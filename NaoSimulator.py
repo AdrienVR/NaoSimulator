@@ -122,7 +122,7 @@ class Configuration(QWidget, config):
         self.connect(self.buttonBox,  SIGNAL("rejected()"), self.hide)
         self.connect(self.buttonBox,  SIGNAL("accepted()"), self.appliquer)
         self.connect(self.pushButtonResetValues,  SIGNAL("released()"), self.resetDefaults)
-        
+
     def resetDefaults(self):
         self.lineEditValueIP.setText(self.defaultValueIP)
         self.lineEditValuePort.setText(str(self.defaultValuePort))
@@ -134,7 +134,7 @@ class Configuration(QWidget, config):
         self.valueIP=self.lineEditValueIP.text()
         self.valuePort=int(self.lineEditValuePort.text())
         self.hide()
-        
+
 
 ##class Documentation(QWidget, docu):
 ##    ## Elle est initialisée une fois instanciée par MainWindow
@@ -222,7 +222,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.valueList=[]
         for a in range(len(self.sliders)):
             self.valueList.append(self.sliders[a].value())
-        
+
         self.sliderEq=["piedG","piedG",
                        "molletG",
                        "cuisseG","cuisseG",
@@ -231,7 +231,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
                        "coudeG","coudeG",
                        "mainG",
                        "doigt2G",
-                       
+
                        "piedD","piedD",
                        "molletD",
                        "cuisseD","cuisseD",
@@ -266,7 +266,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
                       self.pushButtonCuisseG:("cuisseG"),self.pushButtonCuisseD:("cuisseD"),
                       self.pushButtonMolletG:("molletG"),self.pushButtonMolletD:("molletD"),
                       self.pushButtonPiedG:("piedG"),self.pushButtonPiedD:("piedD")}
-        
+
         self.checkLedBoxes={self.checkBoxLed1:"eye1",self.checkBoxLed2:"eye2",self.checkBoxLed3:"eye3",
                             self.checkBoxLed4:"eye4",self.checkBoxLed5:"eye5",self.checkBoxLed6:"eye6",
                             self.checkBoxLed7:"eye7",self.checkBoxLed8:"eye8"}
@@ -283,12 +283,12 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.thread = GenericThread(self.runCode)
         self.printer = Printer()
         Printer.target = self
-        
+
         self.materials=[self.actionOrange,self.actionGris,self.actionBleu,self.actionNoir]
         self.eqMtlNames={self.actionOrange:(FORMAT_COLORS/FORMAT_COLORS,30.0/FORMAT_COLORS,1.0/FORMAT_COLORS),self.actionGris:(200.0/FORMAT_COLORS,200.0/FORMAT_COLORS,200.0/FORMAT_COLORS),
                          self.actionBleu:(20.0/FORMAT_COLORS,20.0/FORMAT_COLORS,FORMAT_COLORS/FORMAT_COLORS),self.actionNoir:(0.0/FORMAT_COLORS,0.0/FORMAT_COLORS,0.0/FORMAT_COLORS)}
 
-        
+
         self.differenceRobots=[self.horizontalSliderMainG1,
                                 self.horizontalSliderMainD1,
                                 self.horizontalSliderDoigtsG0,
@@ -306,9 +306,9 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.show()
 
         self.setIO()
-            
+
         self.tabWidget.setCurrentIndex(0)
-        
+
         #Pour la maj, il y a une connexion directe avec le compteur, pour l'animation
         self.connect(self.timer,  SIGNAL("timeout()"), self.animate)
         self.connect(self.timer,  SIGNAL("timeout()"), self.updateSliders)
@@ -317,7 +317,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         #pour le reste une surcharge des fonctions WheelEvent et MouseEvent permet
         #le controle des mouvements
         self.resizeViewer3DWidget()
-        
+
         self.motor()
         self.resizeShell()
 
@@ -363,8 +363,8 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
                 pass
             else :
                 self.save()
-        self.__del__()        
-        
+        self.__del__()
+
     def createConnexions(self):
         """
         Callbacks : signal, slot
@@ -397,18 +397,18 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         #Format Menu
         self.connect(self.actionCommenter,  SIGNAL("triggered()"), self.comment)
         self.connect(self.actionDecommenter,  SIGNAL("triggered()"), self.uncomment)
-        
+
         self.connect(self.actionEffacer,  SIGNAL("triggered()"), self.textBrowserConsole.clearTT)
 
         ## RESEAU
         ##self.connect(self.actionRunReal,  SIGNAL("triggered()"), self.changeReseau)
-        
+
         #actions boutons menu
         self.connect(self.actionRun,  SIGNAL("triggered()"), self.run)
         #self.connect(self.actionStop,  SIGNAL("triggered()"), self.stop)
         self.connect(self.actionRun_2,  SIGNAL("triggered()"), self.run)
         #self.connect(self.actionStop_2,  SIGNAL("triggered()"), self.stop)
-        
+
         #Robot Menu
         self.connect(self.actionNaoH25,  SIGNAL("triggered()"), self.showLegs)
         self.connect(self.actionNaoH21,  SIGNAL("triggered()"), self.showLegsH21)
@@ -452,14 +452,14 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
 
         #Reinitialisation Position Nao
         self.connect( self.actionInitPosition, SIGNAL("triggered()"), self.resetAll)
-        
+
         self.connect(self.thread, SIGNAL("finished ()"), self.finishCode)
 
         ### EVENEMENTIEL
         self.connect(self.pushButtonValidSpeak, SIGNAL("released()"), self.speakToRobot)
         self.connect(self.tabWidget, SIGNAL("currentChanged (int)"), self.protectRunning)
         self.connect(self.lineEditSpeak, SIGNAL("returnPressed ()"), self.speakToRobot)
-        
+
 
 
 
@@ -501,7 +501,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
             print self.sliders[a].value(),self.sliderEq[a]
         for a in self.virtualNao.getMembreKeys():
             print a, self.virtualNao.getMembre(a).getPercentFromAxis(0),self.virtualNao.getMembre(a).getPercentFromAxis(1),self.virtualNao.getMembre(a).getPercentFromAxis(2)
-            
+
     def armReset(self):
         """
         Pour l'utilisation de reset
@@ -510,7 +510,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
             if a.isDown():
                 self.target=a
                 return
-            
+
     ## Reset by pushing button name of the sliders...
     def reset(self):
         """
@@ -529,8 +529,8 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
             self.Viewer3DWidget.update()
             self.running=False
             # maj slider
-            
-            
+
+
     def resetAll(self):
         for a in self.virtualNao.getMembreKeys():
             self.virtualNao.getMembre(a).rotate=[0,0,0]
@@ -593,7 +593,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
 ##            self.virtualNao.getMembre("epauleD").rotate[2]=18
         self.virtualNao.getMembre("epauleBicepsG").rotate[0]=self.virtualNao.getMembre("bicepsG").rotate[0]
         self.virtualNao.getMembre("epauleBicepsD").rotate[0]=self.virtualNao.getMembre("bicepsD").rotate[0]
-            
+
         self.virtualNao.getMembre("teteD").rotate[0]=self.virtualNao.getMembre("teteG").rotate[0]
         self.virtualNao.getMembre("teteD").rotate[2]=-self.virtualNao.getMembre("teteG").rotate[2]
 
@@ -677,7 +677,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         ALProxy.setType("H25")
         for widget in self.differenceRobots:
             widget.setEnabled(True)
-            
+
         if self.tabWidget2.count()==self.initTabLength-1:
             self.Viewer3DWidget.unmiddle()
             if not "hancheSD" in self.virtualNao.getMembre("torseSD").underObjects.keys():
@@ -694,7 +694,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         ALProxy.setType("H21")
         for widget in self.differenceRobots:
             widget.setEnabled(False)
-        
+
         if self.tabWidget2.count()==self.initTabLength-1:
             self.Viewer3DWidget.unmiddle()
             if not "hancheSD" in self.virtualNao.getMembre("torseSD").underObjects.keys():
@@ -711,11 +711,11 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         ALProxy.setType("T14")
         for widget in self.differenceRobots:
             widget.setEnabled(True)
-            
+
         if self.tabWidget2.count()==self.initTabLength:
             self.Viewer3DWidget.middle()
             self.tabWidget2.removeTab(1)
-            
+
             if "hancheD" in self.virtualNao.getMembre("torseSD").underObjects.keys():
                 self.pop[0]=self.virtualNao.getMembre("torseSD").underObjects.pop("hancheD")
                 self.pop[1]=self.virtualNao.getMembre("torseSG").underObjects.pop("hancheG")
@@ -769,7 +769,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         if self.tabWidget.currentIndex()==0:
             self.updateSliders()
             self.stop()
-    
+
     def stop(self):
         """
         Stoppe les animations.
@@ -796,19 +796,19 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
             self.running=True
         else :
             print "running"
-            
+
     def runCode(self):
         """
         Démarre le code écrit dans l'éditeur.
         """
-        
+
         printer=Printer()
         if not DEBUGOUT :
             sys.stdout = printer
             if not DEBUG:
                 sys.stderr = printer
         printer.setConnexion(self.textBrowserConsole)
-        
+
         if self.runReal:
             try:
                 import naoqi
@@ -873,7 +873,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
 
     def changeReseau(self):
         """
-        
+
         """
         self.runReal=self.actionRunReal.isChecked()
         if self.runReal:
@@ -911,11 +911,11 @@ class RealLauncher():
             a=str(self.argument)
             exec(a[:])
 class Printer(QObject):
-    
+
     def __init__(self):
         QtCore.QObject.__init__(self)
         self.target=None
-    
+
     def write(self, text):
         QtCore.QMetaObject.invokeMethod(self.target, "slotMessage", QtCore.Q_ARG(str,text))
 
@@ -928,7 +928,7 @@ class Printer(QObject):
     def __del__(self):
         return
         self.unsetConnexion()
-        
+
 
 
 a = QApplication(sys.argv)
