@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="img">
+    <file>LOGOTYPE.png</file>
+    <file>icoFonce.png</file>
+    <file>icoOff.png</file>
+    <file>arret.png</file>
+    <file>ico.png</file>
+    <file>fleche.png</file>
+    <file>pause.png</file>
+  </qresource>
+</RCC>
