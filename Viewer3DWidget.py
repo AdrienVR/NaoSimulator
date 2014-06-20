@@ -115,7 +115,6 @@ class Viewer3DWidget(QGLWidget):
 
     def resizeGL(self, widthInPixels, heightInPixels):
         self.camera.setViewportDimensions(widthInPixels, heightInPixels)
-        self.camera2.setViewportDimensions(widthInPixels, heightInPixels)
         glViewport(0, 0, widthInPixels, heightInPixels)
 
     def initializeGL(self):
