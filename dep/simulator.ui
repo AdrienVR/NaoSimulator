@@ -1724,7 +1724,7 @@ p, li { white-space: pre-wrap; }
                         </size>
                        </property>
                        <property name="text">
-                        <string>OK</string>
+                        <string>Parler</string>
                        </property>
                       </widget>
                      </item>
@@ -1740,7 +1740,7 @@ p, li { white-space: pre-wrap; }
                       </font>
                      </property>
                      <property name="text">
-                      <string>Faire reconnaitre une forme</string>
+                      <string>Faire reconnaitre un visage ou un objet</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -1757,7 +1757,7 @@ p, li { white-space: pre-wrap; }
                       </font>
                      </property>
                      <property name="text">
-                      <string>Faire enregistrer une forme</string>
+                      <string>Faire enregistrer un visage ou un objet</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -1770,9 +1770,22 @@ p, li { white-space: pre-wrap; }
                       <widget class="QComboBox" name="comboBox">
                        <property name="maximumSize">
                         <size>
+                         <width>220</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="pushButtonReconnaitre">
+                       <property name="maximumSize">
+                        <size>
                          <width>100</width>
                          <height>16777215</height>
                         </size>
+                       </property>
+                       <property name="text">
+                        <string>Reconnaitre</string>
                        </property>
                       </widget>
                      </item>
@@ -1781,17 +1794,17 @@ p, li { white-space: pre-wrap; }
                    <item row="4" column="0">
                     <layout class="QHBoxLayout" name="horizontalLayout_10">
                      <item>
-                      <widget class="QLineEdit" name="lineEdit">
+                      <widget class="QLineEdit" name="lineEditObjet">
                        <property name="maximumSize">
                         <size>
-                         <width>150</width>
+                         <width>200</width>
                          <height>16777215</height>
                         </size>
                        </property>
                       </widget>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="pushButton">
+                      <widget class="QPushButton" name="pushButtonObjet">
                        <property name="maximumSize">
                         <size>
                          <width>100</width>
@@ -1799,7 +1812,7 @@ p, li { white-space: pre-wrap; }
                         </size>
                        </property>
                        <property name="text">
-                        <string>OK</string>
+                        <string>Enregistrer</string>
                        </property>
                       </widget>
                      </item>

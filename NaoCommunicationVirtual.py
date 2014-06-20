@@ -12,7 +12,7 @@ Utilise NaoStructureVirtual (interface anglaise)
 """
 
 class NaoControle:
-    
+
     def __init__(self, nao):
         self.__nao = nao;
         ALProxy.associateStaticNao(nao)
@@ -148,7 +148,7 @@ class NaoControle:
                     rate = (maxPosition - minPosition) /(denominateur);
                     normPosition = 100/rate;
                 string = "    position : %s" %(normPosition);
-                string = self.__nao.getMotors().addSpaces(string, 20); 
+                string = self.__nao.getMotors().addSpaces(string, 20);
                 print string,"- temps :",times[i][j];
 
     #test OK
@@ -174,7 +174,7 @@ class NaoControle:
             "RElbowRoll" : "COUDE DROITE ROTATION BAS HAUT",
             "LWristYaw" : "POIGNET GAUCHE ROTATION GAUCHE DROITE",
             "RWristYaw" : "POIGNET DROITE ROTATION GAUCHE DROITE",
-            "LHand" : "MAIN GAUCHE FERMEE OUVERTE",             
+            "LHand" : "MAIN GAUCHE FERMEE OUVERTE",
             "RHand" : "MAIN DROITE FERMEE OUVERTE",
             "LHipYawPitch" : "HANCHE_GAUCHE",
             "RHipYawPitch" : "HANCHE_DROITE",
@@ -226,7 +226,7 @@ class NaoControle:
 
     def allumerLed(self, numeroLed):
         self.__nao.getLeds().setIntensity(numeroLed, 1);
-        
+
     #test OK
     def eteindreLeds(self):
         self.__nao.getLeds().allLedsOff();
@@ -246,12 +246,12 @@ class NaoControle:
     #test OK
     def estAllume(self, numeroLed):
         estAllume = False;
-        
+
         tabIntensity = self.__nao.getLeds().getIntensity(numeroLed);
         if len(tabIntensity) == 3:
             if tabIntensity[0]>0.06 and tabIntensity[1]>0.06 and tabIntensity[2]>0.06 :
                 estAllume = True;
-        
+
         return estAllume;
 
     #test OK
@@ -266,7 +266,7 @@ class NaoControle:
     def apparitionCouleur(self, numeroLed, rouge, vert, bleu, temps):
         self.__nao.getLeds().fadeColor(numeroLed, rouge, vert, bleu, temps);
 
-    
+
     def effacerAnimationLed(self):
         self.__nao.getLeds().resetAnimation();
 
@@ -281,7 +281,7 @@ class NaoControle:
 
     def afficherAnimationLed(self):
         self.__nao.getLeds().displayAnimation("Led", "Couleur", "Temps", 15);
-                
+
     def __recupererIntensite(self, numeroLed):
         return self.__nao.getLeds().getIntensity(numeroLed);
 
@@ -428,10 +428,10 @@ class AbstractNaoEvenement():
         self.visageReconnu = ""
 
     #test OK
-    
+
     def traiterDetectionVisage(self, visage, tauxReco):
         pass;
-    
+
 
     #test OK
     def _faceDetectedEvent(self, visage, tauxReco):
@@ -456,11 +456,11 @@ class AbstractNaoEvenement():
         self.ratio = 0.0
 
     #test OK
-    
+
     def traiterDetectionObjet(self, nomObjet, coteObjet, ressemblance, ratio):
         pass;
-    
-    
+
+
     #test OK
     def _pictureDetectedEvent(self, objectName, objectSide, matching, ratio):
         self.recoObjet = True
@@ -483,11 +483,11 @@ class AbstractNaoEvenement():
         self.recoParole = False;
 
     #test OK
-    
+
     def traiterDetectionParole(self):
         pass;
-    
-    
+
+
     #test OK
     def _speechDetectedEvent(self):
         self.recoParole = True;
@@ -506,11 +506,9 @@ class AbstractNaoEvenement():
         self.tauxReconnaissance = 0.0
         #self.startWordRecognition();
 
-    
     def traiterReconnaissanceVocale(self, mot, tauxReco):
         pass;
-    
-    
+
     def _wordRecognizedEvent(self, word, rate):
         self.recoVocale= True
         self.motReconnu = word
@@ -521,4 +519,4 @@ class AbstractNaoEvenement():
         self.recoVocale= False
         self.motReconnu = ""
         self.tauxReconnaissance = 0.0
-        #self.stopWordRecognition();   
+        #self.stopWordRecognition();

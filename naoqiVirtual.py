@@ -4,7 +4,7 @@ La classe ALProxy doit bouger le Nao Virtuel
 Attribut statique référence le nao virtuel.
 
 Peut etre qu'il faudrait faire hériter la classe
-du virtualNao de ALProxy et surcharger les méthodes 
+du virtualNao de ALProxy et surcharger les méthodes
 """
 import time as TimerT
 class ALProxy():
@@ -15,7 +15,7 @@ class ALProxy():
     membres={0:"HeadYaw",1:"HeadPitch",
                     2:"LShoulderPitch",3:"LShoulderRoll",4:"LElbowYaw",5:"LElbowRoll",6:"LWristYaw",7:"LHand",
                     8:"RShoulderPitch",9:"RShoulderRoll",10:"RElbowYaw",11:"RElbowRoll",12:"RWristYaw",13:"RHand"}
-    
+
     membresVirtual={0:"teteG2", 1:"teteG0",#ok
                             2:"bicepsG0",3:"bicepsG2",4:"coudeG1",5:"coudeG2",6:"mainG1",7:"doigt1G0",#ok
                             8:"bicepsD0",9:"bicepsD2",10:"coudeD1",11:"coudeD2",12:"mainD1",13:"doigt1D0"#ok
@@ -24,7 +24,7 @@ class ALProxy():
     jointsAll={"T14":["HeadYaw", "HeadPitch",
                                "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand",
                                "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand"],
-                        
+
                         "H21":['HeadYaw', 'HeadPitch',
                                'LShoulderPitch', 'LShoulderRoll', 'LElbowYaw', 'LElbowRoll',
                                'LHipYawPitch', 'LHipRoll', 'LHipPitch', 'LKneePitch', 'LAnklePitch', 'LAnkleRoll',
@@ -37,11 +37,11 @@ class ALProxy():
                                'RHipYawPitch', 'RHipRoll', 'RHipPitch', 'RKneePitch', 'RAnklePitch', 'RAnkleRoll',
                                'RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll',"RWristYaw", "RHand"],
                         }
-    
+
     def __init__(self,name=0,adress=0,port=0):
         self.name=name
         self.membre=None
-        
+
         # Différence par rapport à naoqi :
         # Dans l'interface OpenGL, les rotations des membres droits sont inversé par la symétrie
         # Donc en fait les angles pour la partie gauche et la partie droite sont les memes
@@ -53,13 +53,13 @@ class ALProxy():
         self.limitsAll={"T14":[[-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.671951770782 , 0.514872133732 , 7.19407272339 , 1.20000004768 ],
                                [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ],
                                [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ]],
-                               
+
                         "H21":[[-2.0856685638427734, 2.0856685638427734, 8.267973899841309, 1.2000000476837158], [-0.6719517707824707, 0.514872133731842, 7.194072723388672, 1.2000000476837158],
                                [-2.0856685638427734, 2.0856685638427734, 8.267973899841309, 1.2000000476837158], [-0.3141592741012573, 1.326450228691101, 7.194072723388672, 1.2000000476837158], [-2.0856685638427734, 2.0856685638427734, 8.267973899841309, 1.2000000476837158], [-1.5446163415908813, -0.03490658476948738, 7.194072723388672, 1.2000000476837158],
                                [-1.1452850103378296, 0.7407177090644836, 4.161737442016602, 3.200000047683716], [-0.37943458557128906, 0.7904596328735352, 4.161737442016602, 3.200000047683716], [-1.535889744758606, 0.4839797914028168, 6.40239143371582, 3.200000047683716], [-0.09232791513204575, 2.112546443939209, 6.40239143371582, 3.200000047683716], [-1.1894419193267822, 0.9225810170173645, 6.40239143371582, 3.200000047683716], [-0.3977605402469635, 0.7689920663833618, 4.161737442016602, 3.200000047683716],
                                [-1.1452850103378296, 0.7407177090644836, 4.161737442016602, 3.200000047683716], [-0.37943458557128906, 0.7904596328735352, 4.161737442016602, 3.200000047683716], [-1.535889744758606, 0.4839797914028168, 6.40239143371582, 3.200000047683716], [-0.09232791513204575, 2.112546443939209, 6.40239143371582, 3.200000047683716], [-1.1894419193267822, 0.9225810170173645, 6.40239143371582, 3.200000047683716], [-0.3977605402469635, 0.7689920663833618, 4.161737442016602, 3.200000047683716],
                                [-2.0856685638427734, 2.0856685638427734, 8.267973899841309, 1.2000000476837158], [-0.3141592741012573, 1.326450228691101, 7.194072723388672, 1.2000000476837158], [-2.0856685638427734, 2.0856685638427734, 8.267973899841309, 1.2000000476837158], [-1.5446163415908813, -0.03490658476948738, 7.194072723388672, 1.2000000476837158]],
-                        #not tested 
+                        #not tested
                         "H25":[[-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.671951770782 , 0.514872133732 , 7.19407272339 , 1.20000004768 ],
                                [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ],
                                [-1.1452850103378296, 0.7407177090644836, 4.161737442016602, 3.200000047683716], [-0.37943458557128906, 0.7904596328735352, 4.161737442016602, 3.200000047683716], [-1.535889744758606, 0.4839797914028168, 6.40239143371582, 3.200000047683716], [-0.09232791513204575, 2.112546443939209, 6.40239143371582, 3.200000047683716], [-1.1894419193267822, 0.9225810170173645, 6.40239143371582, 3.200000047683716], [-0.3977605402469635, 0.7689920663833618, 4.161737442016602, 3.200000047683716],
@@ -71,7 +71,7 @@ class ALProxy():
                      'RightFaceLed6':"eye3D", 'RightFaceLed5':"eye4D",
                      'RightFaceLed4':"eye5D", 'RightFaceLed3':"eye6D",
                      'RightFaceLed2':"eye7D", 'RightFaceLed1':"eye8D",
-                     
+
                      'LeftFaceLed8':"eye8G", 'LeftFaceLed7':"eye7G",
                      'LeftFaceLed6':"eye6G", 'LeftFaceLed5':"eye5G",
                      'LeftFaceLed4':"eye4G", 'LeftFaceLed3':"eye3G",
@@ -96,7 +96,7 @@ class ALProxy():
                              'LeftFaceLed1':[.0,.0,.0]}
 
         self.ledColors={'RightFaceLed1': ['Face/Led/Red/Right/0Deg/Actuator/Value', 'Face/Led/Green/Right/0Deg/Actuator/Value', 'Face/Led/Blue/Right/0Deg/Actuator/Value'], 'RightFaceLed3': ['Face/Led/Red/Right/90Deg/Actuator/Value', 'Face/Led/Green/Right/90Deg/Actuator/Value', 'Face/Led/Blue/Right/90Deg/Actuator/Value'], 'RightFaceLed2': ['Face/Led/Red/Right/45Deg/Actuator/Value', 'Face/Led/Green/Right/45Deg/Actuator/Value', 'Face/Led/Blue/Right/45Deg/Actuator/Value'], 'RightFaceLed5': ['Face/Led/Red/Right/180Deg/Actuator/Value', 'Face/Led/Green/Right/180Deg/Actuator/Value', 'Face/Led/Blue/Right/180Deg/Actuator/Value'], 'RightFaceLed4': ['Face/Led/Red/Right/135Deg/Actuator/Value', 'Face/Led/Green/Right/135Deg/Actuator/Value', 'Face/Led/Blue/Right/135Deg/Actuator/Value'], 'RightFaceLed7': ['Face/Led/Red/Right/270Deg/Actuator/Value', 'Face/Led/Green/Right/270Deg/Actuator/Value', 'Face/Led/Blue/Right/270Deg/Actuator/Value'], 'RightFaceLed6': ['Face/Led/Red/Right/225Deg/Actuator/Value', 'Face/Led/Green/Right/225Deg/Actuator/Value', 'Face/Led/Blue/Right/225Deg/Actuator/Value'], 'RightFaceLed8': ['Face/Led/Red/Right/315Deg/Actuator/Value', 'Face/Led/Green/Right/315Deg/Actuator/Value', 'Face/Led/Blue/Right/315Deg/Actuator/Value'], 'LeftFaceLed1': ['Face/Led/Red/Left/0Deg/Actuator/Value', 'Face/Led/Green/Left/0Deg/Actuator/Value', 'Face/Led/Blue/Left/0Deg/Actuator/Value'], 'LeftFaceLed3': ['Face/Led/Red/Left/90Deg/Actuator/Value', 'Face/Led/Green/Left/90Deg/Actuator/Value', 'Face/Led/Blue/Left/90Deg/Actuator/Value'], 'LeftFaceLed2': ['Face/Led/Red/Left/45Deg/Actuator/Value', 'Face/Led/Green/Left/45Deg/Actuator/Value', 'Face/Led/Blue/Left/45Deg/Actuator/Value'], 'LeftFaceLed5': ['Face/Led/Red/Left/180Deg/Actuator/Value', 'Face/Led/Green/Left/180Deg/Actuator/Value', 'Face/Led/Blue/Left/180Deg/Actuator/Value'], 'LeftFaceLed4': ['Face/Led/Red/Left/135Deg/Actuator/Value', 'Face/Led/Green/Left/135Deg/Actuator/Value', 'Face/Led/Blue/Left/135Deg/Actuator/Value'], 'LeftFaceLed7': ['Face/Led/Red/Left/270Deg/Actuator/Value', 'Face/Led/Green/Left/270Deg/Actuator/Value', 'Face/Led/Blue/Left/270Deg/Actuator/Value'], 'LeftFaceLed6': ['Face/Led/Red/Left/225Deg/Actuator/Value', 'Face/Led/Green/Left/225Deg/Actuator/Value', 'Face/Led/Blue/Left/225Deg/Actuator/Value'], 'LeftFaceLed8': ['Face/Led/Red/Left/315Deg/Actuator/Value', 'Face/Led/Green/Left/315Deg/Actuator/Value', 'Face/Led/Blue/Left/315Deg/Actuator/Value']}
-        
+
         self.language="french"
         self.volume=0
         self.listLimits={"Body":[]}
@@ -113,17 +113,19 @@ class ALProxy():
     @staticmethod
     def getFunction(functionName):
         functionsByName={
-            "onWordRecognized":ALProxy.staticNao._wordRecognizedEvent}
+            "onWordRecognized":ALProxy.staticNao._wordRecognizedEvent,
+            "onPictureDetected":ALProxy.staticNao._pictureDetectedEvent,
+            "onFaceDetected":ALProxy.staticNao._faceDetectedEvent}
         return functionsByName[functionName]
 
     @staticmethod
-    def eventCall(function, arg):
-        try:
-            ALProxy.getFunction(function)(arg,100)
+    def eventCall(function, args):
+        ##try:
+            ALProxy.getFunction(function)(*args)
             return 1
-        except:
-            print "Pas de AbstractNaoEvenement instancié"
-        return 0
+        ##except:
+        ##    print "Pas de AbstractNaoEvenement instancié"
+        ##return 0
 
     @staticmethod
     def setType(robot="T14"):
@@ -151,34 +153,34 @@ class ALProxy():
                                 14:'hancheD1', 15:'cuisseD1', 16:'cuisseD0', 17:'molletD0', 18:'piedD0', 19:'piedD1',
                                 20:"bicepsD0", 21:"bicepsD2", 22:"coudeD1", 23:"coudeD2", 24:"mainD1", 25:"doigt1D0"
                                 }
-        
+
     #test ok
     def setLanguage(self, language):
         self.language=language
-        
+
     #test ok
     def getLanguage(self):
         return self.language
-        
+
     #test ok
     def say(self, text):
         #print "NAO dit : "+str(text)
         self.virtualNao.addSpeaking(text)
-        
+
     def setVolume(self, value):
         self.volume=value
-        
+
     def getVolume(self):
         return self.volume
-        
+
     #test ok
     def getJointNames(self, part="Body"):
         return self.jointsAll[self.typeRobot]
-        
+
     #test ok
     def getLimits(self, part="Body"):
         return self.limitsAll[self.typeRobot]
-        
+
     #test ok
     def getStiffnesses(self, part="Body"):
         r=[]
@@ -190,7 +192,7 @@ class ALProxy():
 
     def getStiffness(self, numeroMoteur):
             print "not implemented"
-        
+
     def setStiffnesses(self, part="Body", value=1):
         names=self.getNamesFromPart(part)
         for a in names:
@@ -198,10 +200,10 @@ class ALProxy():
 
     def setStiffness(self, numeroMoteur, taux):
             print "not implemented"
-        
+
     def getAngles(self, part="Body", isStg=True):
         return [0,0,0,0]
-        
+
     def angleInterpolation(self, name, motorAngle, time, isAbsolute):
         num=self.getNumberFromName(name)
         nom=self.membresVirtual[num][:-1]
@@ -217,7 +219,7 @@ class ALProxy():
                 return x
         print "error numberName"
         return num
- 
+
     def getNamesFromPart(self, part):
         if part=="body":
             return self.membresVirtual.values()
@@ -226,7 +228,7 @@ class ALProxy():
                 return [self.membresVirtual[x]]
         print "error Names part"
         return []
-               
+
 
     def getAvailableLanguages(self):
         return ["fr"]
@@ -245,7 +247,7 @@ class ALProxy():
                 if "Left" in x: result.append(self.ledMnM[x])
         else:result=self.ledMnM.values()
         return result
-    
+
     def getListNamesFromName(self, name):
         result=[]
         if name in self.ledMnM.keys():
@@ -257,7 +259,7 @@ class ALProxy():
             for x in self.ledMnM.keys():
                 if "Left" in x: result.append(x)
         else:result=self.ledMnM.values()
-        return result        
+        return result
 
     def setIntensity(self, name, intensity):
         #print intensity

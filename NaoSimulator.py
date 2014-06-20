@@ -43,9 +43,9 @@ from naoqiVirtual import ALProxy
 #pour activer ou desactiver la redirection des
 #affichages de texte vers la console intégrée
 DEBUG = True
-#DEBUG = False
+DEBUG = False
 DEBUGOUT = True
-#DEBUGOUT = False
+DEBUGOUT = False
 
 ENABLE_SPACES_TO_TAB=True
 
@@ -461,9 +461,10 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.connect(self.pushButtonValidSpeak, SIGNAL("released()"), self.speakToRobot)
         self.connect(self.tabWidget, SIGNAL("currentChanged (int)"), self.protectRunning)
         self.connect(self.lineEditSpeak, SIGNAL("returnPressed ()"), self.speakToRobot)
+        self.connect(self.lineEditObjet, SIGNAL("returnPressed ()"), self.objetToRobot)
+        self.connect(self.pushButtonObjet, SIGNAL("released()"), self.objetToRobot)
 
-
-
+        self.connect(self.pushButtonReconnaitre, SIGNAL("released()"), self.recognizeObjet)
 
     ####### Main prog --------------------------------------------------------------------- #############
 
@@ -473,8 +474,20 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
 
     def speakToRobot(self):
         if str(self.lineEditSpeak.text()) != "":
-            if ALProxy.eventCall("onWordRecognized",str(self.lineEditSpeak.text())):
+            if ALProxy.eventCall( "onWordRecognized",(str(self.lineEditSpeak.text()),100) ):
                 self.lineEditSpeak.clear()
+
+    def objetToRobot(self):
+        if str(self.lineEditObjet.text()) != "":
+            self.comboBox.addItem( str(self.lineEditObjet.text()) )
+            self.lineEditObjet.clear()
+
+    def recognizeObjet(self):
+        name=str(self.comboBox.currentText())
+        if  name != "":
+            #print  str(self.comboBox.currentText())
+            ALProxy.eventCall( "onFaceDetected", (name, 100) )
+            ALProxy.eventCall( "onPictureDetected", (name, "face", 100, 100) )
 
     def hasChanged(self):
         """
