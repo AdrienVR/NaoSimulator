@@ -1,4 +1,4 @@
-﻿
+
 from time import sleep
 from NaoCommunication import *
 
@@ -29,7 +29,7 @@ nao.allumerLed(i+8)
 #moteur 0 : tete droite gauche
 #moteur 1 : tete haut bas
 
-nao.dire("Tests des moteurs. Regardez ma tête.")
+nao.dire("Tests des moteurs. Regardez ma tÃªte.")
 nao.bloquerMoteur(0)
 nao.bloquerMoteur(1)
 
@@ -45,7 +45,7 @@ nao.bougerMoteur(1, 50, 2)
 nao.libererMoteur(0)
 nao.libererMoteur(1)
 
-#tests reconnaissance vocale en français
+#tests reconnaissance vocale en franÃ§ais
 #nao.attribuerVocabulaire("bonjour", "oui", "non");
 nao.dire("Demarrage de la detection vocale. Dites bonjour, oui ou non.");
 #nao.demarrerReconnaissanceVocale();

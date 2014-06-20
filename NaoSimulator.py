@@ -43,9 +43,9 @@ from naoqiVirtual import ALProxy
 #pour activer ou desactiver la redirection des
 #affichages de texte vers la console intégrée
 DEBUG = True
-DEBUG = False
+#DEBUG = False
 DEBUGOUT = True
-DEBUGOUT = False
+#DEBUGOUT = False
 
 ENABLE_SPACES_TO_TAB=True
 
@@ -297,6 +297,8 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
                                 self.pushButtonMainD,
                                 self.pushButtonDoigtsG,
                                 self.pushButtonDoigtsD]
+
+        self.currentIndex = 0
 
         ################# INITIALISATION #####################################
 
@@ -788,8 +790,13 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         print "launch"
         if (not self.running):
             #Démarrage du chrono pour le framerate seulement
+            self.currentIndex = self.tabWidget2.currentIndex()
             self.timer.start(40)
             self.thread.start()
+            self.actionNaoT14.setEnabled(False)
+            self.actionNaoH21.setEnabled(False)
+            self.actionNaoH25.setEnabled(False)
+            self.actionInitPosition.setEnabled(False)
             #self.tabWidget.setTabEnabled(0,False)
             for x in range(self.tabWidget2.count()-2):
                 self.tabWidget2.setTabEnabled(x,False)
@@ -870,6 +877,11 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         #self.printState()
         for x in range(self.tabWidget2.count()-1):
             self.tabWidget2.setTabEnabled(x,True)
+        self.tabWidget2.setCurrentIndex (self.currentIndex)
+        self.actionNaoT14.setEnabled(True)
+        self.actionNaoH21.setEnabled(True)
+        self.actionNaoH25.setEnabled(True)
+        self.actionInitPosition.setEnabled(True)
 
     def changeReseau(self):
         """

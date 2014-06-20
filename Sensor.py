@@ -35,14 +35,12 @@ class SpeechRecognitionSensor:
     #test OK
     def startSpeechRecognition(self):
         print "START SPEECH RECOGNITION 1";
-        self.__proxy.subscribe("naoEnib");
         print "START SPEECH RECOGNITION 2";
 
     #test OK
     def stopSpeechRecognition(self):
         print "STOP SPEECH RECOGNITION 1";
-        self.__proxy.unsubscribe("naoEnib");
         print "STOP SPEECH RECOGNITION 2";
         return
 
-        
+
