@@ -35,6 +35,7 @@ from Viewer3DWidget import Viewer3DWidget
 from Loader import Objet3D
 #Affichage accents
 from DecoderAll import Decoder
+from coloring2 import *
 
 #API NAO
 from Nao3D import Nao3D
@@ -299,6 +300,8 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
                                 self.pushButtonDoigtsD]
 
         self.currentIndex = 0
+
+        self.syntaxColor = PythonHighlighter(self.textEdit.document())
 
         ################# INITIALISATION #####################################
 

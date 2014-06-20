@@ -17,7 +17,7 @@ class EditeurPython():
         sizes.append(fenX/2);
         self.splitter.setSizes(sizes)
         self.resizeEvent(0)
-        
+
     def initVue3D(self):
         fenX=self.centralwidget.width()
         fenY=self.centralwidget.height()
@@ -62,7 +62,7 @@ class EditeurPython():
         a,b=self.getPosInText(fullText,text)
         fullText=fullText[:a]+fullText[a:b].replace("\n##","\n")+fullText[b:]
         self.textEdit.setPlainText(fullText)
-    
+
     def comment(self):
         fullText=self.textEdit.toPlainText()#
         text=self.getHighLightedText(self.textEdit)#
@@ -74,10 +74,10 @@ class EditeurPython():
     ###################################### MENU EDITION #####################################################
     def paste(self):
         self.textEdit.paste()
-        
+
     def cut(self):
         self.textEdit.cut()
-        
+
     def copy(self):
         self.textEdit.copy()
 
@@ -106,7 +106,7 @@ class EditeurPython():
 
     def undo(self):
         self.textEdit.undo()
-        
+
     ###################################### MENU FICHIER #####################################################
     def setStar(self,modif=True):
         if modif and not self.modified:
@@ -124,8 +124,8 @@ class EditeurPython():
 ##        fullText=str(self.textEdit.toPlainText())
 ##        htmlText=highlight(fullText, PythonLexer(), HtmlFormatter())
 ##        self.textEdit.setHtml(htmlText)
-            
-        
+
+
     def openFile(self):
         fileName = QFileDialog.getOpenFileName(self,
                  "Ouvrir fichier", "/", "Python Files (*.py)")
@@ -155,7 +155,7 @@ class EditeurPython():
             self.setWindowTitle(self.name+" - "+self.fileName)
         else:
             self.saveUnder()
-            
+
     def saveUnder(self):
         fileName = QFileDialog.getSaveFileName(self,
                  "Enregistrer fichier", "/", "Python Files (*.py)")
