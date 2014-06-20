@@ -2019,12 +2019,12 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionDocumentation">
    <property name="text">
-    <string>Documentation</string>
+    <string>Documentation...</string>
    </property>
   </action>
   <action name="actionApropos">
    <property name="text">
-    <string>À propos</string>
+    <string>À propos...</string>
    </property>
   </action>
   <action name="actionRun">
@@ -2205,7 +2205,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionConfiguration">
    <property name="text">
-    <string>Configuration</string>
+    <string>Configuration...</string>
    </property>
   </action>
   <action name="actionNaoH21">

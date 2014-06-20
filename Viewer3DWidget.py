@@ -16,6 +16,7 @@ from OpenGL.GLUT import glutInit, glutInitDisplayMode,GLUT_RGBA, GLUT_DOUBLE,glu
 import numpy as np
 
 from GLDemo.Camera import Camera
+from GLDemo.MyGeom import Point3D
 #from Nao3D import Nao3D  #utilise virtualNao
 
 import time
@@ -38,6 +39,11 @@ class Viewer3DWidget(QGLWidget):
         self.camera = Camera()
         self.camera.setSceneRadius( 2 )
         self.camera.reset()
+
+
+        self.camera2 = Camera()
+        self.camera2.setSceneRadius( 2 )
+        self.camera2.reset()
         self.isPressed = False
         self.oldx = self.oldy = 0
 
@@ -47,7 +53,7 @@ class Viewer3DWidget(QGLWidget):
         self.taille=0
 
         self.virtualNao = None#Nao3D()
-        
+
         self.size(0)
 
     def updateDt(self, dt):
@@ -61,10 +67,10 @@ class Viewer3DWidget(QGLWidget):
         surcharge de la fonction présente dans GLWidget
         est appelée par update
         """
-        #?glPushMatrix()
-        
+        #glPushMatrix()
+
         glEnable(GL_TEXTURE_2D);
-        glEnable(GL_DEPTH_TEST); 
+        glEnable(GL_DEPTH_TEST);
         glEnable(GL_LIGHTING)
         glMatrixMode( GL_PROJECTION )
         glLoadIdentity()
@@ -84,21 +90,28 @@ class Viewer3DWidget(QGLWidget):
         self.virtualNao.getMembre("torseG").draw()
         glScalef(-1.0,1.0,1.0)
         self.virtualNao.getMembre("torseD").draw()
-        
+
         glPopMatrix()
-        
+
         glDisableClientState(GL_NORMAL_ARRAY);
         glDisableClientState(GL_VERTEX_ARRAY);
-##
-        #nao speaking
-        gluOrtho2D(-10, 10, -10, 0);
+
+############################### NAO SPEAKING #############################
+
+        self.camera2.up = Point3D()-self.camera.up
+        self.camera2.position = Point3D()-self.camera.position
+        self.camera2.target = Point3D()-self.camera.target
+        self.camera2.ground  = Point3D()-self.camera.ground
+        self.camera2.transform()
+
         glDisable(GL_TEXTURE_2D);
-        glDisable(GL_DEPTH_TEST); 
+        glDisable(GL_DEPTH_TEST);
         glDisable(GL_LIGHTING)
-        #glPopMatrix();
-        glMatrixMode( GL_MODELVIEW );
         glLoadIdentity()
-        #nao parle
+        glViewport(0, 0, self.width(), self.height());
+        glMatrixMode(GL_PROJECTION);
+        glOrtho(0, self.width(), self.height(), 0, -10, 10);
+        #gluOrtho2D(-10, 10, -10, 0);
         glColor3f(0.0,.0,.0)
         glRasterPos2f(-0.09*len(self.virtualNao.speaking),-1.70);
         for a in self.virtualNao.speaking:
@@ -126,15 +139,15 @@ class Viewer3DWidget(QGLWidget):
         glLightfv(GL_LIGHT0,GL_SPOT_DIRECTION,l_dir0);
         glLightfv(GL_LIGHT0,GL_DIFFUSE,vert);
         glEnable(GL_LIGHT0);
-        
+
         glEnable(GL_LIGHTING);
         glEnable(GL_COLOR_MATERIAL)
-        
+
         glDepthFunc(GL_LESS);
         glEnable(GL_DEPTH_TEST);
-        
+
         glutInit([])
-        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE)   
+        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE)
 
     def mouseMoveEvent(self, mouseEvent):
         if int(mouseEvent.buttons()) != Core.Qt.NoButton :
