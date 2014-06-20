@@ -40,10 +40,6 @@ class Viewer3DWidget(QGLWidget):
         self.camera.setSceneRadius( 2 )
         self.camera.reset()
 
-
-        self.camera2 = Camera()
-        self.camera2.setSceneRadius( 2 )
-        self.camera2.reset()
         self.isPressed = False
         self.oldx = self.oldy = 0
 
@@ -67,7 +63,25 @@ class Viewer3DWidget(QGLWidget):
         surcharge de la fonction présente dans GLWidget
         est appelée par update
         """
-        #glPushMatrix()
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
+        ######################## NAO SPEAKING ###################
+
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0,self.width(),0,self.height(),-1, 1);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glTranslated(0,0,0);
+        glRasterPos2f(5,5);
+        for a in self.virtualNao.speaking:
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18,ord(a));
+        glMatrixMode(GL_PROJECTION);
+        glMatrixMode(GL_MODELVIEW);
+
+        glLoadIdentity();
+        ############################# 3D DRAWING ################
 
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
@@ -78,7 +92,6 @@ class Viewer3DWidget(QGLWidget):
         glMatrixMode( GL_MODELVIEW );
         glLoadIdentity();
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
@@ -96,32 +109,13 @@ class Viewer3DWidget(QGLWidget):
         glDisableClientState(GL_NORMAL_ARRAY);
         glDisableClientState(GL_VERTEX_ARRAY);
 
-############################### NAO SPEAKING #############################
-
-        self.camera2.up = Point3D()-self.camera.up
-        self.camera2.position = Point3D()-self.camera.position
-        self.camera2.target = Point3D()-self.camera.target
-        self.camera2.ground  = Point3D()-self.camera.ground
-        self.camera2.transform()
-
-        glDisable(GL_TEXTURE_2D);
-        glDisable(GL_DEPTH_TEST);
-        glDisable(GL_LIGHTING)
-        glLoadIdentity()
-        glViewport(0, 0, self.width(), self.height());
-        glMatrixMode(GL_PROJECTION);
-        glOrtho(0, self.width(), self.height(), 0, -10, 10);
-        #gluOrtho2D(-10, 10, -10, 0);
-        glColor3f(0.0,.0,.0)
-        glRasterPos2f(-0.09*len(self.virtualNao.speaking),-1.70);
-        for a in self.virtualNao.speaking:
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18,ord(a));
-
         glFlush()
         time.sleep(0.015)
 
+
     def resizeGL(self, widthInPixels, heightInPixels):
         self.camera.setViewportDimensions(widthInPixels, heightInPixels)
+        self.camera2.setViewportDimensions(widthInPixels, heightInPixels)
         glViewport(0, 0, widthInPixels, heightInPixels)
 
     def initializeGL(self):
