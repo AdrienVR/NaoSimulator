@@ -851,15 +851,15 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         t=Decoder().decode(p)
         t=p#.toUtf8()
         if ENABLE_SPACES_TO_TAB:
-            t.replace("    ","\t")
+            t=t.replace("    ","\t")
 
         if self.runReal:
             realT=t[:]
             a,b=self.config.getProxy()
             h=str("(Nao("+'"'+str(a)+'"'+","+str(b)+"))")
             realT.replace("(Nao())",h)
-        t.replace("from NaoCommunication import",
-                      "from NaoCommunicationVirtual import")
+        t=t.replace("from NaoCommunication import","from NaoCommunicationVirtual import")
+        #print t
         if self.runReal:
             launcher=RealLauncher()
             launcher.setArgument(realT)
