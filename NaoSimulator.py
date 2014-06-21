@@ -44,9 +44,9 @@ from naoqiVirtual import ALProxy
 #pour activer ou desactiver la redirection des
 #affichages de texte vers la console intégrée
 DEBUG = True
-#DEBUG = False
+DEBUG = False
 DEBUGOUT = True
-#DEBUGOUT = False
+DEBUGOUT = False
 
 ENABLE_SPACES_TO_TAB=True
 
