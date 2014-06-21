@@ -12,7 +12,7 @@ from PySide.QtGui import QApplication,  QMainWindow, QTextBrowser
 from PySide.QtGui import QFileDialog, QCursor, QToolTip
 from PySide.QtGui import QWidget,QSplashScreen,QDialog
 from PySide.QtGui import QMessageBox,QFont
-from PySide import uic
+#from PySide import uic
 from PySide.QtCore import QRect, QUrl
 from PySide.QtCore import Qt, SIGNAL, QTimer
 from PySide.QtCore import QObject, QThread
@@ -44,9 +44,9 @@ from naoqiVirtual import ALProxy
 #pour activer ou desactiver la redirection des
 #affichages de texte vers la console intégrée
 DEBUG = True
-DEBUG = False
+#DEBUG = False
 DEBUGOUT = True
-DEBUGOUT = False
+#DEBUGOUT = False
 
 ENABLE_SPACES_TO_TAB=True
 
@@ -88,12 +88,16 @@ class PyShell(QTextBrowser):
 
 
 ## Chargement de chaque design de fenetre.
-UiMainWindow,  Klass = uic.loadUiType(os.path.join("dep",'simulator.ui'))
-aProposWindow, k = uic.loadUiType(os.path.join("dep",'aPropos.ui'))
+from dep.Ui_simulator import Ui_MainWindow
+#UiMainWindow,  Klass = uic.loadUiType(os.path.join("dep",'simulator.ui'))
+from dep.Ui_aPropos import Ui_widget as Ui_aProposWindow
+#aProposWindow, k = uic.loadUiType(os.path.join("dep",'aPropos.ui'))
+#from dep.Ui_documentation import Ui_documentation
 #docu, k = uic.loadUiType(os.path.join("dep",'documentation.ui'))
-config, k = uic.loadUiType(os.path.join("dep",'config.ui'))
+from dep.Ui_config import Ui_Configuration
+#config, k = uic.loadUiType(os.path.join("dep",'config.ui'))
 
-class Configuration(QWidget, config):
+class Configuration(QWidget, Ui_Configuration):
     """
     Fenêtre de configuration d'adresse IP du robot
     et de configuration du port.
@@ -101,7 +105,7 @@ class Configuration(QWidget, config):
     def __init__(self, conteneur=None):
         if conteneur is None : conteneur = self
         QWidget.__init__(conteneur)
-        config.__init__(conteneur)
+        Ui_Configuration.__init__(conteneur)
         self.setupUi(conteneur)
 
         self.defaultValueIP=""
@@ -145,16 +149,16 @@ class Configuration(QWidget, config):
 ##        docu.__init__(conteneur)
 ##        self.setupUi(conteneur)
 
-class ApWindow(QDialog, aProposWindow):
+class ApWindow(QDialog, Ui_aProposWindow):
     def __init__(self, conteneur=None):
         if conteneur is None : conteneur = self
         QDialog.__init__(conteneur)
-        aProposWindow.__init__(conteneur)
+        Ui_aProposWindow.__init__(conteneur)
         self.setupUi(conteneur)
 
 from Editeur import EditeurPython
 
-class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
+class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
     def __init__(self,  conteneur=None):
         if conteneur is None : conteneur = self
         QMainWindow.__init__(conteneur)
@@ -745,9 +749,8 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         """
         Gère la façon dont se resize la vue 3D
         """
-        h=self.widgetGLContainer.property("geometry").toRect()
-        x=h.width()
-        y=h.height()
+        x=self.widgetGLContainer.property("geometry").width()
+        y=self.widgetGLContainer.property("geometry").height()
         g=QRect(0,0,x,y)
         self.Viewer3DWidget.setProperty("geometry",g)
 
@@ -755,9 +758,8 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         """
         Gère la façon dont se resize la console
         """
-        h=self.widgetShellContainer.property("geometry").toRect()
-        x=h.width()
-        y=h.height()
+        x=self.widgetShellContainer.property("geometry").width()
+        y=self.widgetShellContainer.property("geometry").height()
         self.textBrowserConsole.setMaximumSize(x,y)
         self.textBrowserConsole.setMinimumSize(x,y)
 
@@ -847,7 +849,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.tabWidget.setCurrentIndex(0)
         p=self.textEdit.toPlainText()#.toUtf8()
         t=Decoder().decode(p)
-        t=p.toUtf8()
+        t=p#.toUtf8()
         if ENABLE_SPACES_TO_TAB:
             t.replace("    ","\t")
 

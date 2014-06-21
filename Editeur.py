@@ -6,7 +6,7 @@ from PySide.QtGui import QFileDialog
 ##from pygments.lexers import PythonLexer
 ##from pygments.formatters import HtmlFormatter
 
-class EditeurPython():
+class EditeurPython(object):
     def __init__(a=None):
         pass
         ###################################### INTERFACE   #####################################################

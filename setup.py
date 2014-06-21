@@ -1,9 +1,9 @@
 import sys
- 
+
 from cx_Freeze import setup, Executable
 import PySide
 import os
-import PySide.uic
+#import PySide.uic
 
 """
 utiliser : python setup.py build pour compiler.
@@ -20,17 +20,18 @@ importationCode=[]
 dependances = ["doc/","dep/","objects/"]
 
 #QWEB
-includefiles = ["rsc_rc.py",(os.path.join(os.path.dirname(PyQt4.uic.__file__),
-"widget-plugins"), "PyQt4.uic.widget-plugins")]+importationCode+dependances
+#includefiles = ["rsc_rc.py",(os.path.join(os.path.dirname(PyQt4.uic.__file__),
+#"widget-plugins"), "PyQt4.uic.widget-plugins")]+importationCode+dependances
 #QWEB!
+includefiles = ["rsc_rc.py"]+importationCode+dependances
 
-includes = ["PyQt4.QtNetwork"]
+includes = []#["PyQt4.QtNetwork"]
 excludes = []
 packages = ["encodings",
             "OpenGL",
             "OpenGL.arrays" # or just this one
             ]
- 
+
 setup(
     name = "NAO_Simulator",
     version = "0.9",
