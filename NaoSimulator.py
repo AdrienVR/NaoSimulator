@@ -8,26 +8,26 @@ import sys
 import os
 
 ## QT libs
-from PyQt4.QtGui import QApplication,  QMainWindow, QTextBrowser
-from PyQt4.QtGui import QFileDialog, QCursor, QToolTip
-from PyQt4.QtGui import QWidget,QSplashScreen,QDialog
-from PyQt4.QtGui import QMessageBox,QFont
-from PyQt4 import uic
-from PyQt4.QtCore import QRect, QUrl
-from PyQt4.QtCore import Qt, SIGNAL, QTimer
-from PyQt4.QtCore import QObject, QThread
-from PyQt4.QtCore import QMutex
+from PySide.QtGui import QApplication,  QMainWindow, QTextBrowser
+from PySide.QtGui import QFileDialog, QCursor, QToolTip
+from PySide.QtGui import QWidget,QSplashScreen,QDialog
+from PySide.QtGui import QMessageBox,QFont
+from PySide import uic
+from PySide.QtCore import QRect, QUrl
+from PySide.QtCore import Qt, SIGNAL, QTimer
+from PySide.QtCore import QObject, QThread
+from PySide.QtCore import QMutex
 
 import time
 import threading
 
 ###### QWEB
-##from PyQt4 import uic
+##from PySide import uic
 ##import os
 ##import sys
 ##path = os.path.join(os.path.dirname(sys.argv[0]), "PyQt4.uic.widget-plugins")
 ##uic.widgetPluginPath.append(path)
-##from PyQt4.QtWebKit import QWebView
+##from PySide.QtWebKit import QWebView
 ###### QWEB!
 
 #Partie 3D
@@ -59,7 +59,7 @@ FORMAT_COLORS = 255.0
 EYES_GREY = 175.0
 R_COLOR = EYES_GREY / FORMAT_COLORS
 
-from PyQt4 import QtCore
+from PySide import QtCore
 
 Ssaveout = sys.stdout
 Ssaveerr = sys.stderr
@@ -82,7 +82,7 @@ class PyShell(QTextBrowser):
     def finish(self):
         self.write("\n>>>")
     # define a slot with the right signature
-    @QtCore.pyqtSlot(str)
+    @QtCore.Slot(str)
     def slotMessage(self, message):
         self.write(message)
 

@@ -1,8 +1,8 @@
-from PyQt4 import QtCore
+from PySide import QtCore
 
-from PyQt4.QtCore import QObject, QThread
-from PyQt4.QtGui import QApplication
-from PyQt4.QtCore import Qt, SIGNAL
+from PySide.QtCore import QObject, QThread
+from PySide.QtGui import QApplication
+from PySide.QtCore import Qt, SIGNAL
 
 from time import sleep
 

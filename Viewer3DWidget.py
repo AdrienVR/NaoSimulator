@@ -3,9 +3,9 @@
 import  sys, os
 import math
 
-import PyQt4.QtGui as Gui
-import PyQt4.QtCore as Core
-from PyQt4.QtOpenGL import QGLWidget
+import PySide.QtGui as Gui
+import PySide.QtCore as Core
+from PySide.QtOpenGL import QGLWidget
 
 from OpenGL.arrays import vbo
 from OpenGL.GL import *

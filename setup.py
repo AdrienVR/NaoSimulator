@@ -1,9 +1,9 @@
 import sys
  
 from cx_Freeze import setup, Executable
-import PyQt4
+import PySide
 import os
-import PyQt4.uic
+import PySide.uic
 
 """
 utiliser : python setup.py build pour compiler.

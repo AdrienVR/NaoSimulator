@@ -1,6 +1,6 @@
 
 import os
-from PyQt4.QtGui import QFileDialog
+from PySide.QtGui import QFileDialog
 
 ##from pygments import highlight
 ##from pygments.lexers import PythonLexer

@@ -3,7 +3,7 @@
 
 import os, sys
 
-from PyQt4 import QtCore, QtGui
+from PySide import QtCore, QtGui
 
 #############################################################################
 class ColorSyntax(QtGui.QSyntaxHighlighter):
