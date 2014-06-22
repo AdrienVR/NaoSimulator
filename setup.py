@@ -28,8 +28,7 @@ includes = []#["PyQt4.QtNetwork"]
 excludes = []
 packages = ["encodings",
             "OpenGL",
-            "OpenGL.arrays" # or just this one
-            ]
+            "OpenGL.arrays"] # or just this one
 
 setup(
     name = "NAO_Simulator",
@@ -39,4 +38,4 @@ setup(
     options = {'build_exe': {'excludes':excludes,"compressed":True,
                              'packages':packages,'include_files':includefiles,
                              "includes":includes}}
-    )
+     )
