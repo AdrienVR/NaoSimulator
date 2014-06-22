@@ -1,9 +1,8 @@
 import sys
+import os
 
 from cx_Freeze import setup, Executable
 import PySide
-import os
-#import PySide.uic
 
 """
 utiliser : python setup.py build pour compiler.

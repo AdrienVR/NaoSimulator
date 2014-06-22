@@ -21,13 +21,12 @@ from PySide.QtCore import Qt, SIGNAL, QTimer
 from PySide.QtCore import QObject, QThread
 from PySide.QtCore import QMutex
 
+QWEB_ENABLE = True
 ###### QWEB
-##from PySide import uic
-##import os
-##import sys
 ##path = os.path.join(os.path.dirname(sys.argv[0]), "PyQt4.uic.widget-plugins")
 ##uic.widgetPluginPath.append(path)
-##from PySide.QtWebKit import QWebView
+if QWEB_ENABLE:
+    from PySide.QtWebKit import QWebView
 ###### QWEB!
 
 #Partie 3D
@@ -36,10 +35,25 @@ from Loader import Objet3D
 #Affichage accents
 from DecoderAll import Decoder
 from syntaxColor import *
-
 #API NAO
 from Nao3D import Nao3D
 from naoqiVirtual import ALProxy
+#compilation
+from imports import *
+#heritage pour simplifier l'editeur
+from Editeur import EditeurPython
+
+# UI:
+## Chargement de chaque design de fenetre.
+from dep.Ui_simulator import Ui_MainWindow
+#UiMainWindow,  Klass = uic.loadUiType(os.path.join("dep",'simulator.ui'))
+from dep.Ui_aPropos import Ui_widget as Ui_aProposWindow
+#aProposWindow, k = uic.loadUiType(os.path.join("dep",'aPropos.ui'))
+if QWEB_ENABLE:
+    from dep.Ui_documentation import Ui_Form as docu
+#docu, k = uic.loadUiType(os.path.join("dep",'documentation.ui'))
+from dep.Ui_config import Ui_Configuration
+#config, k = uic.loadUiType(os.path.join("dep",'config.ui'))
 
 #pour activer ou desactiver la redirection des
 #affichages de texte vers la console intégrée
@@ -49,8 +63,6 @@ DEBUGOUT = True
 DEBUGOUT = False
 
 ENABLE_SPACES_TO_TAB=True
-
-from imports import *
 
 ## Calcul du gris des yeux
 FORMAT_COLORS = 255.0
@@ -83,17 +95,6 @@ class PyShell(QTextBrowser):
     @QtCore.Slot(str)
     def slotMessage(self, message):
         self.write(message)
-
-
-## Chargement de chaque design de fenetre.
-from dep.Ui_simulator import Ui_MainWindow
-#UiMainWindow,  Klass = uic.loadUiType(os.path.join("dep",'simulator.ui'))
-from dep.Ui_aPropos import Ui_widget as Ui_aProposWindow
-#aProposWindow, k = uic.loadUiType(os.path.join("dep",'aPropos.ui'))
-#from dep.Ui_documentation import Ui_documentation
-#docu, k = uic.loadUiType(os.path.join("dep",'documentation.ui'))
-from dep.Ui_config import Ui_Configuration
-#config, k = uic.loadUiType(os.path.join("dep",'config.ui'))
 
 class Configuration(QWidget, Ui_Configuration):
     """
@@ -138,14 +139,14 @@ class Configuration(QWidget, Ui_Configuration):
         self.valuePort=int(self.lineEditValuePort.text())
         self.hide()
 
-
-##class Documentation(QWidget, docu):
-##    ## Elle est initialisée une fois instanciée par MainWindow
-##    def __init__(self, conteneur=None):
-##        if conteneur is None : conteneur = self
-##        QWidget.__init__(conteneur)
-##        docu.__init__(conteneur)
-##        self.setupUi(conteneur)
+if QWEB_ENABLE:
+    class Documentation(QWidget, docu):
+        ## Elle est initialisée une fois instanciée par MainWindow
+        def __init__(self, conteneur=None):
+            if conteneur is None : conteneur = self
+            QWidget.__init__(conteneur)
+            docu.__init__(conteneur)
+            self.setupUi(conteneur)
 
 class ApWindow(QDialog, Ui_aProposWindow):
     def __init__(self, conteneur=None):
@@ -153,8 +154,6 @@ class ApWindow(QDialog, Ui_aProposWindow):
         QDialog.__init__(conteneur)
         Ui_aProposWindow.__init__(conteneur)
         self.setupUi(conteneur)
-
-from Editeur import EditeurPython
 
 class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
     def __init__(self,  conteneur=None):
@@ -177,9 +176,15 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         self.runReal=False
 
         #fenetre documentation
-##        self.doc=Documentation()
-##        self.doc.webView.load(QUrl(os.path.join("doc","index.html")))
-##        self.doc.webView.show()
+        if QWEB_ENABLE:
+            self.doc=Documentation()
+            self.doc.webView.load(QUrl(os.path.join("doc","index.html")))
+            self.doc.webView.show()
+        else :
+            self.actionDocumentation.setEnabled(False)
+
+        #stop ne marche pas ...
+        self.actionStop.setEnabled(False)
 
         #on enregistre les redirections systemes vers le nouveau "shell"
         self.saveout = sys.stdout
@@ -379,7 +384,8 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
 
         #fenetres
         self.connect(self.actionApropos,  SIGNAL("triggered()"), self.aProposWindow.show)
-        #self.connect(self.actionDocumentation,  SIGNAL("triggered()"), self.doc.show)
+        if QWEB_ENABLE:
+            self.connect(self.actionDocumentation,  SIGNAL("triggered()"), self.doc.show)
         self.connect(self.actionConfiguration,  SIGNAL("triggered()"), self.config.show)
 
         #fentre interface
@@ -412,8 +418,9 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
 
         #actions boutons menu
         self.connect(self.actionRun,  SIGNAL("triggered()"), self.run)
-        #self.connect(self.actionStop,  SIGNAL("triggered()"), self.stop)
         self.connect(self.actionRun_2,  SIGNAL("triggered()"), self.run)
+        # marche pas
+        #self.connect(self.actionStop,  SIGNAL("triggered()"), self.stop)
         #self.connect(self.actionStop_2,  SIGNAL("triggered()"), self.stop)
 
         #Robot Menu
@@ -444,7 +451,7 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         self.connect(self.pushButtonStopLights, SIGNAL("released ()"), self.stopLights)
         self.connect(self.checkBoxSelectAll, SIGNAL("stateChanged (int)"), self.selectAll)
 
-        #?àdijzc
+        #led sliders + spins
         ledsSpins=[self.spinBoxRouge,self.spinBoxVert,self.spinBoxBleu]
         ledsSliders=[self.horizontalSliderRouge,self.horizontalSliderVert,self.horizontalSliderBleu]
         for a in ledsSpins:
