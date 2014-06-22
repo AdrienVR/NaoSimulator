@@ -8,23 +8,17 @@ import PySide
 utiliser : python setup.py build pour compiler.
 """
 
-
 base = None
 if sys.platform == "win32":
     base = "Win32GUI"
 
 importationCode=[]
 
-
 dependances = ["doc/","dep/","objects/"]
 
-#QWEB
-#includefiles = ["rsc_rc.py",(os.path.join(os.path.dirname(PyQt4.uic.__file__),
-#"widget-plugins"), "PyQt4.uic.widget-plugins")]+importationCode+dependances
-#QWEB!
-includefiles = ["rsc_rc.py"]+importationCode+dependances
+includefiles = importationCode+dependances
 
-includes = []#["PyQt4.QtNetwork"]
+includes = []
 excludes = []
 packages = ["encodings",
             "OpenGL",

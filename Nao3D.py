@@ -1,6 +1,6 @@
 ﻿
 from NaoMembre import Membre
-
+import time
 ## Calcul du gris des yeux
 FORMAT_COLORS = 255.0
 EYES_GREY = 175.0
@@ -20,7 +20,7 @@ class Nao3D():
         ##Création de l'architecture
         Membre("torse","torseG")
         Membre("torse","torseD")
-        
+
         arbre=[{"torse":["hanche","tete","biceps","epaule","epauleBiceps"]},
                {"biceps":["coude"],"hanche":["cuisse"],
                 "tete":["eye1","eye2","eye3","eye4","eye5",
@@ -108,7 +108,7 @@ class Nao3D():
         for x in self.membres.keys():
             if x in copie.keys():
                 self.membres[x].pos=copie[x][:]
-        
+
         self.imageText=None
         self.ImageLoad("naoText.png")
 
@@ -122,7 +122,7 @@ class Nao3D():
         self.speaking=""
 
         self.finishedSpeaking=True
-        
+
         #self.membres["eye1G"].replaceColor=[1.0,.0,.0]
         self.legG=self.membres["torseSG"]
         self.legG.underObjects=self.membres["torseG"].underObjects.copy()
@@ -133,7 +133,7 @@ class Nao3D():
     def updateSpeaking(self, dt):
         if self.timeSpeaking>.0:
             self.timeSpeaking-=dt
-            
+
         elif self.timeSpeaking<=.0 and self.speakingList!=[]:
             self.speaking=self.speakingList[0]
             self.speakingList=self.speakingList[1:]
@@ -152,11 +152,17 @@ class Nao3D():
         else:
             self.speakingList.append(texte)
 
+    def resetSpeaking(self):
+        self.timeSpeaking=.0
+        self.speakingList=[]
+        self.speaking=""
+        self.finishedSpeaking=True
+
     def ImageLoad(self,filename):
         #self.imageText=Gui.QImage(filename,"RGB")
         #print "texture chargee"
         return
-    
+
     def changeLegs(self):
         a=self.legD
         b=self.legG

@@ -14,7 +14,6 @@ from PySide.QtGui import QApplication,  QMainWindow, QTextBrowser
 from PySide.QtGui import QFileDialog, QCursor, QToolTip
 from PySide.QtGui import QWidget,QSplashScreen,QDialog
 from PySide.QtGui import QMessageBox,QFont
-#from PySide import uic
 from PySide import QtCore
 from PySide.QtCore import QRect, QUrl
 from PySide.QtCore import Qt, SIGNAL, QTimer
@@ -22,12 +21,8 @@ from PySide.QtCore import QObject, QThread
 from PySide.QtCore import QMutex
 
 QWEB_ENABLE = True
-###### QWEB
-##path = os.path.join(os.path.dirname(sys.argv[0]), "PyQt4.uic.widget-plugins")
-##uic.widgetPluginPath.append(path)
 if QWEB_ENABLE:
     from PySide.QtWebKit import QWebView
-###### QWEB!
 
 #Partie 3D
 from Viewer3DWidget import Viewer3DWidget
@@ -46,14 +41,10 @@ from Editeur import EditeurPython
 # UI:
 ## Chargement de chaque design de fenetre.
 from dep.Ui_simulator import Ui_MainWindow
-#UiMainWindow,  Klass = uic.loadUiType(os.path.join("dep",'simulator.ui'))
 from dep.Ui_aPropos import Ui_widget as Ui_aProposWindow
-#aProposWindow, k = uic.loadUiType(os.path.join("dep",'aPropos.ui'))
+from dep.Ui_config import Ui_Configuration
 if QWEB_ENABLE:
     from dep.Ui_documentation import Ui_Form as docu
-#docu, k = uic.loadUiType(os.path.join("dep",'documentation.ui'))
-from dep.Ui_config import Ui_Configuration
-#config, k = uic.loadUiType(os.path.join("dep",'config.ui'))
 
 #pour activer ou desactiver la redirection des
 #affichages de texte vers la console intégrée
@@ -905,6 +896,7 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         self.actionNaoH21.setEnabled(True)
         self.actionNaoH25.setEnabled(True)
         self.actionInitPosition.setEnabled(True)
+        self.virtualNao.resetSpeaking()
 
     def changeReseau(self):
         """

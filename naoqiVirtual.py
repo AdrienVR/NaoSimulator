@@ -7,6 +7,7 @@ Peut etre qu'il faudrait faire hériter la classe
 du virtualNao de ALProxy et surcharger les méthodes
 """
 import time as TimerT
+
 class ALProxy():
     staticNao=None
     virtualNao=None
@@ -165,7 +166,9 @@ class ALProxy():
     #test ok
     def say(self, text):
         #print "NAO dit : "+str(text)
+        self.timePerCharacter=0.1
         self.virtualNao.addSpeaking(text)
+        TimerT.sleep(len(text)*self.timePerCharacter)
 
     def setVolume(self, value):
         self.volume=value
