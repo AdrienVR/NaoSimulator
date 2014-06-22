@@ -6,6 +6,8 @@
 
 import sys
 import os
+import time
+import threading
 
 ## QT libs
 from PySide.QtGui import QApplication,  QMainWindow, QTextBrowser
@@ -13,13 +15,11 @@ from PySide.QtGui import QFileDialog, QCursor, QToolTip
 from PySide.QtGui import QWidget,QSplashScreen,QDialog
 from PySide.QtGui import QMessageBox,QFont
 #from PySide import uic
+from PySide import QtCore
 from PySide.QtCore import QRect, QUrl
 from PySide.QtCore import Qt, SIGNAL, QTimer
 from PySide.QtCore import QObject, QThread
 from PySide.QtCore import QMutex
-
-import time
-import threading
 
 ###### QWEB
 ##from PySide import uic
@@ -35,7 +35,7 @@ from Viewer3DWidget import Viewer3DWidget
 from Loader import Objet3D
 #Affichage accents
 from DecoderAll import Decoder
-from coloring2 import *
+from syntaxColor import *
 
 #API NAO
 from Nao3D import Nao3D
@@ -58,8 +58,6 @@ FORMAT_COLORS = 255.0
 ## afin de simuler la faible intesité des leds du robot.
 EYES_GREY = 175.0
 R_COLOR = EYES_GREY / FORMAT_COLORS
-
-from PySide import QtCore
 
 Ssaveout = sys.stdout
 Ssaveerr = sys.stderr
