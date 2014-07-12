@@ -68,18 +68,19 @@ class Viewer3DWidget(QGLWidget):
 
         ######################## NAO SPEAKING ###################
 
-        glDisable(GL_LIGHTING)
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0,self.width(),0,self.height(),-1, 1);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-        glColor3f(.0,.0,.0)
-        glRasterPos2f(5,5);
-        for a in self.virtualNao.speaking:
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18,ord(a));
-        glMatrixMode(GL_PROJECTION);
-        glMatrixMode(GL_MODELVIEW);
+        if not self.virtualNao.finishedSpeaking:
+            glDisable(GL_LIGHTING)
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            glOrtho(0,self.width(),0,self.height(),-1, 1);
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            glColor3f(.0,.0,.0)
+            glRasterPos2f(5,5);
+            for a in self.virtualNao.speaking:
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18,ord(a));
+            glMatrixMode(GL_PROJECTION);
+            glMatrixMode(GL_MODELVIEW);
 
         glLoadIdentity();
         ############################# 3D DRAWING ################

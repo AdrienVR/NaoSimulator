@@ -48,8 +48,8 @@ if QWEB_ENABLE:
 
 #pour activer ou desactiver la redirection des
 #affichages de texte vers la console intégrée
-DEBUG = True
-DEBUG = False
+DEBUGERR = True
+#DEBUGERR = False
 DEBUGOUT = True
 DEBUGOUT = False
 
@@ -84,8 +84,12 @@ class PyShell(QTextBrowser):
         self.write("\n>>>")
     # define a slot with the right signature
     @QtCore.Slot(str)
-    def slotMessage(self, message):
-        self.write(message)
+    def slotMessage(self, message="ko"):
+        try:
+            self.write(message)
+        except Exception, e:
+            pass
+        time.sleep(2)
 
 class Configuration(QWidget, Ui_Configuration):
     """
@@ -346,7 +350,7 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
     def setIO(self):
         if not DEBUGOUT :
             sys.stdout = self.textBrowserConsole
-            if not DEBUG:
+            if not DEBUGERR:
                 sys.stderr = self.textBrowserConsole
             else :
                 sys.stderr = self.saveerr
@@ -826,9 +830,9 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         printer=Printer()
         if not DEBUGOUT :
             sys.stdout = printer
-            if not DEBUG:
+            if not DEBUGERR:
                 sys.stderr = printer
-        printer.setConnexion(self.textBrowserConsole)
+        printer.setConnexion(self.textBrowserConsole.slotMessage)
 
         if self.runReal:
             try:
@@ -866,6 +870,7 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
             if t: exec(unicode(t))
         except Exception, error :
             print error
+            print "ok"
 ##            a=QMessageBox()
 ##            s=u"Erreur, la connexion avec le robot est impossible"
 ##            a.information(self,u"Erreur à la connexion au robot",s)
@@ -879,6 +884,7 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         return
 
     def finishCode(self):
+        #self.thread.stop()
         self.stop()
         self.timer.stop()
         self.resizeShell()
@@ -937,17 +943,22 @@ class RealLauncher():
             #print self.argument
             a=str(self.argument)
             exec(a[:])
+
 class Printer(QObject):
+
+    envoi=QtCore.Signal(str)
 
     def __init__(self):
         QtCore.QObject.__init__(self)
         self.target=None
 
     def write(self, text):
-        QtCore.QMetaObject.invokeMethod(self.target, "slotMessage", QtCore.Q_ARG(str,text))
+        #QtCore.QMetaObject.invokeMethod(self.target, "slotMessage", QtCore.Qt.AutoConnection)
+        self.envoi.emit(text)
 
     def setConnexion(self,slot):
-        self.target=slot
+        #self.target=slot
+        self.envoi.connect(slot)
 
     def unsetConnexion(self, slot):
         pass

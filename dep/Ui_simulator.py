@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'simulator.ui'
 #
-# Created: Sat Jun 21 14:18:14 2014
-#      by: pyside-uic 0.2.13 running on PySide 1.1.0
+# Created: Sat Jul 12 12:52:03 2014
+#      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
 
