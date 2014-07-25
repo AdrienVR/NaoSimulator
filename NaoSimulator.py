@@ -88,7 +88,7 @@ class PyShell(QTextBrowser):
 UiMainWindow,  Klass = uic.loadUiType(os.path.join("dep",'simulator.ui'))
 aProposWindow, k = uic.loadUiType(os.path.join("dep",'aPropos.ui'))
 colorWindow, k = uic.loadUiType(os.path.join("dep",'colors.ui'))
-#docu, k = uic.loadUiType(os.path.join("dep",'documentation.ui'))
+docu, k = uic.loadUiType(os.path.join("dep",'documentation.ui'))
 config, k = uic.loadUiType(os.path.join("dep",'config.ui'))
 
 class Configuration(QWidget, config):
@@ -135,13 +135,13 @@ class Configuration(QWidget, config):
         self.hide()
 
 
-##class Documentation(QWidget, docu):
-##    ## Elle est initialisée une fois instanciée par MainWindow
-##    def __init__(self, conteneur=None):
-##        if conteneur is None : conteneur = self
-##        QWidget.__init__(conteneur)
-##        docu.__init__(conteneur)
-##        self.setupUi(conteneur)
+class Documentation(QWidget, docu):
+    ## Elle est initialisée une fois instanciée par MainWindow
+    def __init__(self, conteneur=None):
+        if conteneur is None : conteneur = self
+        QWidget.__init__(conteneur)
+        docu.__init__(conteneur)
+        self.setupUi(conteneur)
 
 class ApWindow(QDialog, aProposWindow):
     def __init__(self, conteneur=None):
