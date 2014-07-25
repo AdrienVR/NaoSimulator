@@ -1845,7 +1845,7 @@ p, li { white-space: pre-wrap; }
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
+  <widget class="QMenuBar" name="menuBarNaoSimulator">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -1949,7 +1949,7 @@ p, li { white-space: pre-wrap; }
    <addaction name="menuAffichage"/>
    <addaction name="menuAide"/>
   </widget>
-  <widget class="QToolBar" name="toolBar">
+  <widget class="QToolBar" name="toolBarNaoSimulator">
    <property name="cursor">
     <cursorShape>PointingHandCursor</cursorShape>
    </property>

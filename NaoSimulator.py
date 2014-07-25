@@ -363,6 +363,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
 
         ################# INITIALISATION #####################################
 
+        #self.actionStop_2.setShortcut(None)
 
         #stop ne marche pas ...
         self.actionStop.setEnabled(False)
@@ -447,6 +448,9 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.connect(self.actionReinitialiser_Pupitre,  SIGNAL("triggered()"), self.initPupitre)
         self.connect(self.actionReinitialiser_Editeur,  SIGNAL("triggered()"), self.initEditeur)
         self.connect(self.actionReinitialiser_Vue_3D,  SIGNAL("triggered()"), self.initVue3D)
+
+        self.Viewer3DWidget.signalFullscreenOn.connect(self.setFullScreenOn)
+        self.Viewer3DWidget.signalFullscreenOff.connect(self.setFullScreenOff)
 
         self.connect(self.actionColors,  SIGNAL("triggered()"), self.colors.show)
         self.connect(self.colors.buttonBox, SIGNAL("accepted ()"), self.applyColor)
@@ -536,6 +540,40 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.connect(self.pushButtonReconnaitre, SIGNAL("released()"), self.recognizeObjet)
 
     ####### Main prog --------------------------------------------------------------------- #############
+
+    def setFullScreenOn(self):
+        self.menuBarNaoSimulator.hide()
+        self.toolBarNaoSimulator.hide()
+
+        fenX=self.centralwidget.width()
+        fenY=self.centralwidget.height()
+        sizes=[]
+        sizes.append(0);
+        sizes.append(fenX);
+        self.splitter.setSizes(sizes)
+        sizes=[]
+        sizes.append(fenY);
+        sizes.append(0);
+        self.splitterHB.setSizes(sizes)
+        self.resizeEvent(0)
+
+        self.showFullScreen()
+
+
+    def setFullScreenOff(self):
+        self.menuBarNaoSimulator.show()
+        self.toolBarNaoSimulator.show()
+        self.initPupitre()
+        self.showNormal()
+
+
+    def keyPressEvent (self, key_e):
+        if (self.Viewer3DWidget.inFullscreen) and key_e.key()==Qt.Key_Escape:
+            self.Viewer3DWidget.inFullscreen=False
+            self.setFullScreenOff()
+        if key_e.key()==Qt.Key_F5 and (not self.thread.isRunning()):
+            self.run()
+
 
     def protectRunning(self):
         if self.thread.isRunning():
