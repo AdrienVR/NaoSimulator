@@ -153,7 +153,6 @@ class ApWindow(QDialog, Ui_aProposWindow):
 
 
 from PySide.QtGui import QColorDialog
-from PySide.QtGui import QToolButton
 from PySide.QtGui import QPalette, QColor
 
 class ColorWindow(QWidget, Ui_Personnalisation):
