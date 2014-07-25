@@ -87,6 +87,7 @@ class PyShell(QTextBrowser):
 ## Chargement de chaque design de fenetre.
 UiMainWindow,  Klass = uic.loadUiType(os.path.join("dep",'simulator.ui'))
 aProposWindow, k = uic.loadUiType(os.path.join("dep",'aPropos.ui'))
+colorWindow, k = uic.loadUiType(os.path.join("dep",'colors.ui'))
 #docu, k = uic.loadUiType(os.path.join("dep",'documentation.ui'))
 config, k = uic.loadUiType(os.path.join("dep",'config.ui'))
 
@@ -149,6 +150,65 @@ class ApWindow(QDialog, aProposWindow):
         aProposWindow.__init__(conteneur)
         self.setupUi(conteneur)
 
+from PyQt4.QtGui import QColorDialog
+from PyQt4.QtGui import QPalette, QColor
+from PyQt4 import QtGui
+
+class ColorWindow(QWidget, colorWindow):
+    def __init__(self, conteneur=None):
+        if conteneur is None : conteneur = self
+        QWidget.__init__(conteneur)
+        colorWindow.__init__(conteneur)
+        self.setupUi(conteneur)
+
+        self.listColor = []
+        self.changers = [u"Fond d'écran 3D",u"Arrière-plan"]
+        self.changersVar = ["wallpaper","background"]
+
+        self.changedColor = []
+
+        for a in self.changers:
+            self.comboBox.addItem(a)
+            self.listColor.append(QColor(255,255,255))
+            self.changedColor.append(False)
+
+        self.connect(self.toolButton,  SIGNAL("released()"), self.chooseColor)
+        self.connect(self.comboBox,  SIGNAL("currentIndexChanged (int)"), self.changeColor)
+        self.connect(self.buttonBox, SIGNAL("accepted ()"), self.apply)
+        self.connect(self.buttonBox, SIGNAL("rejected ()"), self.hide)
+
+        self.changeColor()
+
+    def chooseColor(self):
+        self.listColor[self.comboBox.currentIndex()] = QColorDialog.getColor()
+        self.changedColor[self.comboBox.currentIndex()] = True
+        self.changeColor()
+
+    def changeColor(self):
+        pixmap = QtGui.QPixmap(16, 16)
+        pixmap.fill(self.listColor[self.comboBox.currentIndex()])
+        self.toolButton.setIcon(QtGui.QIcon(pixmap))
+
+    def changeColorN(self, n):
+        pixmap = QtGui.QPixmap(16, 16)
+        pixmap.fill(self.listColor[n])
+        self.toolButton.setIcon(QtGui.QIcon(pixmap))
+
+    def apply(self):
+        self.colors_applied = self.listColor[:]
+        self.hide()
+
+    def getApplied(self):
+        result = {}
+        for a in range(len(self.changers)):
+            if self.changedColor[a]:
+                result[self.changersVar[a]] = self.colors_applied[a]
+        return result
+
+    def setColorVar(self, var, color):
+        self.listColor[self.changersVar.index(var)]=color
+        self.changeColorN(self.changersVar.index(var))
+
 from Editeur import EditeurPython
 
 class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
@@ -161,6 +221,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
 
         ######################## ATTRIBUTS ################################
 
+        self.colors = ColorWindow()
         #Python Shell like
         self.textBrowserConsole = PyShell(self.tabConsole)
 
@@ -302,6 +363,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
 
         ################# INITIALISATION #####################################
 
+        self.colors.setColorVar("wallpaper",self.Viewer3DWidget.background)
         self.initTextEdit()
 
         self.createConnexions()
@@ -381,6 +443,9 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.connect(self.actionReinitialiser_Pupitre,  SIGNAL("triggered()"), self.initPupitre)
         self.connect(self.actionReinitialiser_Editeur,  SIGNAL("triggered()"), self.initEditeur)
         self.connect(self.actionReinitialiser_Vue_3D,  SIGNAL("triggered()"), self.initVue3D)
+
+        self.connect(self.actionColors,  SIGNAL("triggered()"), self.colors.show)
+        self.connect(self.colors.buttonBox, SIGNAL("accepted ()"), self.applyColor)
 
         #actions Editeur de texte
         #Fichier Menu
@@ -627,6 +692,17 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
                 break
         self.Viewer3DWidget.update()
         return
+
+
+    def applyColor(self):
+        dictColor = self.colors.getApplied()
+        if "wallpaper" in dictColor.keys():
+            self.Viewer3DWidget.background = dictColor["wallpaper"]
+        #etc..
+        if "background" in dictColor.keys():
+            p = self.palette()
+            p.setColor( self.backgroundRole(), dictColor["background"])
+            self.setPalette(p)
 
     #######################" LEDS ####################
 

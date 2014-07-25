@@ -221,80 +221,7 @@ p, li { white-space: pre-wrap; }
                       </property>
                      </spacer>
                     </item>
-                    <item row="1" column="0">
-                     <widget class="QPushButton" name="pushButtonTeteHB">
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                      <property name="acceptDrops">
-                       <bool>true</bool>
-                      </property>
-                      <property name="text">
-                       <string>Tête H/B</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="1">
-                     <widget class="QPushButton" name="pushButtonTeteGD">
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                      <property name="text">
-                       <string>Tête G/D</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="0">
-                     <widget class="QSlider" name="horizontalSliderTete0">
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>18</height>
-                       </size>
-                      </property>
-                      <property name="minimum">
-                       <number>0</number>
-                      </property>
-                      <property name="maximum">
-                       <number>100</number>
-                      </property>
-                      <property name="value">
-                       <number>0</number>
-                      </property>
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="1">
-                     <widget class="QSlider" name="horizontalSliderTete2">
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>18</height>
-                       </size>
-                      </property>
-                      <property name="minimum">
-                       <number>0</number>
-                      </property>
-                      <property name="maximum">
-                       <number>100</number>
-                      </property>
-                      <property name="value">
-                       <number>0</number>
-                      </property>
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="3" column="0">
+                    <item row="4" column="0">
                      <widget class="QPushButton" name="pushButtonBicepsG">
                       <property name="maximumSize">
                        <size>
@@ -303,11 +230,11 @@ p, li { white-space: pre-wrap; }
                        </size>
                       </property>
                       <property name="text">
-                       <string>Biceps Gauche (H/B;G/D)</string>
+                       <string>Biceps Gauche (2 : H/B;3 : G/D)</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="3" column="1">
+                    <item row="4" column="1">
                      <widget class="QPushButton" name="pushButtonBicepsD">
                       <property name="maximumSize">
                        <size>
@@ -316,11 +243,11 @@ p, li { white-space: pre-wrap; }
                        </size>
                       </property>
                       <property name="text">
-                       <string>Biceps Droit (H/B;G/D)</string>
+                       <string>Biceps Droit (8 : H/B;9 : G/D)</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="4" column="0">
+                    <item row="5" column="0">
                      <layout class="QHBoxLayout" name="horizontalLayout">
                       <property name="topMargin">
                        <number>0</number>
@@ -365,7 +292,7 @@ p, li { white-space: pre-wrap; }
                       </item>
                      </layout>
                     </item>
-                    <item row="4" column="1">
+                    <item row="5" column="1">
                      <layout class="QHBoxLayout" name="horizontalLayout_5">
                       <item>
                        <widget class="QSlider" name="horizontalSliderBicepsD0">
@@ -407,7 +334,7 @@ p, li { white-space: pre-wrap; }
                       </item>
                      </layout>
                     </item>
-                    <item row="6" column="0">
+                    <item row="7" column="0">
                      <widget class="QPushButton" name="pushButtonCoudeG">
                       <property name="maximumSize">
                        <size>
@@ -416,11 +343,11 @@ p, li { white-space: pre-wrap; }
                        </size>
                       </property>
                       <property name="text">
-                       <string>Coude Gauche (G/D;Z)</string>
+                       <string>Coude Gauche (4 : Z;5 : G/D)</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="6" column="1">
+                    <item row="7" column="1">
                      <widget class="QPushButton" name="pushButtonCoudeD">
                       <property name="maximumSize">
                        <size>
@@ -429,12 +356,31 @@ p, li { white-space: pre-wrap; }
                        </size>
                       </property>
                       <property name="text">
-                       <string>Coude Droit</string>
+                       <string>Coude Droit (10 : Z;11 : G/D)</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="7" column="0">
+                    <item row="8" column="0">
                      <layout class="QHBoxLayout" name="horizontalLayout_4">
+                      <item>
+                       <widget class="QSlider" name="horizontalSliderCoudeG1">
+                        <property name="maximumSize">
+                         <size>
+                          <width>16777215</width>
+                          <height>18</height>
+                         </size>
+                        </property>
+                        <property name="minimum">
+                         <number>0</number>
+                        </property>
+                        <property name="maximum">
+                         <number>100</number>
+                        </property>
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                       </widget>
+                      </item>
                       <item>
                        <widget class="QSlider" name="horizontalSliderCoudeG0">
                         <property name="maximumSize">
@@ -457,48 +403,211 @@ p, li { white-space: pre-wrap; }
                         </property>
                        </widget>
                       </item>
-                      <item>
-                       <widget class="QSlider" name="horizontalSliderCoudeG1">
-                        <property name="maximumSize">
-                         <size>
-                          <width>16777215</width>
-                          <height>18</height>
-                         </size>
-                        </property>
-                        <property name="minimum">
-                         <number>0</number>
-                        </property>
-                        <property name="maximum">
-                         <number>100</number>
-                        </property>
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                       </widget>
-                      </item>
                      </layout>
                     </item>
-                    <item row="7" column="1">
+                    <item row="10" column="0">
+                     <widget class="QPushButton" name="pushButtonMainG">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>6 : Rotation Main Gauche</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="10" column="1">
+                     <widget class="QPushButton" name="pushButtonMainD">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>12 : Rotation Main Droite</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="12" column="0">
+                     <widget class="QSlider" name="horizontalSliderMainG1">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>18</height>
+                       </size>
+                      </property>
+                      <property name="minimum">
+                       <number>0</number>
+                      </property>
+                      <property name="maximum">
+                       <number>100</number>
+                      </property>
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="12" column="1">
+                     <widget class="QSlider" name="horizontalSliderMainD1">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>18</height>
+                       </size>
+                      </property>
+                      <property name="minimum">
+                       <number>0</number>
+                      </property>
+                      <property name="maximum">
+                       <number>100</number>
+                      </property>
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="13" column="0">
+                     <widget class="QPushButton" name="pushButtonDoigtsG">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>7 : Doigts Gauches</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="13" column="1">
+                     <widget class="QPushButton" name="pushButtonDoigtsD">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>13 : Doigts Droits</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="14" column="0">
+                     <widget class="QSlider" name="horizontalSliderDoigtsG0">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>18</height>
+                       </size>
+                      </property>
+                      <property name="maximum">
+                       <number>100</number>
+                      </property>
+                      <property name="singleStep">
+                       <number>10</number>
+                      </property>
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="14" column="1">
+                     <widget class="QSlider" name="horizontalSliderDoigtsD0">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>18</height>
+                       </size>
+                      </property>
+                      <property name="maximum">
+                       <number>100</number>
+                      </property>
+                      <property name="singleStep">
+                       <number>10</number>
+                      </property>
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="3" column="0">
+                     <widget class="QSlider" name="horizontalSliderTete2">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>18</height>
+                       </size>
+                      </property>
+                      <property name="minimum">
+                       <number>0</number>
+                      </property>
+                      <property name="maximum">
+                       <number>100</number>
+                      </property>
+                      <property name="value">
+                       <number>0</number>
+                      </property>
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="3" column="1">
+                     <widget class="QSlider" name="horizontalSliderTete0">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>18</height>
+                       </size>
+                      </property>
+                      <property name="minimum">
+                       <number>0</number>
+                      </property>
+                      <property name="maximum">
+                       <number>100</number>
+                      </property>
+                      <property name="value">
+                       <number>0</number>
+                      </property>
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="1">
+                     <widget class="QPushButton" name="pushButtonTeteHB">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="acceptDrops">
+                       <bool>true</bool>
+                      </property>
+                      <property name="text">
+                       <string>1 : Tête H/B</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0">
+                     <widget class="QPushButton" name="pushButtonTeteGD">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>0 : Tête G/D</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="8" column="1">
                      <layout class="QHBoxLayout" name="horizontalLayout_7">
-                      <item>
-                       <widget class="QSlider" name="horizontalSliderCoudeD0">
-                        <property name="maximumSize">
-                         <size>
-                          <width>16777215</width>
-                          <height>18</height>
-                         </size>
-                        </property>
-                        <property name="minimum">
-                         <number>0</number>
-                        </property>
-                        <property name="maximum">
-                         <number>100</number>
-                        </property>
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                       </widget>
-                      </item>
                       <item>
                        <widget class="QSlider" name="horizontalSliderCoudeD1">
                         <property name="maximumSize">
@@ -518,135 +627,26 @@ p, li { white-space: pre-wrap; }
                         </property>
                        </widget>
                       </item>
+                      <item>
+                       <widget class="QSlider" name="horizontalSliderCoudeD0">
+                        <property name="maximumSize">
+                         <size>
+                          <width>16777215</width>
+                          <height>18</height>
+                         </size>
+                        </property>
+                        <property name="minimum">
+                         <number>0</number>
+                        </property>
+                        <property name="maximum">
+                         <number>100</number>
+                        </property>
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                       </widget>
+                      </item>
                      </layout>
-                    </item>
-                    <item row="9" column="0">
-                     <widget class="QPushButton" name="pushButtonMainG">
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                      <property name="text">
-                       <string>Rotation Main Gauche</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="9" column="1">
-                     <widget class="QPushButton" name="pushButtonMainD">
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                      <property name="text">
-                       <string>Rotation Main Droite</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="11" column="0">
-                     <widget class="QSlider" name="horizontalSliderMainG1">
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>18</height>
-                       </size>
-                      </property>
-                      <property name="minimum">
-                       <number>0</number>
-                      </property>
-                      <property name="maximum">
-                       <number>100</number>
-                      </property>
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="11" column="1">
-                     <widget class="QSlider" name="horizontalSliderMainD1">
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>18</height>
-                       </size>
-                      </property>
-                      <property name="minimum">
-                       <number>0</number>
-                      </property>
-                      <property name="maximum">
-                       <number>100</number>
-                      </property>
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="12" column="0">
-                     <widget class="QPushButton" name="pushButtonDoigtsG">
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                      <property name="text">
-                       <string>Doigts Gauches</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="12" column="1">
-                     <widget class="QPushButton" name="pushButtonDoigtsD">
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                      <property name="text">
-                       <string>Doigts Droits</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="13" column="0">
-                     <widget class="QSlider" name="horizontalSliderDoigtsG0">
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>18</height>
-                       </size>
-                      </property>
-                      <property name="maximum">
-                       <number>100</number>
-                      </property>
-                      <property name="singleStep">
-                       <number>10</number>
-                      </property>
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="13" column="1">
-                     <widget class="QSlider" name="horizontalSliderDoigtsD0">
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>18</height>
-                       </size>
-                      </property>
-                      <property name="maximum">
-                       <number>100</number>
-                      </property>
-                      <property name="singleStep">
-                       <number>10</number>
-                      </property>
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
-                      </property>
-                     </widget>
                     </item>
                    </layout>
                   </widget>
@@ -1913,6 +1913,8 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Affichage</string>
     </property>
+    <addaction name="actionColors"/>
+    <addaction name="separator"/>
     <addaction name="actionReinitialiser_Pupitre"/>
     <addaction name="actionReinitialiser_Editeur"/>
     <addaction name="actionReinitialiser_Vue_3D"/>
@@ -2211,6 +2213,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionNaoH21">
    <property name="text">
     <string>NAO H21</string>
+   </property>
+  </action>
+  <action name="actionColors">
+   <property name="text">
+    <string>Personnaliser les couleurs...</string>
    </property>
   </action>
  </widget>

@@ -51,6 +51,10 @@ class Viewer3DWidget(QGLWidget):
         self.virtualNao = None#Nao3D()
 
         self.size(0)
+        self.font = Gui.QFont("Helvetica",5)
+        self.font_offset=[20,20]
+
+        self.background = Gui.QColor(125,125,255)
 
     def updateDt(self, dt):
         #animation
@@ -64,23 +68,11 @@ class Viewer3DWidget(QGLWidget):
         est appelée par update
         """
 
+        glClearColor(self.background.red()/255.0,self.background.green()/255.0,self.background.blue()/255.0,1.0) ;
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        ######################## NAO SPEAKING ###################
+        glLoadIdentity();
 
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0,self.width(),0,self.height(),-1, 1);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-        glTranslated(0,0,0);
-        glRasterPos2f(5,5);
-        for a in self.virtualNao.speaking:
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18,ord(a));
-        glMatrixMode(GL_PROJECTION);
-        glMatrixMode(GL_MODELVIEW);
-
-        glLoadIdentity();
         ############################# 3D DRAWING ################
 
         glEnable(GL_TEXTURE_2D);
@@ -109,13 +101,19 @@ class Viewer3DWidget(QGLWidget):
         glDisableClientState(GL_NORMAL_ARRAY);
         glDisableClientState(GL_VERTEX_ARRAY);
 
-        glFlush()
+                ######################## NAO SPEAKING ###################
+        glLoadIdentity();
+
+        # scene pos and size
+        self.renderText(self.font_offset[0],self.font_offset[1],self.virtualNao.speaking, self.font)
         time.sleep(0.015)
 
 
     def resizeGL(self, widthInPixels, heightInPixels):
         self.camera.setViewportDimensions(widthInPixels, heightInPixels)
         glViewport(0, 0, widthInPixels, heightInPixels)
+        self.font.setPointSize(int(2.5*widthInPixels/100))
+        self.font_offset[1] = heightInPixels - (20)
 
     def initializeGL(self):
         glEnable(GL_BLEND)
@@ -138,9 +136,6 @@ class Viewer3DWidget(QGLWidget):
 
         glDepthFunc(GL_LESS);
         glEnable(GL_DEPTH_TEST);
-
-        glutInit([])
-        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE)
 
     def mouseMoveEvent(self, mouseEvent):
         if int(mouseEvent.buttons()) != Core.Qt.NoButton :
