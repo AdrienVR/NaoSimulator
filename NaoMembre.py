@@ -52,16 +52,16 @@ class Membre():
                      "doigt2D":[(.0,90.0),(.0,.0),(.0,.0)],
                      "doigt2G":[(.0,90.0),(.0,.0),(.0,.0)],
                      "epauleD":[(-119.5,119.5),(.0,.0),(-18.0,76.0)]}
-    
+
     def __init__(self,partie,name):
-        
+
         self.isFirst=False
         self.boolText=False
         self.replaceColor=False
 
         self.multipleColors=False
         self.changeColor={}
-        
+
         self.membre=partie
 
         if partie not in Membre.membres.keys():
@@ -72,10 +72,10 @@ class Membre():
             elif partie=="torse" : print "50 %"
             elif partie=="tete" : print "75 %"
             elif partie=="pied" : print "100 %"
-        
+
         self.size=[1.0,1.0,1.0]
         self.rotate=[0.0,0.0,0.0]
-        
+
         self.vitesse=[0.0,0.0,0.0]
 
         self.stiffness= 0.0
@@ -93,7 +93,7 @@ class Membre():
             self.max=[.0,.0,.0]
 
         self.name=name
-        
+
         self.underObjects={}
         #on ajoute cet objet dans la 'liste' des objets existant
         #pour y avoir accès facilement.
@@ -136,7 +136,7 @@ class Membre():
             glDisable(GL_LIGHTING)
         if self.isFirst:
             glPushMatrix()
-        
+
         glTranslatef(self.pos[0],self.pos[2],self.pos[1])
         glScalef(self.size[0],self.size[2],self.size[1])
 
@@ -154,12 +154,12 @@ class Membre():
             glColor3f(self.replaceColor[0],self.replaceColor[1],self.replaceColor[2])
         else :
             glColor3f(1.0,1.0,1.0)
-            
+
         self.drawVBO()
 
         for x in self.underObjects.keys():
             self.underObjects[x].draw()#rotation)#self.rotate,self.pos)
-            
+
         if self.isFirst:
             glPopMatrix()
         if self.membre[:3]=="eye":
@@ -173,7 +173,7 @@ class Membre():
 
     def subList(self,list1,list2):
         return list([list1[0]-list2[0],list1[1]-list2[1],list1[2]-list2[2]])
-        
+
     def construct(self):
         Membre.membres[self.membre]={}
         #on ne récupère ici qu'un seul objet.(genre objet blender pas objet reel)
@@ -189,7 +189,7 @@ class Membre():
         V=[]
         for a in range(len(nao.tabCoordInd)):
             V.append(nao.tabCoord[nao.tabCoordInd[a]-1])
-            
+
         VN=[]
         for a in range(len(nao.tabNormInd)):
             VN.append(nao.tabNorm[nao.tabNormInd[a]-1])
@@ -206,13 +206,13 @@ class Membre():
             VT=[]
             for a in range(len(nao.tabTextInd)):
                 VT.append(nao.tabText[nao.tabTextInd[a]-1])
-            
+
             #Create the VBO
             vt = numpy.array([VT], dtype=numpy.float32)
             Membre.membres[self.membre]["vtVBO"] = vbo.VBO(vt)
 
     def drawVBO(self):
-        
+
         if self.boolText:
             Membre.membres[self.membre]["vtVBO"].bind()
             #self.vtVBO.bind()
@@ -237,13 +237,14 @@ class Membre():
                 glColor3f(sorted_x[a][1].getColor()[0],sorted_x[a][1].getColor()[1],sorted_x[a][1].getColor()[2])
                 #on affiche toutes les faces de la face n° text actuelle à la face n° text suivante...
                 glDrawArrays(GL_TRIANGLES, sorted_x[a][0], self.compteNb(sorted_x,a,Membre.membres[self.membre]["len"]));
+        glBindBuffer(GL_ARRAY_BUFFER, 0)
 
     def compteNb(self,liste,a,big):
         if a < len(liste)-1:
             return liste[a+1][0]-liste[a][0]
         else:
             return big-liste[a][0]
-                
+
     def recopy(self,recopiable):
         self.isFirst=recopiable.isFirst
         self.boolText=recopiable.boolText
