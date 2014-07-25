@@ -6,6 +6,8 @@
 
 import sys
 import os
+import time
+import threading
 
 ## QT libs
 from PyQt4.QtGui import QApplication,  QMainWindow, QTextBrowser
@@ -18,16 +20,11 @@ from PyQt4.QtCore import Qt, SIGNAL, QTimer
 from PyQt4.QtCore import QObject, QThread
 from PyQt4.QtCore import QMutex
 
-import time
-import threading
 
 ###### QWEB
-##from PyQt4 import uic
-##import os
-##import sys
-##path = os.path.join(os.path.dirname(sys.argv[0]), "PyQt4.uic.widget-plugins")
-##uic.widgetPluginPath.append(path)
-##from PyQt4.QtWebKit import QWebView
+path = os.path.join(os.path.dirname(sys.argv[0]), "PyQt4.uic.widget-plugins")
+uic.widgetPluginPath.append(path)
+from PyQt4.QtWebKit import QWebView
 ###### QWEB!
 
 #Partie 3D
