@@ -2,13 +2,12 @@
 
 import weakref
 import types
-
+from threading import Event
 from functools import partial
 from multiprocessing.pool import ThreadPool
 
-
-
-
+from PySide import QtGui, QtCore
+import time
 
 
 class ref(object):
@@ -69,9 +68,6 @@ class ref(object):
     def __ne__(self, other):
         return not self == other
 
-
-from PySide import QtGui, QtCore
-
 #
 # The modified proxy class, adding a quiet option
 #
@@ -110,12 +106,10 @@ class proxy(ref):
         except:
             return False
 
-
 class _Invoker(QtCore.QObject):
 
     def customEvent(self, e):
         e.callback()
-
 
 class CallbackEvent(QtCore.QEvent):
     """
@@ -202,7 +196,6 @@ class _Invoker(QtCore.QObject):
     def customEvent(self, e):
         e.callback()
 
-
 class CallbackEvent(QtCore.QEvent):
     """
     A custom QEvent that contains a callback reference
@@ -258,7 +251,6 @@ class CallbackEvent(QtCore.QEvent):
         # post the event to the given receiver
         QtGui.QApplication.postEvent(receiver, event)
 
-
 class CallbackThreadPool(ThreadPool):
     """
     Simple wrapper around ThreadPool to wrap callbacks in a weakref
@@ -282,7 +274,3 @@ class CallbackThreadPool(ThreadPool):
             proxyCbk = None
 
         return proxyCbk
-
-from PySide import QtGui, QtCore
-import time
-from threading import Event

@@ -6,6 +6,7 @@ import math
 import PySide.QtGui as Gui
 import PySide.QtCore as Core
 from PySide.QtOpenGL import QGLWidget
+from PySide.QtCore import Signal
 
 from OpenGL.arrays import vbo
 from OpenGL.GL import *
@@ -30,6 +31,8 @@ class Viewer3DWidget(QGLWidget):
     WheelEvent et MouseMoveEvent sont des callback qui mettent à jour
     l'affichage 3D (fonction update qui appelle la fonction paintGL)
     """
+    signalFullscreenOn = Signal()
+    signalFullscreenOff = Signal()
     def __init__(self,parent=None):
         QGLWidget.__init__(self,parent)
         self.setMouseTracking(True)
@@ -39,7 +42,10 @@ class Viewer3DWidget(QGLWidget):
         self.camera.reset()
 
         self.isPressed = False
-        self.oldx = self.oldy = 0
+        self.inFullscreen = False
+
+        self.oldx = 0
+        self.oldy = 0
 
         self.decalage=-10
 
@@ -182,3 +188,13 @@ class Viewer3DWidget(QGLWidget):
 
     def mouseReleaseEvent(self, e):
         self.isPressed = False
+
+    def mouseDoubleClickEvent (self, mouse_e):
+        if not self.inFullscreen:
+            self.showFullScreen()
+            self.inFullscreen=True
+            self.signalFullscreenOn.emit()
+        else :
+            self.inFullscreen=False
+            self.signalFullscreenOff.emit()
+
