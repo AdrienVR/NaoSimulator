@@ -10,8 +10,6 @@ from PyQt4.QtOpenGL import QGLWidget
 from OpenGL.arrays import vbo
 from OpenGL.GL import *
 from OpenGL.GLU import *
-from OpenGL.GLUT import glutBitmapCharacter,GLUT_BITMAP_HELVETICA_18,glutBitmapString
-from OpenGL.GLUT import glutInit, glutInitDisplayMode,GLUT_RGBA, GLUT_DOUBLE,glutSwapBuffers;
 
 import numpy as np
 

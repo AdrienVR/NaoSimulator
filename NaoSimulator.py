@@ -233,9 +233,9 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.runReal=False
 
         #fenetre documentation
-##        self.doc=Documentation()
-##        self.doc.webView.load(QUrl(os.path.join("doc","index.html")))
-##        self.doc.webView.show()
+        self.doc=Documentation()
+        self.doc.webView.load(QUrl(os.path.join("doc","index.html")))
+        self.doc.webView.show()
 
         #on enregistre les redirections systemes vers le nouveau "shell"
         self.saveout = sys.stdout
@@ -363,6 +363,10 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
 
         ################# INITIALISATION #####################################
 
+
+        #stop ne marche pas ...
+        self.actionStop.setEnabled(False)
+
         self.colors.setColorVar("wallpaper",self.Viewer3DWidget.background)
         self.initTextEdit()
 
@@ -436,7 +440,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
 
         #fenetres
         self.connect(self.actionApropos,  SIGNAL("triggered()"), self.aProposWindow.show)
-        #self.connect(self.actionDocumentation,  SIGNAL("triggered()"), self.doc.show)
+        self.connect(self.actionDocumentation,  SIGNAL("triggered()"), self.doc.show)
         self.connect(self.actionConfiguration,  SIGNAL("triggered()"), self.config.show)
 
         #fentre interface
