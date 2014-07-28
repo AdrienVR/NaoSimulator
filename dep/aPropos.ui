@@ -122,8 +122,9 @@
        </property>
        <property name="text">
         <string>NAO Simulator 2014
-v.0.9.8 Adrien Vernotte
-juin 2014</string>
+v.1.0.0 Adrien Vernotte
+août 2014
+LGPL GNU v2.1</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -144,7 +145,7 @@ juin 2014</string>
 
 Ce simulateur a été développé dans le cadre du projet &quot;Horizon ENIB&quot; qui vise à faire découvrir l'enseignement supérieur et la recherche dans le domaine de l'informatique, de l'électronique et de la mécatronique.
 
-Programmé en Python, utilise PyQt4 et l'API de l'ENIB.
+Programmé en Python, utilise PyQt4, OpenGL et l'API NaoCommunication de l'ENIB.
 Remerciements : Céline Jost</string>
      </property>
      <property name="alignment">
