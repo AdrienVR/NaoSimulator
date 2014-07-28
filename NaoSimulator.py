@@ -10,20 +10,15 @@ import time
 import threading
 
 ## QT libs
-from PySide.QtGui import QApplication,  QMainWindow, QTextBrowser
+from PySide.QtGui import QApplication,  QMainWindow
 from PySide.QtGui import QFileDialog, QCursor, QToolTip
-from PySide.QtGui import QWidget,QSplashScreen,QDialog
+from PySide.QtGui import QWidget,QDialog
 from PySide.QtGui import QMessageBox,QFont
 from PySide import QtCore
 from PySide.QtCore import QRect, QUrl
 from PySide.QtCore import Qt, SIGNAL, QTimer
 from PySide.QtCore import QObject, QThread
 from PySide.QtCore import QMutex
-
-
-QWEB_ENABLE = True
-if QWEB_ENABLE:
-    from PySide.QtWebKit import QWebView
 
 #Partie 3D
 from Viewer3DWidget import Viewer3DWidget
@@ -36,17 +31,6 @@ from Nao3D import Nao3D
 from naoqiVirtual import ALProxy
 #compilation
 from imports import *
-#heritage pour simplifier l'editeur
-from Editeur import EditeurPython
-
-# UI:
-## Chargement de chaque design de fenetre.
-from dep.Ui_simulator import Ui_MainWindow
-from dep.Ui_aPropos import Ui_widget as Ui_aProposWindow
-from dep.Ui_colors import Ui_Personnalisation
-from dep.Ui_config import Ui_Configuration
-if QWEB_ENABLE:
-    from dep.Ui_documentation import Ui_Form as docu
 
 #pour activer ou desactiver la redirection des
 #affichages de texte vers la console intégrée
@@ -67,152 +51,10 @@ R_COLOR = EYES_GREY / FORMAT_COLORS
 Ssaveout = sys.stdout
 Ssaveerr = sys.stderr
 
-class PyShell(QTextBrowser):
-    """
-    Permet d'afficher du texte comme dans le Python Shell intégré.
-    """
-    def __init__(self,  conteneur=None):
-        QTextBrowser.__init__(self)
-        self.setParent(conteneur)
-        self.font=QFont("Courier",12)
-        self.setFont(self.font)
-        self.clearTT()
-    def write(self, text):
-        if text.strip()=="":return
-        self.setText(self.toPlainText()+text)
-        self.verticalScrollBar().setValue(self.verticalScrollBar().maximum())
-    def clearTT(self):
-        self.setText("\n>>>")
-    def finish(self):
-        self.write("\n>>>")
-    # define a slot with the right signature
-    @QtCore.Slot(str)
-    def slotMessage(self, message="ko"):
-        try:
-            self.write(message)
-        except Exception, e:
-            pass
-        time.sleep(2)
+from widgets import *
 
-class Configuration(QWidget, Ui_Configuration):
-    """
-    Fenêtre de configuration d'adresse IP du robot
-    et de configuration du port.
-    """
-    def __init__(self, conteneur=None):
-        if conteneur is None : conteneur = self
-        QWidget.__init__(conteneur)
-        Ui_Configuration.__init__(conteneur)
-        self.setupUi(conteneur)
-
-        self.defaultValueIP=""
-        self.defaultValuePort=80
-        self.valueIP=""
-        self.valuePort=80
-
-        ## Les valeurs du proxy par défaut sont stockés dans ce fichier.
-        a=open(os.path.join("dep",'config.txt'))
-        b=a.readlines()
-        a.close()
-
-        if len(b)>1:
-            self.defaultValueIP=b[0].strip()
-            self.defaultValuePort=int(b[1].strip())
-        self.resetDefaults()
-        self.appliquer()
-
-        self.connect(self.buttonBox,  SIGNAL("rejected()"), self.hide)
-        self.connect(self.buttonBox,  SIGNAL("accepted()"), self.appliquer)
-        self.connect(self.pushButtonResetValues,  SIGNAL("released()"), self.resetDefaults)
-
-    def resetDefaults(self):
-        self.lineEditValueIP.setText(self.defaultValueIP)
-        self.lineEditValuePort.setText(str(self.defaultValuePort))
-
-    def getProxy(self):
-        return self.valueIP, self.valuePort
-
-    def appliquer(self):
-        self.valueIP=self.lineEditValueIP.text()
-        self.valuePort=int(self.lineEditValuePort.text())
-        self.hide()
-
-if QWEB_ENABLE:
-    class Documentation(QWidget, docu):
-        ## Elle est initialisée une fois instanciée par MainWindow
-        def __init__(self, conteneur=None):
-            if conteneur is None : conteneur = self
-            QWidget.__init__(conteneur)
-            docu.__init__(conteneur)
-            self.setupUi(conteneur)
-
-class ApWindow(QDialog, Ui_aProposWindow):
-    def __init__(self, conteneur=None):
-        if conteneur is None : conteneur = self
-        QDialog.__init__(conteneur)
-        Ui_aProposWindow.__init__(conteneur)
-        self.setupUi(conteneur)
-
-
-from PySide.QtGui import QColorDialog
-from PySide.QtGui import QPalette, QColor
-
-class ColorWindow(QWidget, Ui_Personnalisation):
-    def __init__(self, conteneur=None):
-        if conteneur is None : conteneur = self
-        QWidget.__init__(conteneur)
-        Ui_Personnalisation.__init__(conteneur)
-        self.setupUi(conteneur)
-
-        self.listColor = []
-        self.changers = [u"Fond d'écran 3D",u"Arrière-plan"]
-        self.changersVar = ["wallpaper","background"]
-
-        self.changedColor = []
-
-        for a in self.changers:
-            self.comboBox.addItem(a)
-            self.listColor.append(QColor(255,255,255))
-            self.changedColor.append(False)
-
-        self.connect(self.toolButton,  SIGNAL("released()"), self.chooseColor)
-        self.connect(self.comboBox,  SIGNAL("currentIndexChanged (int)"), self.changeColor)
-        self.connect(self.buttonBox, SIGNAL("accepted ()"), self.apply)
-        self.connect(self.buttonBox, SIGNAL("rejected ()"), self.hide)
-
-        self.changeColor()
-
-    def chooseColor(self):
-        self.listColor[self.comboBox.currentIndex()] = QColorDialog.getColor()
-        self.changedColor[self.comboBox.currentIndex()] = True
-        self.changeColor()
-
-    def changeColor(self):
-        pixmap = QtGui.QPixmap(16, 16)
-        pixmap.fill(self.listColor[self.comboBox.currentIndex()])
-        self.toolButton.setIcon(QtGui.QIcon(pixmap))
-
-    def changeColorN(self, n):
-        pixmap = QtGui.QPixmap(16, 16)
-        pixmap.fill(self.listColor[n])
-        self.toolButton.setIcon(QtGui.QIcon(pixmap))
-
-    def apply(self):
-        self.colors_applied = self.listColor[:]
-        self.hide()
-
-    def getApplied(self):
-        result = {}
-        for a in range(len(self.changers)):
-            if self.changedColor[a]:
-                result[self.changersVar[a]] = self.colors_applied[a]
-        return result
-
-    def setColorVar(self, var, color):
-        self.listColor[self.changersVar.index(var)]=color
-        self.changeColorN(self.changersVar.index(var))
-
-
+#heritage pour simplifier l'editeur
+from Editeur import EditeurPython
 
 class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
     def __init__(self,  conteneur=None):
@@ -354,8 +196,8 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
 
         self.thread_both_terminated = False
 
-        self.printer = Printer(self.thread.parent())
-        Printer.target = self
+        self.printer = Printer()
+        self.printer.target = self
 
         self.materials=[self.actionOrange,self.actionGris,self.actionBleu,self.actionNoir]
         self.eqMtlNames={self.actionOrange:(FORMAT_COLORS/FORMAT_COLORS,30.0/FORMAT_COLORS,1.0/FORMAT_COLORS),self.actionGris:(200.0/FORMAT_COLORS,200.0/FORMAT_COLORS,200.0/FORMAT_COLORS),
@@ -921,35 +763,30 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
 
     def stop(self):
         """
-        Stoppe les animations.
+        Stoppe rien du tout.
         """
-        self.thread.wait()
-        self.thread.exit()
-        self.thread.quit()
-        self.thread.terminate()
-        self.thread.wait()
+        pass
 
     def afficher(self,text="blarg"):
-        self.textBrowserConsole.write(text+'\n')
+        self.textBrowserConsole.write('\n'+text)
 
     def run(self):
-        self.running=self.thread.isRunning()
-        print "launch"
+        self.running=self.thread_code.isRunning()
         if (not self.running):
-            #Démarrage du chrono pour le framerate seulement
+            print "launch"
             self.currentIndex = self.tabWidget2.currentIndex()
+            #Démarrage du chrono pour le framerate seulement
             self.timer.start(40)
             self.actionNaoT14.setEnabled(False)
             self.actionNaoH21.setEnabled(False)
             self.actionNaoH25.setEnabled(False)
             self.actionInitPosition.setEnabled(False)
-            #self.tabWidget.setTabEnabled(0,False)
             for x in range(self.tabWidget2.count()-2):
                 self.tabWidget2.setTabEnabled(x,False)
             self.running=True
+            self.runCode()
         else :
             print "running"
-        self.runCode()
 
     def runCode(self):
         """
@@ -987,23 +824,20 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
             realT.replace("(Nao())",h)
         t=t.replace("from NaoCommunication import","from NaoCommunicationVirtual import")
 
-        if self.runReal:
-            self.thread.setCode(realT)
-            self.thread.start()
         try:
             if self.runReal:
+                self.thread.setCode(realT)
+                self.thread.start()
                 time.sleep(1.5)
             if t:
                 self.thread_code.setCode(unicode(t))
                 self.thread_code.start()
         except Exception, error :
-            print error
-            print "ok"
-##            a=QMessageBox()
-##            s=u"Erreur, la connexion avec le robot est impossible"
-##            a.information(self,u"Erreur à la connexion au robot",s)
+            a=QMessageBox()
+            s=u"Erreur, la connexion avec le robot est impossible"
+            a.information(self,u"Erreur à la connexion au robot",s)
         if self.runReal:
-            while not thread.isFinished():
+            while not self.thread.isFinished():
                 time.sleep(0.2)
 
         while not self.virtualNao.finishedSpeaking:
@@ -1063,11 +897,11 @@ class Printer(QObject):
         def __init__(self, parent=None):
             super(Printer, self).__init__()
             self.text = ""
-            self.parent=parent
+            self.target = None
 
         def write(self, text):
             self.text = text
-            CallbackEvent.post_to(self.parent, self.parent.afficher, self.text)
+            CallbackEvent.post_to(self.target, self.target.afficher, self.text)
 
 
     # Just some random worker

@@ -158,7 +158,7 @@ class EditeurPython(object):
 
     def saveUnder(self):
         fileName = QFileDialog.getSaveFileName(self,
-                 "Enregistrer fichier", "/", "Python Files (*.py)")
+                 "Enregistrer fichier", "/", "Python Files (*.py)")[0]
         self.fileName=fileName
         if fileName!="":
             self.save()
