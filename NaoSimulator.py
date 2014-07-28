@@ -10,38 +10,30 @@ import time
 import threading
 
 ## QT libs
-from PyQt4.QtGui import QApplication,  QMainWindow, QTextBrowser
+from PyQt4.QtGui import QApplication,  QMainWindow
 from PyQt4.QtGui import QFileDialog, QCursor, QToolTip
-from PyQt4.QtGui import QWidget,QSplashScreen,QDialog
+from PyQt4.QtGui import QWidget,QDialog
 from PyQt4.QtGui import QMessageBox,QFont
-from PyQt4 import uic
 from PyQt4.QtCore import QRect, QUrl
 from PyQt4.QtCore import Qt, SIGNAL, QTimer
 from PyQt4.QtCore import QObject, QThread
-from PyQt4.QtCore import QMutex
-
-
-###### QWEB
-path = os.path.join(os.path.dirname(sys.argv[0]), "PyQt4.uic.widget-plugins")
-uic.widgetPluginPath.append(path)
-from PyQt4.QtWebKit import QWebView
-###### QWEB!
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 
 #Partie 3D
 from Viewer3DWidget import Viewer3DWidget
 from Loader import Objet3D
 #Affichage accents
 from DecoderAll import Decoder
-from coloring2 import *
-
+from syntaxColor import *
 #API NAO
 from Nao3D import Nao3D
 from naoqiVirtual import ALProxy
 
 #pour activer ou desactiver la redirection des
 #affichages de texte vers la console intégrée
-DEBUG = True
-DEBUG = False
+DEBUGERR = True
+DEBUGERR = False
 DEBUGOUT = True
 DEBUGOUT = False
 
@@ -51,164 +43,16 @@ from imports import *
 
 ## Calcul du gris des yeux
 FORMAT_COLORS = 255.0
+
 ## plus cette valeur grandit plus les couleurs sont ternes
-## afin de simuler la faible intesité des leds du robot.
+## afin de simuler la faible intensité des leds du robot.
 EYES_GREY = 175.0
 R_COLOR = EYES_GREY / FORMAT_COLORS
-
-from PyQt4 import QtCore
 
 Ssaveout = sys.stdout
 Ssaveerr = sys.stderr
 
-class PyShell(QTextBrowser):
-    """
-    Permet d'afficher du texte comme dans le Python Shell intégré.
-    """
-    def __init__(self,  conteneur=None):
-        QTextBrowser.__init__(self)
-        self.setParent(conteneur)
-        self.font=QFont("Courier",12)
-        self.setFont(self.font)
-        self.clearTT()
-    def write(self, text):
-        self.setText(self.toPlainText()+text)
-        self.verticalScrollBar().setValue(self.verticalScrollBar().maximum())
-    def clearTT(self):
-        self.setText("\n>>>")
-    def finish(self):
-        self.write("\n>>>")
-    # define a slot with the right signature
-    @QtCore.pyqtSlot(str)
-    def slotMessage(self, message):
-        self.write(message)
-
-
-## Chargement de chaque design de fenetre.
-UiMainWindow,  Klass = uic.loadUiType(os.path.join("dep",'simulator.ui'))
-aProposWindow, k = uic.loadUiType(os.path.join("dep",'aPropos.ui'))
-colorWindow, k = uic.loadUiType(os.path.join("dep",'colors.ui'))
-docu, k = uic.loadUiType(os.path.join("dep",'documentation.ui'))
-config, k = uic.loadUiType(os.path.join("dep",'config.ui'))
-
-class Configuration(QWidget, config):
-    """
-    Fenêtre de configuration d'adresse IP du robot
-    et de configuration du port.
-    """
-    def __init__(self, conteneur=None):
-        if conteneur is None : conteneur = self
-        QWidget.__init__(conteneur)
-        config.__init__(conteneur)
-        self.setupUi(conteneur)
-
-        self.defaultValueIP=""
-        self.defaultValuePort=80
-        self.valueIP=""
-        self.valuePort=80
-
-        ## Les valeurs du proxy par défaut sont stockés dans ce fichier.
-        a=open(os.path.join("dep",'config.txt'))
-        b=a.readlines()
-        a.close()
-
-        if len(b)>1:
-            self.defaultValueIP=b[0].strip()
-            self.defaultValuePort=int(b[1].strip())
-        self.resetDefaults()
-        self.appliquer()
-
-        self.connect(self.buttonBox,  SIGNAL("rejected()"), self.hide)
-        self.connect(self.buttonBox,  SIGNAL("accepted()"), self.appliquer)
-        self.connect(self.pushButtonResetValues,  SIGNAL("released()"), self.resetDefaults)
-
-    def resetDefaults(self):
-        self.lineEditValueIP.setText(self.defaultValueIP)
-        self.lineEditValuePort.setText(str(self.defaultValuePort))
-
-    def getProxy(self):
-        return self.valueIP, self.valuePort
-
-    def appliquer(self):
-        self.valueIP=self.lineEditValueIP.text()
-        self.valuePort=int(self.lineEditValuePort.text())
-        self.hide()
-
-
-class Documentation(QWidget, docu):
-    ## Elle est initialisée une fois instanciée par MainWindow
-    def __init__(self, conteneur=None):
-        if conteneur is None : conteneur = self
-        QWidget.__init__(conteneur)
-        docu.__init__(conteneur)
-        self.setupUi(conteneur)
-
-class ApWindow(QDialog, aProposWindow):
-    def __init__(self, conteneur=None):
-        if conteneur is None : conteneur = self
-        QDialog.__init__(conteneur)
-        aProposWindow.__init__(conteneur)
-        self.setupUi(conteneur)
-
-from PyQt4.QtGui import QColorDialog
-from PyQt4.QtGui import QPalette, QColor
-from PyQt4 import QtGui
-
-class ColorWindow(QWidget, colorWindow):
-    def __init__(self, conteneur=None):
-        if conteneur is None : conteneur = self
-        QWidget.__init__(conteneur)
-        colorWindow.__init__(conteneur)
-        self.setupUi(conteneur)
-
-        self.listColor = []
-        self.changers = [u"Fond d'écran 3D",u"Arrière-plan"]
-        self.changersVar = ["wallpaper","background"]
-
-        self.changedColor = []
-
-        for a in self.changers:
-            self.comboBox.addItem(a)
-            self.listColor.append(QColor(255,255,255))
-            self.changedColor.append(False)
-
-        self.connect(self.toolButton,  SIGNAL("released()"), self.chooseColor)
-        self.connect(self.comboBox,  SIGNAL("currentIndexChanged (int)"), self.changeColor)
-        self.connect(self.buttonBox, SIGNAL("accepted ()"), self.apply)
-        self.connect(self.buttonBox, SIGNAL("rejected ()"), self.hide)
-
-        self.changeColor()
-
-    def chooseColor(self):
-        self.listColor[self.comboBox.currentIndex()] = QColorDialog.getColor()
-        self.changedColor[self.comboBox.currentIndex()] = True
-        self.changeColor()
-
-    def changeColor(self):
-        pixmap = QtGui.QPixmap(16, 16)
-        pixmap.fill(self.listColor[self.comboBox.currentIndex()])
-        self.toolButton.setIcon(QtGui.QIcon(pixmap))
-
-    def changeColorN(self, n):
-        pixmap = QtGui.QPixmap(16, 16)
-        pixmap.fill(self.listColor[n])
-        self.toolButton.setIcon(QtGui.QIcon(pixmap))
-
-    def apply(self):
-        self.colors_applied = self.listColor[:]
-        self.hide()
-
-    def getApplied(self):
-        result = {}
-        for a in range(len(self.changers)):
-            if self.changedColor[a]:
-                result[self.changersVar[a]] = self.colors_applied[a]
-        return result
-
-    def setColorVar(self, var, color):
-        self.listColor[self.changersVar.index(var)]=color
-        self.changeColorN(self.changersVar.index(var))
-
+from widgets import *
 from Editeur import EditeurPython
 
 class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
@@ -339,9 +183,13 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.running=True
         self.htmlSet=True
 
-        self.thread = GenericThread(self.runCode)
+        self.thread = Worker(self)
+        self.thread_code = Worker(self)
+
+        self.thread_both_terminated = False
+
         self.printer = Printer()
-        Printer.target = self
+        self.printer.target = self
 
         self.materials=[self.actionOrange,self.actionGris,self.actionBleu,self.actionNoir]
         self.eqMtlNames={self.actionOrange:(FORMAT_COLORS/FORMAT_COLORS,30.0/FORMAT_COLORS,1.0/FORMAT_COLORS),self.actionGris:(200.0/FORMAT_COLORS,200.0/FORMAT_COLORS,200.0/FORMAT_COLORS),
@@ -412,7 +260,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
     def setIO(self):
         if not DEBUGOUT :
             sys.stdout = self.textBrowserConsole
-            if not DEBUG:
+            if not DEBUGERR:
                 sys.stderr = self.textBrowserConsole
             else :
                 sys.stderr = self.saveerr
@@ -512,7 +360,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.connect(self.pushButtonStopLights, SIGNAL("released ()"), self.stopLights)
         self.connect(self.checkBoxSelectAll, SIGNAL("stateChanged (int)"), self.selectAll)
 
-        #?àdijzc
+        #leds sliders:
         ledsSpins=[self.spinBoxRouge,self.spinBoxVert,self.spinBoxBleu]
         ledsSliders=[self.horizontalSliderRouge,self.horizontalSliderVert,self.horizontalSliderBleu]
         for a in ledsSpins:
@@ -529,6 +377,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.connect( self.actionInitPosition, SIGNAL("triggered()"), self.resetAll)
 
         self.connect(self.thread, SIGNAL("finished ()"), self.finishCode)
+        self.connect(self.thread_code, SIGNAL("finished ()"), self.finishCode)
 
         ### EVENEMENTIEL
         self.connect(self.pushButtonValidSpeak, SIGNAL("released()"), self.speakToRobot)
@@ -698,7 +547,6 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.updatePhysics()
         self.Viewer3DWidget.update()
 
-
     def updatePhysics(self):
         """
         Modifie l'angle des moteurs qui sont dépendants d'autres
@@ -734,7 +582,6 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
                 break
         self.Viewer3DWidget.update()
         return
-
 
     def applyColor(self):
         dictColor = self.colors.getApplied()
@@ -905,25 +752,20 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
 
     def stop(self):
         """
-        Stoppe les animations.
+        Stoppe rien du tout.
         """
-        self.thread.wait()
-        self.thread.exit()
-        self.thread.quit()
-        self.thread.terminate()
-        self.thread.wait()
+        pass
 
     def afficher(self,text="blarg"):
-        self.textBrowserConsole.write(text+'\n')
+        self.textBrowserConsole.write(text)
 
     def run(self):
-        self.running=self.thread.isRunning()
-        print "launch"
+        self.running=self.thread_code.isRunning()
         if (not self.running):
+            print "launch"
             #Démarrage du chrono pour le framerate seulement
             self.currentIndex = self.tabWidget2.currentIndex()
             self.timer.start(40)
-            self.thread.start()
             self.actionNaoT14.setEnabled(False)
             self.actionNaoH21.setEnabled(False)
             self.actionNaoH25.setEnabled(False)
@@ -932,6 +774,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
             for x in range(self.tabWidget2.count()-2):
                 self.tabWidget2.setTabEnabled(x,False)
             self.running=True
+            self.runCode()
         else :
             print "running"
 
@@ -940,12 +783,10 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         Démarre le code écrit dans l'éditeur.
         """
 
-        printer=Printer()
         if not DEBUGOUT :
-            sys.stdout = printer
-            if not DEBUG:
-                sys.stderr = printer
-        printer.setConnexion(self.textBrowserConsole)
+            sys.stdout = self.printer
+            if not DEBUGERR:
+                sys.stderr = self.printer
 
         if self.runReal:
             try:
@@ -974,28 +815,31 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         t.replace("from NaoCommunication import",
                       "from NaoCommunicationVirtual import")
         if self.runReal:
-            launcher=RealLauncher()
-            launcher.setArgument(realT)
-            thread=GenericThread(launcher.run)
-            thread.start()
-        try:
-            if self.runReal:time.sleep(1.5)
-            if t: exec(unicode(t))
-        except Exception, error :
-            print error
+            self.thread.setCode(realT)
+            self.thread.start()
+
+        if self.runReal:
+                time.sleep(1.5)
+        if t:
+                self.thread_code.setCode(unicode(t))
+                self.thread_code.start()
+        #except Exception, error :
+        #    print "error"
 ##            a=QMessageBox()
 ##            s=u"Erreur, la connexion avec le robot est impossible"
 ##            a.information(self,u"Erreur à la connexion au robot",s)
-        if self.runReal:
-            while not thread.isFinished():
-                time.sleep(0.2)
 
-        while not self.virtualNao.finishedSpeaking:
-            time.sleep(0.2)
 
         return
 
     def finishCode(self):
+        if self.runReal:
+            if not self.thread_both_terminated:
+                self.thread_both_terminated=True
+                return
+            else :
+                self.thread_both_terminated=False
+        #self.thread.stop()
         self.stop()
         self.timer.stop()
         self.resizeShell()
@@ -1013,6 +857,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.actionNaoH21.setEnabled(True)
         self.actionNaoH25.setEnabled(True)
         self.actionInitPosition.setEnabled(True)
+        self.virtualNao.resetSpeaking()
 
     def changeReseau(self):
         """
@@ -1028,51 +873,44 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
             os.chdir("..")
             sys.path.append(os.getcwd())
 
-class GenericThread(QThread):
-    def __init__(self, function):#, *args):#, **kwargs):
-        QtCore.QThread.__init__(self)
-        self.function = function
-        #self.args = args
-        #self.kwargs = kwargs
+    def customEvent(self, e):
+        e.callback()
 
-    def __del__(self):
-        self.wait()
-
-    def run(self):
-        self.function()#*self.args):#,**self.kwargs)
-        return
-
-class RealLauncher():
-        def __init__(self):
-            self.argument=""
-
-        def setArgument(self, arg):
-            self.argument=arg
-
-        def run(self):
-            #print self.argument
-            a=str(self.argument)
-            exec(a[:])
+    # Printer for shell
 class Printer(QObject):
 
-    def __init__(self):
-        QtCore.QObject.__init__(self)
-        self.target=None
+        def __init__(self, parent=None):
+            super(Printer, self).__init__()
+            self.text = ""
+            self.target = None
 
-    def write(self, text):
-        QtCore.QMetaObject.invokeMethod(self.target, "slotMessage", QtCore.Q_ARG(str,text))
-
-    def setConnexion(self,slot):
-        self.target=slot
-
-    def unsetConnexion(self, slot):
-        pass
-
-    def __del__(self):
-        return
-        self.unsetConnexion()
+        def write(self, text):
+            self.text = text
+            CallbackEvent.post_to(self.target, self.target.afficher, self.text)
 
 
+    # Just worker
+class Worker(QtCore.QThread):
+
+        def __init__(self, parent=None):
+            super(Worker, self).__init__(parent)
+            self.__quitting = Event()
+            self.code=""
+
+        def setCode(self, code):
+            self.code = code
+
+        def run(self):
+            # And lets just have one happen from this worker thread too
+            if self.code.strip()!="":
+                exec(self.code,{})
+            time.sleep(4)
+
+        def stop(self):
+            self.__quitting.set()
+            self.wait()
+
+from threaders import *
 
 a = QApplication(sys.argv)
 f = MainWindow()
