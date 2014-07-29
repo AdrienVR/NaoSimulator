@@ -35,9 +35,9 @@ from imports import *
 #pour activer ou desactiver la redirection des
 #affichages de texte vers la console intégrée
 DEBUGERR = True
-DEBUGERR = False
+#DEBUGERR = False
 DEBUGOUT = True
-DEBUGOUT = False
+#DEBUGOUT = False
 
 ENABLE_SPACES_TO_TAB=True
 
@@ -437,8 +437,7 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
             self.run()
 
     def protectRunning(self):
-        if self.thread.isRunning():
-            self.tabWidget.setTabEnabled(0,False)
+        pass
 
     def speakToRobot(self):
         if str(self.lineEditSpeak.text()) != "":
@@ -820,28 +819,18 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         if self.runReal:
             realT=t[:]
             a,b=self.config.getProxy()
-            h=str("(Nao("+'"'+str(a)+'"'+","+str(b)+"))")
-            realT.replace("(Nao())",h)
+            h=str("Nao("+'"'+str(a)+'"'+","+str(b)+")")
+            realT = realT.replace("Nao()",h)
         t=t.replace("from NaoCommunication import","from NaoCommunicationVirtual import")
 
-        try:
-            if self.runReal:
-                self.thread.setCode(realT)
-                self.thread.start()
-                time.sleep(1.5)
-            if t:
-                self.thread_code.setCode(unicode(t))
-                self.thread_code.start()
-        except Exception, error :
-            a=QMessageBox()
-            s=u"Erreur, la connexion avec le robot est impossible"
-            a.information(self,u"Erreur à la connexion au robot",s)
+        #try:
         if self.runReal:
-            while not self.thread.isFinished():
-                time.sleep(0.2)
-
-        while not self.virtualNao.finishedSpeaking:
-            time.sleep(0.2)
+            self.thread.setCode(realT)
+            self.thread.start()
+            time.sleep(1.5)
+        if t:
+            self.thread_code.setCode(unicode(t))
+            self.thread_code.start()
 
         return
 

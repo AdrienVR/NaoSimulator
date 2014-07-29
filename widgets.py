@@ -69,19 +69,30 @@ class Configuration(QWidget, Ui_Configuration):
         self.valuePort=80
 
         ## Les valeurs du proxy par défaut sont stockés dans ce fichier.
-        a=open(os.path.join("dep",'config.txt'))
-        b=a.readlines()
-        a.close()
 
-        if len(b)>1:
-            self.defaultValueIP=b[0].strip()
-            self.defaultValuePort=int(b[1].strip())
+        self.load()
         self.resetDefaults()
         self.appliquer()
 
         self.connect(self.buttonBox,  SIGNAL("rejected()"), self.hide)
         self.connect(self.buttonBox,  SIGNAL("accepted()"), self.appliquer)
         self.connect(self.pushButtonResetValues,  SIGNAL("released()"), self.resetDefaults)
+
+    def load(self):
+        a=open(os.path.join("dep",'config.txt'))
+        b=a.readline()
+        a.close()
+
+        c=b.split(":")
+
+        if len(c)>1:
+            self.defaultValueIP=c[0].strip()
+            self.defaultValuePort=int(c[1].strip())
+
+    def save(self):
+        a=open(os.path.join("dep",'config.txt'),"w")
+        a.write(self.valueIP+":"+str(self.valuePort))
+        a.close()
 
     def resetDefaults(self):
         self.lineEditValueIP.setText(self.defaultValueIP)
@@ -93,6 +104,7 @@ class Configuration(QWidget, Ui_Configuration):
     def appliquer(self):
         self.valueIP=self.lineEditValueIP.text()
         self.valuePort=int(self.lineEditValuePort.text())
+        self.save()
         self.hide()
 
 if QWEB_ENABLE:

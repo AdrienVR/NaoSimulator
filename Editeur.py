@@ -128,19 +128,16 @@ class EditeurPython(object):
 
     def openFile(self):
         fileName = QFileDialog.getOpenFileName(self,
-                 "Ouvrir fichier", "/", "Python Files (*.py)")
+                 "Ouvrir fichier", "/", "Python Files (*.py)")[0]
         if fileName!="":
             self.fileName=fileName
             self.setWindowTitle(self.name+" - "+self.fileName)
         else :
             return
-        try :
-            f=open(fileName)
-            self.textEdit.setPlainText(f.read())
-            f.close()
-            self.setStar(False)
-        except Exception,e:
-            print "Error :",e;
+        f=open(fileName)
+        self.textEdit.setPlainText(unicode(f.read()))
+        f.close()
+        self.setStar(False)
 
     def save(self):
         if self.fileName!="":
