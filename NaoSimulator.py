@@ -810,19 +810,17 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         if self.runReal:
             realT=t[:]
             a,b=self.config.getProxy()
-            h=str("(Nao("+'"'+str(a)+'"'+","+str(b)+"))")
-            realT.replace("(Nao())",h)
+            h=str("Nao("+'"'+str(a)+'"'+","+str(b)+")")
+            realT.replace("Nao()",h)
         t.replace("from NaoCommunication import",
                       "from NaoCommunicationVirtual import")
         if self.runReal:
-            self.thread.setCode(realT)
+            self.thread.setCode(unicode(realT))
             self.thread.start()
+            time.sleep(1.5)
 
-        if self.runReal:
-                time.sleep(1.5)
-        if t:
-                self.thread_code.setCode(unicode(t))
-                self.thread_code.start()
+        self.thread_code.setCode(unicode(t))
+        self.thread_code.start()
         #except Exception, error :
         #    print "error"
 ##            a=QMessageBox()
@@ -876,7 +874,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
     def customEvent(self, e):
         e.callback()
 
-    # Printer for shell
+# Printer for shell
 class Printer(QObject):
 
         def __init__(self, parent=None):
@@ -902,7 +900,9 @@ class Worker(QtCore.QThread):
 
         def run(self):
             # And lets just have one happen from this worker thread too
-            if self.code.strip()!="":
+            code = self.code
+            code = unicode(code).strip()
+            if code!="":
                 exec(self.code,{})
             time.sleep(4)
 
