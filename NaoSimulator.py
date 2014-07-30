@@ -218,6 +218,11 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         self.syntaxColor = PythonHighlighter(self.textEdit.document())
 
         #self._pool = CallbackThreadPool(4)
+        self.touchSensor = -1
+
+        self.touchSensors = [self.pushButtonMainDDevant, self.pushButtonMainDDessus, self.pushButtonMainDArriere,
+        self.pushButtonMainGDevant, self.pushButtonMainGDessus, self.pushButtonMainGArriere,
+        self.pushButtonTeteDevant, self.pushButtonTeteDessus, self.pushButtonTeteArriere]
 
         ################# INITIALISATION #####################################
 
@@ -279,16 +284,16 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         sys.stdout = self.saveout
         sys.stderr = self.saveerr
 
-    def close(self):
-        if self.modified:
-            reponse = QMessageBox.question(self, u"Enregistrer",
-                u"Voulez-vous enregistrer le fichier avant de quitter ?",
-                QMessageBox.Yes | QMessageBox.No)
-            if reponse==QMessageBox.No:
-                pass
-            else :
-                self.save()
-        self.__del__()
+#     def close(self):
+#         if self.modified:
+#             reponse = QMessageBox.question(self, u"Enregistrer",
+#                 u"Voulez-vous enregistrer le fichier avant de quitter ?",
+#                 QMessageBox.Yes | QMessageBox.No)
+#             if reponse==QMessageBox.No:
+#                 pass
+#             else :
+#                 self.save()
+#         self.__del__()
 
     def createConnexions(self):
         """
@@ -315,6 +320,7 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
 
         #actions Editeur de texte
         #Fichier Menu
+        self.connect(self.actionQuitter, SIGNAL("triggered()"), self.close)
         self.connect(self.actionOuvrir,  SIGNAL("triggered()"), self.openFile)
         self.connect(self.textEdit, SIGNAL("textChanged ()"), self.setStar)
         self.connect(self.textEdit, SIGNAL("textChanged ()"), self.setColors)
@@ -373,7 +379,7 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         self.connect(self.pushButtonStopLights, SIGNAL("released ()"), self.stopLights)
         self.connect(self.checkBoxSelectAll, SIGNAL("stateChanged (int)"), self.selectAll)
 
-        #led sliders + spins
+        #led sliders     spins
         ledsSpins=[self.spinBoxRouge,self.spinBoxVert,self.spinBoxBleu]
         ledsSliders=[self.horizontalSliderRouge,self.horizontalSliderVert,self.horizontalSliderBleu]
         for a in ledsSpins:
@@ -400,6 +406,10 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         self.connect(self.pushButtonObjet, SIGNAL("released()"), self.objetToRobot)
 
         self.connect(self.pushButtonReconnaitre, SIGNAL("released()"), self.recognizeObjet)
+
+        for a in self.touchSensors:
+            self.connect(a, SIGNAL("pressed()"), self.armTouch)
+            self.connect(a, SIGNAL("released()"), self.touch)
 
     ####### Main prog --------------------------------------------------------------------- #############
 
@@ -440,9 +450,11 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         pass
 
     def speakToRobot(self):
-        if str(self.lineEditSpeak.text()) != "":
-            if ALProxy.eventCall( "onWordRecognized",(str(self.lineEditSpeak.text()),100) ):
-                self.lineEditSpeak.clear()
+        if self.thread_code.isRunning():
+            if str(self.lineEditSpeak.text()) != "":
+                ALProxy.eventCall( "onWordDetected",(str(self.lineEditSpeak.text()),100) )
+                if ALProxy.eventCall( "onWordRecognized",(str(self.lineEditSpeak.text()),100) ):
+                    self.lineEditSpeak.clear()
 
     def objetToRobot(self):
         if str(self.lineEditObjet.text()) != "":
@@ -450,11 +462,12 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
             self.lineEditObjet.clear()
 
     def recognizeObjet(self):
-        name=str(self.comboBox.currentText())
-        if  name != "":
-            #print  str(self.comboBox.currentText())
-            ALProxy.eventCall( "onFaceDetected", (name, 100) )
-            ALProxy.eventCall( "onPictureDetected", (name, "face", 100, 100) )
+        if self.thread_code.isRunning():
+            name=str(self.comboBox.currentText())
+            if  name != "":
+                #print  str(self.comboBox.currentText())
+                ALProxy.eventCall( "onFaceDetected", (name, 100) )
+                ALProxy.eventCall( "onPictureDetected", (name, "face", 100, 100) )
 
     def hasChanged(self):
         """
@@ -483,6 +496,27 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
             print self.sliders[a].value(),self.sliderEq[a]
         for a in self.virtualNao.getMembreKeys():
             print a, self.virtualNao.getMembre(a).getPercentFromAxis(0),self.virtualNao.getMembre(a).getPercentFromAxis(1),self.virtualNao.getMembre(a).getPercentFromAxis(2)
+
+
+    def armTouch(self):
+        """
+        Pour l'utilisation des event touch
+        """
+        if self.thread_code.isRunning():
+            for a in range(len(self.touchSensors)):
+                if self.touchSensors[a].isDown():
+                    self.touchSensor=a
+                    ALProxy.eventCall( "onTactileDetected", (self.touchSensor, 1) )
+                    return
+
+    def touch(self):
+        """
+        Call event for
+        """
+        #location, state
+        if self.thread_code.isRunning():
+            ALProxy.eventCall( "onTactileDetected", (self.touchSensor, 0) )
+
 
     def armReset(self):
         """
@@ -828,9 +862,8 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
             self.thread.setCode(realT)
             self.thread.start()
             time.sleep(1.5)
-        if t:
-            self.thread_code.setCode(unicode(t))
-            self.thread_code.start()
+        self.thread_code.setCode(unicode(t))
+        self.thread_code.start()
 
         return
 
@@ -887,10 +920,33 @@ class Printer(QObject):
             super(Printer, self).__init__()
             self.text = ""
             self.target = None
-
+            self.lastTime = time.time()
+            self.alert = False
+            self.alertCount = 30
+            self.alertTime = 8
         def write(self, text):
-            self.text = text
-            CallbackEvent.post_to(self.target, self.target.afficher, self.text)
+            if self.alert :
+                if time.time()-self.lastTime > 0.5:
+                    self.text = text
+                    CallbackEvent.post_to(self.target, self.target.afficher, self.text)
+                    self.alertTime -= (time.time()-self.lastTime)
+                    self.lastTime = time.time()
+                if self.alertTime < 0 :
+                    self.alert = False
+                    self.alertTime = 8
+                    CallbackEvent.post_to(self.target, self.target.afficher, "\nAlert : end skipping print frames !\n")
+            else :
+                self.text = text
+                CallbackEvent.post_to(self.target, self.target.afficher, self.text)
+                if time.time()-self.lastTime < 0.01:
+                    self.alertCount -= 1
+                if self.alertCount < 0:
+                    self.alert = True
+                    self.alertCount = 30
+                    CallbackEvent.post_to(self.target, self.target.afficher, "\nAlert : begin skipping print frames !\n")
+                else :
+                    self.alertCount = 30
+                self.lastTime = time.time()
 
 
     # Just some random worker

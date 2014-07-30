@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'aPropos.ui'
 #
-# Created: Fri Jul 25 20:22:21 2014
+# Created: Wed Jul 30 14:35:23 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -83,13 +83,14 @@ class Ui_widget(object):
     def retranslateUi(self, widget):
         widget.setWindowTitle(QtGui.QApplication.translate("widget", "À propos", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("widget", "NAO Simulator 2014\n"
-"v.0.9.8 Adrien Vernotte\n"
-"juin 2014", None, QtGui.QApplication.UnicodeUTF8))
+"v.1.0.0 Adrien Vernotte\n"
+"août 2014\n"
+"LGPL GNU v2.1", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("widget", "NAO Simulator 2014 est un simulateur de robot NAO gratuit destiné à apprendre la programmation en Python dans une interface simple.\n"
 "\n"
 "Ce simulateur a été développé dans le cadre du projet \"Horizon ENIB\" qui vise à faire découvrir l\'enseignement supérieur et la recherche dans le domaine de l\'informatique, de l\'électronique et de la mécatronique.\n"
 "\n"
-"Programmé en Python, utilise PyQt4 et l\'API de l\'ENIB.\n"
+"Programmé en Python, utilise PySide, OpenGL et l\'API NaoCommunication de l\'ENIB.\n"
 "Remerciements : Céline Jost", None, QtGui.QApplication.UnicodeUTF8))
 
 import rsc_rc

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'simulator.ui'
 #
-# Created: Fri Jul 25 20:22:18 2014
+# Created: Wed Jul 30 14:35:21 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -630,16 +630,6 @@ class Ui_MainWindow(object):
         self.tab3.setObjectName("tab3")
         self.gridLayout_4 = QtGui.QGridLayout(self.tab3)
         self.gridLayout_4.setObjectName("gridLayout_4")
-        self.label_4 = QtGui.QLabel(self.tab3)
-        self.label_4.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.label_4.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_4.setObjectName("label_4")
-        self.gridLayout_4.addWidget(self.label_4, 4, 1, 1, 1)
-        self.label_6 = QtGui.QLabel(self.tab3)
-        self.label_6.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.label_6.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_6.setObjectName("label_6")
-        self.gridLayout_4.addWidget(self.label_6, 6, 1, 1, 1)
         self.label_2 = QtGui.QLabel(self.tab3)
         self.label_2.setMaximumSize(QtCore.QSize(16777215, 20))
         font = QtGui.QFont()
@@ -653,34 +643,44 @@ class Ui_MainWindow(object):
         self.label_3.setMaximumSize(QtCore.QSize(16777215, 20))
         self.label_3.setAlignment(QtCore.Qt.AlignCenter)
         self.label_3.setObjectName("label_3")
-        self.gridLayout_4.addWidget(self.label_3, 2, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.label_3, 6, 1, 1, 1)
         self.pushButtonTeteDessus = QtGui.QPushButton(self.tab3)
         self.pushButtonTeteDessus.setObjectName("pushButtonTeteDessus")
-        self.gridLayout_4.addWidget(self.pushButtonTeteDessus, 3, 1, 1, 1)
-        self.pushButtonMainGDevant = QtGui.QPushButton(self.tab3)
-        self.pushButtonMainGDevant.setObjectName("pushButtonMainGDevant")
-        self.gridLayout_4.addWidget(self.pushButtonMainGDevant, 5, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.pushButtonTeteDessus, 7, 1, 1, 1)
+        self.pushButtonTeteDevant = QtGui.QPushButton(self.tab3)
+        self.pushButtonTeteDevant.setObjectName("pushButtonTeteDevant")
+        self.gridLayout_4.addWidget(self.pushButtonTeteDevant, 7, 0, 1, 1)
+        self.pushButtonTeteArriere = QtGui.QPushButton(self.tab3)
+        self.pushButtonTeteArriere.setObjectName("pushButtonTeteArriere")
+        self.gridLayout_4.addWidget(self.pushButtonTeteArriere, 7, 2, 1, 1)
+        self.label_6 = QtGui.QLabel(self.tab3)
+        self.label_6.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.label_6.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_6.setObjectName("label_6")
+        self.gridLayout_4.addWidget(self.label_6, 2, 1, 1, 1)
         self.pushButtonMainDDevant = QtGui.QPushButton(self.tab3)
         self.pushButtonMainDDevant.setObjectName("pushButtonMainDDevant")
-        self.gridLayout_4.addWidget(self.pushButtonMainDDevant, 7, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.pushButtonMainDDevant, 3, 0, 1, 1)
+        self.label_4 = QtGui.QLabel(self.tab3)
+        self.label_4.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.label_4.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_4.setObjectName("label_4")
+        self.gridLayout_4.addWidget(self.label_4, 4, 1, 1, 1)
+        self.pushButtonMainDArriere = QtGui.QPushButton(self.tab3)
+        self.pushButtonMainDArriere.setObjectName("pushButtonMainDArriere")
+        self.gridLayout_4.addWidget(self.pushButtonMainDArriere, 3, 2, 1, 1)
+        self.pushButtonMainDDessus = QtGui.QPushButton(self.tab3)
+        self.pushButtonMainDDessus.setObjectName("pushButtonMainDDessus")
+        self.gridLayout_4.addWidget(self.pushButtonMainDDessus, 3, 1, 1, 1)
         self.pushButtonMainGDessus = QtGui.QPushButton(self.tab3)
         self.pushButtonMainGDessus.setObjectName("pushButtonMainGDessus")
         self.gridLayout_4.addWidget(self.pushButtonMainGDessus, 5, 1, 1, 1)
+        self.pushButtonMainGDevant = QtGui.QPushButton(self.tab3)
+        self.pushButtonMainGDevant.setObjectName("pushButtonMainGDevant")
+        self.gridLayout_4.addWidget(self.pushButtonMainGDevant, 5, 0, 1, 1)
         self.pushButtonMainGArriere = QtGui.QPushButton(self.tab3)
         self.pushButtonMainGArriere.setObjectName("pushButtonMainGArriere")
         self.gridLayout_4.addWidget(self.pushButtonMainGArriere, 5, 2, 1, 1)
-        self.pushButtonTeteDevant = QtGui.QPushButton(self.tab3)
-        self.pushButtonTeteDevant.setObjectName("pushButtonTeteDevant")
-        self.gridLayout_4.addWidget(self.pushButtonTeteDevant, 3, 0, 1, 1)
-        self.pushButtonMainDDessus = QtGui.QPushButton(self.tab3)
-        self.pushButtonMainDDessus.setObjectName("pushButtonMainDDessus")
-        self.gridLayout_4.addWidget(self.pushButtonMainDDessus, 7, 1, 1, 1)
-        self.pushButtonTeteArriere = QtGui.QPushButton(self.tab3)
-        self.pushButtonTeteArriere.setObjectName("pushButtonTeteArriere")
-        self.gridLayout_4.addWidget(self.pushButtonTeteArriere, 3, 2, 1, 1)
-        self.pushButtonMainDArriere = QtGui.QPushButton(self.tab3)
-        self.pushButtonMainDArriere.setObjectName("pushButtonMainDArriere")
-        self.gridLayout_4.addWidget(self.pushButtonMainDArriere, 7, 2, 1, 1)
         self.tabWidget2.addTab(self.tab3, "")
         self.tab4 = QtGui.QWidget()
         self.tab4.setObjectName("tab4")
@@ -999,16 +999,6 @@ class Ui_MainWindow(object):
         self.pushButtonChangeColors.setText(QtGui.QApplication.translate("MainWindow", "Changer", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButtonStopLights.setText(QtGui.QApplication.translate("MainWindow", "Éteindre", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget2.setTabText(self.tabWidget2.indexOf(self.tab), QtGui.QApplication.translate("MainWindow", "Lumières", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_4.setText(QtGui.QApplication.translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">Main Gauche</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_6.setText(QtGui.QApplication.translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">Main Droite</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -1019,15 +1009,25 @@ class Ui_MainWindow(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">Tête</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButtonTeteDessus.setText(QtGui.QApplication.translate("MainWindow", "Dessus", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButtonMainGDevant.setText(QtGui.QApplication.translate("MainWindow", "Devant", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButtonMainDDevant.setText(QtGui.QApplication.translate("MainWindow", "Devant", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButtonMainGDessus.setText(QtGui.QApplication.translate("MainWindow", "Dessus", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButtonMainGArriere.setText(QtGui.QApplication.translate("MainWindow", "Arrière", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButtonTeteDevant.setText(QtGui.QApplication.translate("MainWindow", "Devant", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButtonMainDDessus.setText(QtGui.QApplication.translate("MainWindow", "Dessus", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButtonTeteArriere.setText(QtGui.QApplication.translate("MainWindow", "Arrière", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButtonMainDArriere.setText(QtGui.QApplication.translate("MainWindow", "Arrière", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushButtonTeteDessus.setText(QtGui.QApplication.translate("MainWindow", "8 : Dessus", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushButtonTeteDevant.setText(QtGui.QApplication.translate("MainWindow", "7 : Devant", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushButtonTeteArriere.setText(QtGui.QApplication.translate("MainWindow", "9 : Arrière", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_6.setText(QtGui.QApplication.translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">Main Droite</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushButtonMainDDevant.setText(QtGui.QApplication.translate("MainWindow", "1 : Devant", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_4.setText(QtGui.QApplication.translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">Main Gauche</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushButtonMainDArriere.setText(QtGui.QApplication.translate("MainWindow", "3 : Arrière", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushButtonMainDDessus.setText(QtGui.QApplication.translate("MainWindow", "2 : Dessus", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushButtonMainGDessus.setText(QtGui.QApplication.translate("MainWindow", "5 : Dessus", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushButtonMainGDevant.setText(QtGui.QApplication.translate("MainWindow", "4 : Devant", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushButtonMainGArriere.setText(QtGui.QApplication.translate("MainWindow", "6 : Arrière", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget2.setTabText(self.tabWidget2.indexOf(self.tab3), QtGui.QApplication.translate("MainWindow", "Capteurs", None, QtGui.QApplication.UnicodeUTF8))
         self.labelParler.setText(QtGui.QApplication.translate("MainWindow", "Parler au robot", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButtonValidSpeak.setText(QtGui.QApplication.translate("MainWindow", "Parler", None, QtGui.QApplication.UnicodeUTF8))
