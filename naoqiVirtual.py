@@ -5,11 +5,18 @@ Attribut statique référence le nao virtuel.
 
 Peut etre qu'il faudrait faire hériter la classe
 du virtualNao de ALProxy et surcharger les méthodes
+mais ca serait pas bien pour les fonctions non surchargées
 """
 import time as TimerT
 class ALProxy():
+    # staticNao = NaoCommunicationVirtual.AbstractNaoEvenement
+    # (remplace les fonctions du robot réel pour les events)
     staticNao=None
+    # virtualNao = Nao3D
+    # (remplace les membres du robot réel)
     virtualNao=None
+
+    vocabList = []
     typeRobot="T14"
 
     membres={0:"HeadYaw",1:"HeadPitch",
@@ -22,21 +29,21 @@ class ALProxy():
                             }
 
     jointsAll={"T14":["HeadYaw", "HeadPitch",
-                               "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand",
-                               "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand"],
+                       "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand",
+                       "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand"],
 
-                        "H21":['HeadYaw', 'HeadPitch',
-                               'LShoulderPitch', 'LShoulderRoll', 'LElbowYaw', 'LElbowRoll',
-                               'LHipYawPitch', 'LHipRoll', 'LHipPitch', 'LKneePitch', 'LAnklePitch', 'LAnkleRoll',
-                               'RHipYawPitch', 'RHipRoll', 'RHipPitch', 'RKneePitch', 'RAnklePitch', 'RAnkleRoll',
-                               'RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll'],
-                        #not tested, may not work :
-                        "H25":['HeadYaw', 'HeadPitch',
-                               'LShoulderPitch', 'LShoulderRoll', 'LElbowYaw', 'LElbowRoll', "LWristYaw", "LHand",
-                               'LHipYawPitch', 'LHipRoll', 'LHipPitch', 'LKneePitch', 'LAnklePitch', 'LAnkleRoll',
-                               'RHipYawPitch', 'RHipRoll', 'RHipPitch', 'RKneePitch', 'RAnklePitch', 'RAnkleRoll',
-                               'RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll',"RWristYaw", "RHand"],
-                        }
+               "H21":['HeadYaw', 'HeadPitch',
+                       'LShoulderPitch', 'LShoulderRoll', 'LElbowYaw', 'LElbowRoll',
+                       'LHipYawPitch', 'LHipRoll', 'LHipPitch', 'LKneePitch', 'LAnklePitch', 'LAnkleRoll',
+                       'RHipYawPitch', 'RHipRoll', 'RHipPitch', 'RKneePitch', 'RAnklePitch', 'RAnkleRoll',
+                       'RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll'],
+               #not tested, may not work :
+               "H25":['HeadYaw', 'HeadPitch',
+                       'LShoulderPitch', 'LShoulderRoll', 'LElbowYaw', 'LElbowRoll', "LWristYaw", "LHand",
+                       'LHipYawPitch', 'LHipRoll', 'LHipPitch', 'LKneePitch', 'LAnklePitch', 'LAnkleRoll',
+                       'RHipYawPitch', 'RHipRoll', 'RHipPitch', 'RKneePitch', 'RAnklePitch', 'RAnkleRoll',
+                       'RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll',"RWristYaw", "RHand"],
+                }
 
     def __init__(self,name=0,adress=0,port=0):
         self.name=name
@@ -49,7 +56,7 @@ class ALProxy():
         # Solution :
         # Après copie de la liste renvoyée par le naoqi réel,
         # on copie tous les éléments de la partie gauche pour les coller et remplacer ceux de
-        # la partie gauche.
+        # la partie droite.
         self.limitsAll={"T14":[[-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.671951770782 , 0.514872133732 , 7.19407272339 , 1.20000004768 ],
                                [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ],
                                [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ]],
@@ -115,17 +122,26 @@ class ALProxy():
         functionsByName={
             "onWordRecognized":ALProxy.staticNao._wordRecognizedEvent,
             "onPictureDetected":ALProxy.staticNao._pictureDetectedEvent,
-            "onFaceDetected":ALProxy.staticNao._faceDetectedEvent}
+            "onFaceDetected":ALProxy.staticNao._faceDetectedEvent,
+            "onTactileDetected":ALProxy.staticNao._tactileEvent,
+            "onWordDetected":ALProxy.staticNao._speechDetectedEvent}
         return functionsByName[functionName]
 
     @staticmethod
     def eventCall(function, args):
         ##try:
+        if function != "onWordDetected":
             ALProxy.getFunction(function)(*args)
             return 1
+        else :
+            for mot in args[0].split():
+                print mot.strip()
+                if mot.strip() in ALProxy.vocabList :
+                    ALProxy.getFunction(function)()
+                    return 1
         ##except:
         ##    print "Pas de AbstractNaoEvenement instancié"
-        ##return 0
+        return 0
 
     @staticmethod
     def setType(robot="T14"):
@@ -293,6 +309,12 @@ class ALProxy():
         pass
 
     def fadeRGB (self, name, color, duration):
+        pass
+
+    def setWordListAsVocabulary(self, vocabList):
+        ALProxy.vocabList = vocabList
+
+    def startSpeechRecognition(self):
         pass
 
 class ALBroker():

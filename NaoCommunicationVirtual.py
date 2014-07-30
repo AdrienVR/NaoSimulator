@@ -15,7 +15,6 @@ class NaoControle:
 
     def __init__(self, nao):
         self.__nao = nao;
-        ALProxy.associateStaticNao(nao)
 
     def stop(self):
         self.__nao.stop();
@@ -352,7 +351,8 @@ class NaoControle:
 
     #test OK
     def afficherVideo(self):
-        print self.__nao.getVideo().displayVideo("Vue de Nao");
+        #print self.__nao.getVideo().displayVideo("Vue de Nao");
+        pass
 
 
     ################################################################
@@ -418,6 +418,10 @@ class AbstractNaoEvenement():
         self.objetReconnu = ""
         self.tauxRessemblance = 0.0
         self.ratio = 0.0
+        self.capteursTactiles = ["HandRightLeftTouched", "HandRightBackTouched", "HandRightRightTouched", "HandLeftLeftTouched", "HandLeftBackTouched", "HandLeftRightTouched", "FrontTactilTouched", "MiddleTactilTouched", "RearTactilTouched"]
+        self.recoTactile = False
+        self.location = -1
+        self.etat = 0
 
     ####### FACE DETECTION #######
 
@@ -491,7 +495,7 @@ class AbstractNaoEvenement():
     #test OK
     def _speechDetectedEvent(self):
         self.recoParole = True;
-       # self.traiterDetectionParole();
+        self.traiterDetectionParole();
 
     #test OK
     def arreterDetectionParole(self):
@@ -520,3 +524,56 @@ class AbstractNaoEvenement():
         self.motReconnu = ""
         self.tauxReconnaissance = 0.0
         #self.stopWordRecognition();
+
+    #///// CAPTEUR TACTILE /////
+
+    def afficherNumeroCapteursTactiles(self):
+        for i in range(len(self.capteursTactiles)):
+            if self.capteursTactiles[i]=="HandRightBackTouched":
+                 print("%s : MAIN DROITE - ZONE DU MILIEU" %(i))
+            elif self.capteursTactiles[i]=="HandRightLeftTouched":
+                 print("%s : MAIN DROITE - ZONE DE GAUCHE" %(i))
+            elif self.capteursTactiles[i]=="HandRightRightTouched":
+                 print("%s : MAIN DROITE - ZONE DE DROITE" %(i))
+            elif self.capteursTactiles[i]=="HandLeftBackTouched":
+                 print("%s : MAIN GAUCHE - ZONE DU MILIEU" %(i))
+            elif self.capteursTactiles[i]=="HandLeftLeftTouched":
+                 print("%s : MAIN GAUCHE - ZONE DE GAUCHE" %(i))
+            elif self.capteursTactiles[i]=="HandLeftRightTouched":
+                 print("%s : MAIN GAUCHE - ZONE DE DROITE" %(i))
+            elif self.capteursTactiles[i]=="FrontTactilTouched":
+                 print("%s : TETE - ZONE DE DEVANT" %(i))
+            elif self.capteursTactiles[i]=="MiddleTactilTouched":
+                 print("%s : TETE - ZONE DU MILIEU" %(i))
+            elif self.capteursTactiles[i]=="RearTactilTouched":
+                 print("%s : TETE - ZONE DE DERRIERE" %(i))
+
+        print("\n")
+        print("ETAT 1 : CONTACT AVEC LE CAPTEUR")
+        print("ETAT 0 : CAPTEUR RELACHE")
+
+    def demarrerReconnaissanceTactile(self):
+        self.recoTactile = False
+        self.location = -1
+        self.etat = 0
+        #self.startTactileEventRecognition();
+
+    def traiterReconnaissanceTactile(self, location, etat):
+        pass;
+
+
+    def _tactileEvent(self, location, state):
+        self.recoTactile = True
+        self.location = location
+        self.etat = int(state)
+        self.traiterReconnaissanceTactile(self.location, self.etat);
+
+    def arreterReconnaissanceTactile(self):
+        self.recoTactile = False
+        self.location = -1
+        self.etat = 0
+        #self.stopTactileEventRecognition()
+
+
+
+
