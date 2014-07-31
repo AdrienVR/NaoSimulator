@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'simulator.ui'
 #
-# Created: Wed Jul 30 14:35:21 2014
+# Created: Thu Jul 31 13:04:39 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -30,7 +30,7 @@ class Ui_MainWindow(object):
         font.setFamily("Courier New")
         font.setPointSize(12)
         self.textEdit.setFont(font)
-        self.textEdit.setTabChangesFocus(True)
+        self.textEdit.setTabChangesFocus(False)
         self.textEdit.setLineWrapMode(QtGui.QTextEdit.NoWrap)
         self.textEdit.setTabStopWidth(40)
         self.textEdit.setObjectName("textEdit")
@@ -876,11 +876,14 @@ class Ui_MainWindow(object):
         self.actionNaoH21.setObjectName("actionNaoH21")
         self.actionColors = QtGui.QAction(MainWindow)
         self.actionColors.setObjectName("actionColors")
+        self.actionRelancer = QtGui.QAction(MainWindow)
+        self.actionRelancer.setObjectName("actionRelancer")
         self.menuFichier.addAction(self.actionOuvrir)
         self.menuFichier.addSeparator()
         self.menuFichier.addAction(self.actionEnregistrer)
         self.menuFichier.addAction(self.actionEnregistrer_sous)
         self.menuFichier.addSeparator()
+        self.menuFichier.addAction(self.actionRelancer)
         self.menuFichier.addAction(self.actionQuitter)
         self.menuEdition.addAction(self.actionAnnuler)
         self.menuEdition.addAction(self.actionRetablir)
@@ -927,7 +930,6 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget2.setCurrentIndex(0)
-        QtCore.QObject.connect(self.actionQuitter, QtCore.SIGNAL("triggered()"), MainWindow.close)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -1100,5 +1102,6 @@ class Ui_MainWindow(object):
         self.actionConfiguration.setText(QtGui.QApplication.translate("MainWindow", "Configuration...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNaoH21.setText(QtGui.QApplication.translate("MainWindow", "NAO H21", None, QtGui.QApplication.UnicodeUTF8))
         self.actionColors.setText(QtGui.QApplication.translate("MainWindow", "Personnaliser les couleurs...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionRelancer.setText(QtGui.QApplication.translate("MainWindow", "Relancer", None, QtGui.QApplication.UnicodeUTF8))
 
 import rsc_rc

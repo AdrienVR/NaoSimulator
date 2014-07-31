@@ -35,21 +35,23 @@ from imports import *
 #pour activer ou desactiver la redirection des
 #affichages de texte vers la console intégrée
 DEBUGERR = True
-#DEBUGERR = False
+DEBUGERR = False
 DEBUGOUT = True
-#DEBUGOUT = False
+DEBUGOUT = False
 
 ENABLE_SPACES_TO_TAB=True
 
 ## Calcul du gris des yeux
 FORMAT_COLORS = 255.0
 ## plus cette valeur grandit plus les couleurs sont ternes
-## afin de simuler la faible intesité des leds du robot.
+## afin de simuler la faible intensité des leds du robot.
 EYES_GREY = 175.0
 R_COLOR = EYES_GREY / FORMAT_COLORS
 
 Ssaveout = sys.stdout
 Ssaveerr = sys.stderr
+
+Global_repeat = False
 
 from widgets import *
 
@@ -264,8 +266,9 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         self.running=False
 
     def __del__(self):
-        sys.stdout = self.saveout
-        sys.stderr = self.saveerr
+         sys.stdout = self.saveout
+         sys.stderr = self.saveerr
+         print "goodbye"
 
     #def OnCloseEvent(self):
     #todo
@@ -321,6 +324,7 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         #actions Editeur de texte
         #Fichier Menu
         self.connect(self.actionQuitter, SIGNAL("triggered()"), self.close)
+        self.connect(self.actionRelancer, SIGNAL("triggered()"), self.relaunch)
         self.connect(self.actionOuvrir,  SIGNAL("triggered()"), self.openFile)
         self.connect(self.textEdit, SIGNAL("textChanged ()"), self.setStar)
         self.connect(self.textEdit, SIGNAL("textChanged ()"), self.setColors)
@@ -412,6 +416,11 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
             self.connect(a, SIGNAL("released()"), self.touch)
 
     ####### Main prog --------------------------------------------------------------------- #############
+
+    def relaunch(self):
+        global Global_repeat
+        Global_repeat = True
+        self.close()
 
     def setFullScreenOn(self):
         self.menuBarNaoSimulator.hide()
@@ -996,4 +1005,11 @@ from threaders import *
 a = QApplication(sys.argv)
 f = MainWindow()
 r = a.exec_()
+
+sys.stdout = Ssaveout
+sys.stderr = Ssaveerr
+
+if Global_repeat:
+    #os.execv("launch.bat", ['launch.bat'])
+    pass
 f=None

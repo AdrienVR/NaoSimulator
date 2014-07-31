@@ -44,7 +44,7 @@
         </font>
        </property>
        <property name="tabChangesFocus">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="lineWrapMode">
         <enum>QTextEdit::NoWrap</enum>
@@ -1863,6 +1863,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionEnregistrer"/>
     <addaction name="actionEnregistrer_sous"/>
     <addaction name="separator"/>
+    <addaction name="actionRelancer"/>
     <addaction name="actionQuitter"/>
    </widget>
    <widget class="QMenu" name="menuEdition">
@@ -2220,26 +2221,14 @@ p, li { white-space: pre-wrap; }
     <string>Personnaliser les couleurs...</string>
    </property>
   </action>
+  <action name="actionRelancer">
+   <property name="text">
+    <string>Relancer</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="rsc.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>actionQuitter</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>470</x>
-     <y>338</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
