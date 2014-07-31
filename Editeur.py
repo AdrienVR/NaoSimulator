@@ -2,10 +2,6 @@
 import os
 from PyQt4.QtGui import QFileDialog
 
-##from pygments import highlight
-##from pygments.lexers import PythonLexer
-##from pygments.formatters import HtmlFormatter
-
 class EditeurPython():
     def __init__(a=None):
         pass

@@ -437,8 +437,9 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
 
 
     def protectRunning(self):
-        if self.thread.isRunning():
-            self.tabWidget.setTabEnabled(0,False)
+#         if self.thread.isRunning():
+#             self.tabWidget.setTabEnabled(0,False)
+        pass
 
     def speakToRobot(self):
         if self.thread_code.isRunning():
