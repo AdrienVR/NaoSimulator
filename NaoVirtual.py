@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 #from NaoVirtual import Nao;
-#from NaoCommunication import NaoControle
-#nao = NaoControle(Nao())
-from NaoStructureVirtual import Nao
+#from Nao import Nao
+#nao = Nao(NaoAPI())
+from NaoAPIVirtual import NaoAPI
 from naoqiVirtual import ALProxy
 import time
 
@@ -11,7 +11,7 @@ import time
 Utilise NaoStructureVirtual (interface anglaise)
 """
 
-class NaoControle:
+class Nao:
 
     def __init__(self, nao):
         self.__nao = nao;

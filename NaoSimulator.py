@@ -912,8 +912,8 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
             a,b=self.config.getProxy()
             h=str("Nao("+'"'+str(a)+'"'+","+str(b)+")")
             realT.replace("Nao()",h)
-        t.replace("from NaoCommunication import",
-                      "from NaoCommunicationVirtual import")
+        t.replace("from Nao import",
+                      "from NaoVirtual import")
         if self.runReal:
             self.thread.setCode(unicode(realT))
             self.thread.start()

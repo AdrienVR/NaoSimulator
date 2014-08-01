@@ -4,7 +4,7 @@
 ## qu'ils ne sont importés que dans le code écrit par l'utilisateur)
 ## Il s'agit notamment de l'API NAO réel et virtuel
 
-import NaoStructureVirtual
-import NaoCommunicationVirtual
+import NaoAPIVirtual
+import NaoVirtual
 
 from nao_api import *

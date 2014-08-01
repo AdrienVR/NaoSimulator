@@ -12,7 +12,7 @@ import sys
 
 #FakeALProxy
 
-class Nao():
+class NaoAPI():
     """
     Permet d'utiliser les fonctions qui programment le robot réel
     sur le robot virtuel
@@ -31,7 +31,7 @@ class Nao():
             speechRecoProxy = ALProxy("ALSpeechRecognition",self.__address, self.__port);
             faceRecoProxy = ALProxy("ALFaceDetection",self.__address, self.__port);
             videoProxy = ALProxy("ALVideoDevice",self.__address, self.__port);
-    
+
             self.__voice = VoiceActuator(ttsProxy);
             self.__motors = MotorsActuator(motorsProxy);
             self.__leds = LedsActuator(ledsProxy);

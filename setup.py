@@ -1,5 +1,5 @@
 import sys
- 
+
 from cx_Freeze import setup, Executable
 import PyQt4
 import os
@@ -30,7 +30,7 @@ packages = ["encodings",
             "OpenGL",
             "OpenGL.arrays" # or just this one
             ]
- 
+
 setup(
     name = "NAO_Simulator",
     version = "0.9",

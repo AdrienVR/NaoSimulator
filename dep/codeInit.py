@@ -1,10 +1,10 @@
 
 from time import sleep
-from NaoCommunication import *
+from Nao import *
 
-nao=NaoControle(Nao())
+nao=Nao(NaoAPI())
 
-naoEvenement = AbstractNaoEvenement("naoEvenement", Nao().getMemory(), nao);
+naoEvenement = AbstractNaoEvenement("naoEvenement", NaoAPI().getMemory(), nao);
 naoEvenement.demarrerReconnaissanceVocale();
 
 #tests parole
@@ -55,5 +55,5 @@ while not naoEvenement.recoVocale:
 if naoEvenement.recoVocale:
 	nao.dire("J'ai reconnu %s" %(naoEvenement.motReconnu))
 	print "Taux : ", naoEvenement.tauxReconnaissance
-	naoEvenement.arreterReconnaissanceVocale(); 
+	naoEvenement.arreterReconnaissanceVocale();
 	nao.arreterReconnaissanceVocale();
