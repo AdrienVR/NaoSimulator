@@ -17,10 +17,17 @@ class UndoFormat(QUndoCommand):
         self.next = text
 
     def undo(self):
+        if self.originalText == unicode(self.target.toPlainText()):
+            return
+        self.next = self.target.toPlainText()
         self.target.setPlainText(self.originalText)
 
     def redo(self):
-        self.target.setPlainText(self.next)
+        if self.next == unicode(self.target.toPlainText()):
+            return
+        self.originalText = self.target.toPlainText()
+        if self.next.strip()!="":
+            self.target.setPlainText(self.next)
 
 
 class EditeurPython():
@@ -80,48 +87,44 @@ class EditeurPython():
     ###################################### MENU FORMAT #####################################################
 
     def uncomment(self):
-        fullText=self.textEdit.toPlainText()#
+        fullText=unicode(self.textEdit.toPlainText())#
+        text=unicode(self.getHighLightedText(self.textEdit))#
+        if text.strip() == "":return
         self.undoFormat.setOriginal(fullText)
         self.lastModif = "format"
-        text=self.getHighLightedText(self.textEdit)#
-        if text=="":return
         a,b=self.getPosInText(fullText,text)
         fullText=fullText[:a]+fullText[a:b].replace("\n##","\n")+fullText[b:]
         self.textEdit.setPlainText(fullText)
-        self.undoFormat.setNext(fullText)
 
     def comment(self):
-        fullText=self.textEdit.toPlainText()#
+        fullText=unicode(self.textEdit.toPlainText())#
+        text=unicode(self.getHighLightedText(self.textEdit))#
+        if text.strip() == "":return
         self.undoFormat.setOriginal(fullText)
         self.lastModif = "format"
-        text=self.getHighLightedText(self.textEdit)#
-        if text=="":return
         a,b=self.getPosInText(fullText,text)
         fullText=fullText[:a]+fullText[a:b].replace("\n","\n##")+fullText[b:]
         self.textEdit.setPlainText(fullText)
-        self.undoFormat.setNext(fullText)
 
     def unindent(self):
-        fullText=self.textEdit.toPlainText()#
+        fullText=unicode(self.textEdit.toPlainText())#
+        text=unicode(self.getHighLightedText(self.textEdit))#
+        if text.strip() == "":return
         self.undoFormat.setOriginal(fullText)
         self.lastModif = "format"
-        text=self.getHighLightedText(self.textEdit)#
-        if text=="":return
         a,b=self.getPosInText(fullText,text)
         fullText=fullText[:a]+fullText[a:b].replace("\n\t","\n").replace("\n\    ","\n")+fullText[b:]
         self.textEdit.setPlainText(fullText)
-        self.undoFormat.setNext(fullText)
 
     def indent(self):
-        fullText=self.textEdit.toPlainText()#
+        fullText=unicode(self.textEdit.toPlainText())#
+        text=unicode(self.getHighLightedText(self.textEdit))#
+        if text.strip() == "":return
         self.undoFormat.setOriginal(fullText)
         self.lastModif = "format"
-        text=self.getHighLightedText(self.textEdit)#
-        if str(text)=="":return
         a,b=self.getPosInText(fullText,text)
         fullText=fullText[:a]+fullText[a:b].replace("\n","\n\t")+fullText[b:]
         self.textEdit.setPlainText(fullText)
-        self.undoFormat.setNext(fullText)
 
     ###################################### MENU EDITION #####################################################
     def paste(self):

@@ -9,7 +9,6 @@ import PyQt4.uic
 utiliser : python setup.py build pour compiler.
 """
 
-
 base = None
 if sys.platform == "win32":
     base = "Win32GUI"
@@ -32,9 +31,9 @@ packages = ["encodings",
             ]
 
 setup(
-    name = "NAO_Simulator",
-    version = "0.9",
-    description = "Simulateur gratuit de NAO",
+    name = "NAO_Simulator_2014",
+    version = "1.0.5",
+    description = "Simulateur gratuit de NAO - Adrien Vernotte - LGPL v2.1",
     executables = [Executable("NaoSimulator.py", base = base)],
     options = {'build_exe': {'excludes':excludes,"compressed":True,
                              'packages':packages,'include_files':includefiles,
