@@ -65,19 +65,30 @@ class Configuration(QWidget, config):
         self.valuePort=80
 
         ## Les valeurs du proxy par défaut sont stockés dans ce fichier.
-        a=open(os.path.join("dep",'config.txt'))
-        b=a.readlines()
-        a.close()
 
-        if len(b)>1:
-            self.defaultValueIP=b[0].strip()
-            self.defaultValuePort=int(b[1].strip())
+        self.load()
         self.resetDefaults()
         self.appliquer()
 
         self.connect(self.buttonBox,  SIGNAL("rejected()"), self.hide)
         self.connect(self.buttonBox,  SIGNAL("accepted()"), self.appliquer)
         self.connect(self.pushButtonResetValues,  SIGNAL("released()"), self.resetDefaults)
+
+    def load(self):
+        a=open(os.path.join("dep",'config.txt'))
+        b=a.readline()
+        a.close()
+
+        c=b.split(":")
+
+        if len(c)>1:
+            self.defaultValueIP=c[0].strip()
+            self.defaultValuePort=int(c[1].strip())
+
+    def save(self):
+        a=open(os.path.join("dep",'config.txt'),"w")
+        a.write(self.valueIP+":"+str(self.valuePort))
+        a.close()
 
     def resetDefaults(self):
         self.lineEditValueIP.setText(self.defaultValueIP)
@@ -89,6 +100,7 @@ class Configuration(QWidget, config):
     def appliquer(self):
         self.valueIP=self.lineEditValueIP.text()
         self.valuePort=int(self.lineEditValuePort.text())
+        self.save()
         self.hide()
 
 class Documentation(QWidget, docu):
@@ -113,6 +125,8 @@ class ColorWindow(QWidget, colorWindow):
         colorWindow.__init__(conteneur)
         self.setupUi(conteneur)
 
+        self.colorDialog = QColorDialog(self)
+
         self.listColor = []
         self.changers = [u"Fond d'écran 3D",u"Arrière-plan"]
         self.changersVar = ["wallpaper","background"]
@@ -129,10 +143,17 @@ class ColorWindow(QWidget, colorWindow):
         self.connect(self.buttonBox, SIGNAL("accepted ()"), self.apply)
         self.connect(self.buttonBox, SIGNAL("rejected ()"), self.hide)
 
+        self.connect(self.colorDialog, SIGNAL("colorSelected ()"), self.finishChooseColor)
+
         self.changeColor()
 
     def chooseColor(self):
-        self.listColor[self.comboBox.currentIndex()] = QColorDialog.getColor()
+        color = self.colorDialog.getColor()
+        if color.getRgb() != (0,0,0,255):
+            self.finishChooseColor(color)
+
+    def finishChooseColor(self, color):
+        self.listColor[self.comboBox.currentIndex()] = color
         self.changedColor[self.comboBox.currentIndex()] = True
         self.changeColor()
 

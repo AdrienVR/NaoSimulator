@@ -1,10 +1,38 @@
 
 import os
-from PyQt4.QtGui import QFileDialog
+from PyQt4.QtGui import QFileDialog, QUndoCommand, QUndoStack
+
+class UndoFormat(QUndoCommand):
+    def __init__(self):
+        self.target = None
+        self.modif = []
+        self.originalText = ""
+        self.next = ""
+
+    def setOriginal(self, text):
+        self.modif.append(text)
+        self.originalText = text
+
+    def setNext(self, text):
+        self.next = text
+
+    def undo(self):
+        self.target.setPlainText(self.originalText)
+
+    def redo(self):
+        self.target.setPlainText(self.next)
+
 
 class EditeurPython():
-    def __init__(a=None):
-        pass
+    def __init__(self, a=None):
+        self.undoFormat = UndoFormat()
+        self.undoFormat.target = self.textEdit
+
+        self.lastModif = "else"
+        self.cancelFormat = False
+
+        #self.undoStack = QUndoStack()
+
         ###################################### INTERFACE   #####################################################
     def initEditeur(self):
         fenX=self.centralwidget.width()
@@ -53,19 +81,47 @@ class EditeurPython():
 
     def uncomment(self):
         fullText=self.textEdit.toPlainText()#
+        self.undoFormat.setOriginal(fullText)
+        self.lastModif = "format"
         text=self.getHighLightedText(self.textEdit)#
         if text=="":return
         a,b=self.getPosInText(fullText,text)
         fullText=fullText[:a]+fullText[a:b].replace("\n##","\n")+fullText[b:]
         self.textEdit.setPlainText(fullText)
+        self.undoFormat.setNext(fullText)
 
     def comment(self):
         fullText=self.textEdit.toPlainText()#
+        self.undoFormat.setOriginal(fullText)
+        self.lastModif = "format"
         text=self.getHighLightedText(self.textEdit)#
         if text=="":return
         a,b=self.getPosInText(fullText,text)
         fullText=fullText[:a]+fullText[a:b].replace("\n","\n##")+fullText[b:]
         self.textEdit.setPlainText(fullText)
+        self.undoFormat.setNext(fullText)
+
+    def unindent(self):
+        fullText=self.textEdit.toPlainText()#
+        self.undoFormat.setOriginal(fullText)
+        self.lastModif = "format"
+        text=self.getHighLightedText(self.textEdit)#
+        if text=="":return
+        a,b=self.getPosInText(fullText,text)
+        fullText=fullText[:a]+fullText[a:b].replace("\n\t","\n").replace("\n\    ","\n")+fullText[b:]
+        self.textEdit.setPlainText(fullText)
+        self.undoFormat.setNext(fullText)
+
+    def indent(self):
+        fullText=self.textEdit.toPlainText()#
+        self.undoFormat.setOriginal(fullText)
+        self.lastModif = "format"
+        text=self.getHighLightedText(self.textEdit)#
+        if str(text)=="":return
+        a,b=self.getPosInText(fullText,text)
+        fullText=fullText[:a]+fullText[a:b].replace("\n","\n\t")+fullText[b:]
+        self.textEdit.setPlainText(fullText)
+        self.undoFormat.setNext(fullText)
 
     ###################################### MENU EDITION #####################################################
     def paste(self):
@@ -98,19 +154,32 @@ class EditeurPython():
         return nb-1,nb+len(piece)
 
     def redo(self):
-        self.textEdit.redo()
+        self.lastModif = "undo"
+        if self.cancelFormat :
+            self.undoFormat.redo()
+        else :
+            self.textEdit.redo()
 
     def undo(self):
-        self.textEdit.undo()
+        self.lastModif = "undo"
+        if self.cancelFormat :
+            self.undoFormat.undo()
+        else :
+            self.textEdit.undo()
 
     ###################################### MENU FICHIER #####################################################
     def setStar(self,modif=True):
+        if self.lastModif == "format":
+            self.cancelFormat = True
+        elif self.lastModif == "else" :
+            self.cancelFormat = False
         if modif and not self.modified:
             self.setWindowTitle(self.windowTitle()+" *")
             self.modified = True
         elif not modif:
             self.setWindowTitle(self.windowTitle().replace(" *",""))
             self.modified = False
+        self.lastModif = "else"
 
     def setColors(self):
         #boucle infinie sinon

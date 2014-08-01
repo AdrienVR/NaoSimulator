@@ -59,8 +59,8 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
     def __init__(self,  conteneur=None):
         if conteneur is None : conteneur = self
         QMainWindow.__init__(conteneur)
-        EditeurPython.__init__(self)
         self.setupUi(conteneur)
+        EditeurPython.__init__(self)
         self.setCentralWidget(self.centralwidget)
 
         ######################## ATTRIBUTS ################################
@@ -310,7 +310,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.connect(self.colors.buttonBox, SIGNAL("accepted ()"), self.applyColor)
 
         #actions Editeur de texte
-        #Fichier Menu
+        # Fichier
         self.connect(self.actionQuitter,  SIGNAL("triggered()"), self.close)
         #self.connect(self.actionRa,  SIGNAL("triggered()"), self.relaunch)
         self.connect(self.actionOuvrir,  SIGNAL("triggered()"), self.openFile)
@@ -318,16 +318,18 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.connect(self.textEdit, SIGNAL("textChanged ()"), self.setColors)
         self.connect(self.actionEnregistrer,  SIGNAL("triggered()"), self.save)
         self.connect(self.actionEnregistrer_sous,  SIGNAL("triggered()"), self.saveUnder)
-        #Edition Menu
+        # Edition
         self.connect(self.actionCouper,  SIGNAL("triggered()"), self.cut)
         self.connect(self.actionColler,  SIGNAL("triggered()"), self.paste)
         self.connect(self.actionCopier,  SIGNAL("triggered()"), self.copy)
         self.connect(self.actionAnnuler,  SIGNAL("triggered()"), self.undo)
         self.connect(self.actionRetablir,  SIGNAL("triggered()"), self.redo)
         #self.connect(self.actionSupprimer,  SIGNAL("triggered()"), self.delete)
-        #Format Menu
+        # Format
         self.connect(self.actionCommenter,  SIGNAL("triggered()"), self.comment)
         self.connect(self.actionDecommenter,  SIGNAL("triggered()"), self.uncomment)
+        self.connect(self.actionIndenter,  SIGNAL("triggered()"), self.indent)
+        self.connect(self.actionDedenter,  SIGNAL("triggered()"), self.unindent)
 
         self.connect(self.actionEffacer,  SIGNAL("triggered()"), self.textBrowserConsole.clearTT)
 
@@ -340,7 +342,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.connect(self.actionRun_2,  SIGNAL("triggered()"), self.run)
         #self.connect(self.actionStop_2,  SIGNAL("triggered()"), self.stop)
 
-        #Robot Menu
+        #Robot
         self.connect(self.actionNaoH25,  SIGNAL("triggered()"), self.showLegs)
         self.connect(self.actionNaoH21,  SIGNAL("triggered()"), self.showLegsH21)
         self.connect(self.actionNaoT14,  SIGNAL("triggered()"), self.hideLegs)
@@ -381,6 +383,9 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
             self.connect(a, SIGNAL("pressed()"), self.armReset)
             self.connect(a, SIGNAL("released()"), self.reset)
 
+        #position nao
+        self.connect( self.actionAfficherPosition, SIGNAL("triggered()"), self.afficherPosition)
+
         #Reinitialisation Position Nao
         self.connect( self.actionInitPosition, SIGNAL("triggered()"), self.resetAll)
 
@@ -401,6 +406,12 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
             self.connect(a, SIGNAL("released()"), self.touch)
 
     ####### Main prog --------------------------------------------------------------------- #############
+
+    def afficherPosition(self):
+        line = ""
+        for a in range(14):
+            line+=str(a)+" : "+str(self.sliders[a].value())+"\n"
+        self.afficher(line)
 
     def setFullScreenOn(self):
         self.menuBarNaoSimulator.hide()

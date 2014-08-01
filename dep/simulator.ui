@@ -44,7 +44,7 @@
         </font>
        </property>
        <property name="tabChangesFocus">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="lineWrapMode">
         <enum>QTextEdit::NoWrap</enum>
@@ -1883,6 +1883,9 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="actionCommenter"/>
     <addaction name="actionDecommenter"/>
+    <addaction name="separator"/>
+    <addaction name="actionIndenter"/>
+    <addaction name="actionDedenter"/>
    </widget>
    <widget class="QMenu" name="menuAide">
     <property name="title">
@@ -1907,7 +1910,10 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionNaoT14"/>
     <addaction name="actionNaoH21"/>
     <addaction name="actionNaoH25"/>
+    <addaction name="separator"/>
     <addaction name="menuCouleur"/>
+    <addaction name="separator"/>
+    <addaction name="actionAfficherPosition"/>
     <addaction name="actionInitPosition"/>
    </widget>
    <widget class="QMenu" name="menuAffichage">
@@ -2223,7 +2229,22 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionRelancer">
    <property name="text">
-    <string>Relancer</string>
+    <string>Relancer (Python 2.7.4+)</string>
+   </property>
+  </action>
+  <action name="actionIndenter">
+   <property name="text">
+    <string>Augmenter l'indentation</string>
+   </property>
+  </action>
+  <action name="actionDedenter">
+   <property name="text">
+    <string>Réduire l'indentation</string>
+   </property>
+  </action>
+  <action name="actionAfficherPosition">
+   <property name="text">
+    <string>Afficher Position</string>
    </property>
   </action>
  </widget>
