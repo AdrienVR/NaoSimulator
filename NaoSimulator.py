@@ -62,8 +62,8 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
     def __init__(self,  conteneur=None):
         if conteneur is None : conteneur = self
         QMainWindow.__init__(conteneur)
-        EditeurPython.__init__(self)
         self.setupUi(conteneur)
+        EditeurPython.__init__(self)
         self.setCentralWidget(self.centralwidget)
 
         ######################## ATTRIBUTS ################################
@@ -340,6 +340,8 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         #Format Menu
         self.connect(self.actionCommenter,  SIGNAL("triggered()"), self.comment)
         self.connect(self.actionDecommenter,  SIGNAL("triggered()"), self.uncomment)
+        self.connect(self.actionIndenter, SIGNAL("triggered()"), self.indent)
+        self.connect(self.actionDedenter, SIGNAL("triggered()"), self.unindent)
 
         self.connect(self.actionEffacer,  SIGNAL("triggered()"), self.textBrowserConsole.clearTT)
 
@@ -399,6 +401,8 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         #Reinitialisation Position Nao
         self.connect( self.actionInitPosition, SIGNAL("triggered()"), self.resetAll)
 
+        self.connect( self.actionAfficherPosition, SIGNAL("triggered()"), self.afficherPosition)
+
         self.connect(self.thread, SIGNAL("finished ()"), self.finishCode)
         self.connect(self.thread_code, SIGNAL("finished ()"), self.finishCode)
 
@@ -416,6 +420,12 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
             self.connect(a, SIGNAL("released()"), self.touch)
 
     ####### Main prog --------------------------------------------------------------------- #############
+
+    def afficherPosition(self):
+        line = ""
+        for a in range(14):
+            line+=str(a)+" : "+str(self.sliders[a].value())+"\n"
+        self.afficher(line)
 
     def relaunch(self):
         global Global_repeat

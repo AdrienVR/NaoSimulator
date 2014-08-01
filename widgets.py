@@ -153,9 +153,11 @@ class ColorWindow(QWidget, Ui_Personnalisation):
         self.changeColor()
 
     def chooseColor(self):
-        self.listColor[self.comboBox.currentIndex()] = QColorDialog.getColor()
-        self.changedColor[self.comboBox.currentIndex()] = True
-        self.changeColor()
+        color = QColorDialog.getColor()
+        if color.getRgb() != (0,0,0,255):
+            self.listColor[self.comboBox.currentIndex()] = color
+            self.changedColor[self.comboBox.currentIndex()] = True
+            self.changeColor()
 
     def changeColor(self):
         pixmap = QtGui.QPixmap(16, 16)

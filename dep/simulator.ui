@@ -230,7 +230,7 @@ p, li { white-space: pre-wrap; }
                        </size>
                       </property>
                       <property name="text">
-                       <string>Biceps Gauche (2 : H/B;3 : G/D)</string>
+                       <string>Biceps Gauche (XX : H/B ; YY : G/D)</string>
                       </property>
                      </widget>
                     </item>
@@ -243,7 +243,7 @@ p, li { white-space: pre-wrap; }
                        </size>
                       </property>
                       <property name="text">
-                       <string>Biceps Droit (8 : H/B;9 : G/D)</string>
+                       <string>Biceps Droit (XX : H/B ; YY : G/D)</string>
                       </property>
                      </widget>
                     </item>
@@ -343,7 +343,7 @@ p, li { white-space: pre-wrap; }
                        </size>
                       </property>
                       <property name="text">
-                       <string>Coude Gauche (4 : Z;5 : G/D)</string>
+                       <string>Coude Gauche (XX : Z ; YY : G/D)</string>
                       </property>
                      </widget>
                     </item>
@@ -356,7 +356,7 @@ p, li { white-space: pre-wrap; }
                        </size>
                       </property>
                       <property name="text">
-                       <string>Coude Droit (10 : Z;11 : G/D)</string>
+                       <string>Coude Droit (XX : Z ; YY : G/D)</string>
                       </property>
                      </widget>
                     </item>
@@ -414,7 +414,7 @@ p, li { white-space: pre-wrap; }
                        </size>
                       </property>
                       <property name="text">
-                       <string>6 : Rotation Main Gauche</string>
+                       <string>XX : Rotation Main Gauche</string>
                       </property>
                      </widget>
                     </item>
@@ -427,7 +427,7 @@ p, li { white-space: pre-wrap; }
                        </size>
                       </property>
                       <property name="text">
-                       <string>12 : Rotation Main Droite</string>
+                       <string>XX : Rotation Main Droite</string>
                       </property>
                      </widget>
                     </item>
@@ -478,7 +478,7 @@ p, li { white-space: pre-wrap; }
                        </size>
                       </property>
                       <property name="text">
-                       <string>7 : Doigts Gauches</string>
+                       <string>XX : Doigts Gauches</string>
                       </property>
                      </widget>
                     </item>
@@ -491,7 +491,7 @@ p, li { white-space: pre-wrap; }
                        </size>
                       </property>
                       <property name="text">
-                       <string>13 : Doigts Droits</string>
+                       <string>XX : Doigts Droits</string>
                       </property>
                      </widget>
                     </item>
@@ -589,7 +589,7 @@ p, li { white-space: pre-wrap; }
                        <bool>true</bool>
                       </property>
                       <property name="text">
-                       <string>1 : Tête H/B</string>
+                       <string>XX : Tête H/B</string>
                       </property>
                      </widget>
                     </item>
@@ -602,7 +602,7 @@ p, li { white-space: pre-wrap; }
                        </size>
                       </property>
                       <property name="text">
-                       <string>0 : Tête G/D</string>
+                       <string>XX : Tête G/D</string>
                       </property>
                      </widget>
                     </item>
@@ -696,7 +696,7 @@ p, li { white-space: pre-wrap; }
                    <item>
                     <widget class="QPushButton" name="pushButtonHanche">
                      <property name="text">
-                      <string>Hanche</string>
+                      <string>XX : Hanche (GH/BD)</string>
                      </property>
                     </widget>
                    </item>
@@ -722,7 +722,7 @@ p, li { white-space: pre-wrap; }
                      <item>
                       <widget class="QPushButton" name="pushButtonCuisseG">
                        <property name="text">
-                        <string>Cuisse Gauche</string>
+                        <string>Cuisse Gauche (XX : H/B ; YY : G/D)</string>
                        </property>
                       </widget>
                      </item>
@@ -763,7 +763,7 @@ p, li { white-space: pre-wrap; }
                      <item>
                       <widget class="QPushButton" name="pushButtonCuisseD">
                        <property name="text">
-                        <string>Cuisse Droite</string>
+                        <string>Cuisse Droite (XX : H/B ; YY : G/D)</string>
                        </property>
                       </widget>
                      </item>
@@ -802,7 +802,7 @@ p, li { white-space: pre-wrap; }
                      <item>
                       <widget class="QPushButton" name="pushButtonMolletG">
                        <property name="text">
-                        <string>Mollet Gauche</string>
+                        <string>XX : Mollet Gauche</string>
                        </property>
                       </widget>
                      </item>
@@ -823,7 +823,7 @@ p, li { white-space: pre-wrap; }
                      <item>
                       <widget class="QPushButton" name="pushButtonMolletD">
                        <property name="text">
-                        <string>Mollet Droit</string>
+                        <string>XX : Mollet Droit</string>
                        </property>
                       </widget>
                      </item>
@@ -854,7 +854,7 @@ p, li { white-space: pre-wrap; }
                         </size>
                        </property>
                        <property name="text">
-                        <string>Pied Gauche</string>
+                        <string>Pied Gauche (XX : H/B ; YY : G/D)</string>
                        </property>
                       </widget>
                      </item>
@@ -913,7 +913,7 @@ p, li { white-space: pre-wrap; }
                         </size>
                        </property>
                        <property name="text">
-                        <string>Pied Droit</string>
+                        <string>Pied Droit (XX : H/B ; YY : G/D)</string>
                        </property>
                       </widget>
                      </item>
@@ -995,31 +995,10 @@ p, li { white-space: pre-wrap; }
                     </font>
                    </property>
                    <property name="text">
-                    <string>Modifier la couleur d'une DEL du robot</string>
+                    <string>Coloration des LED</string>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_18">
-                   <property name="maximumSize">
-                    <size>
-                     <width>60</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>12</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Partie</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -1028,6 +1007,8 @@ p, li { white-space: pre-wrap; }
                    <property name="font">
                     <font>
                      <pointsize>10</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
                     </font>
                    </property>
                    <property name="text">
@@ -1055,6 +1036,37 @@ p, li { white-space: pre-wrap; }
                      </property>
                      <property name="text">
                       <string>Gauche</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="Line" name="line">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+                       <horstretch>1</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>10</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="sizeIncrement">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <weight>50</weight>
+                       <bold>false</bold>
+                      </font>
+                     </property>
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
                      </property>
                     </widget>
                    </item>
@@ -1092,7 +1104,7 @@ p, li { white-space: pre-wrap; }
                     </font>
                    </property>
                    <property name="text">
-                    <string>DEL n°</string>
+                    <string>LED n°</string>
                    </property>
                   </widget>
                  </item>
@@ -1571,21 +1583,21 @@ p, li { white-space: pre-wrap; }
                  <item row="7" column="1">
                   <widget class="QPushButton" name="pushButtonTeteDessus">
                    <property name="text">
-                    <string>8 : Dessus</string>
+                    <string>7 : Dessus</string>
                    </property>
                   </widget>
                  </item>
                  <item row="7" column="0">
                   <widget class="QPushButton" name="pushButtonTeteDevant">
                    <property name="text">
-                    <string>7 : Devant</string>
+                    <string>6 : Devant</string>
                    </property>
                   </widget>
                  </item>
                  <item row="7" column="2">
                   <widget class="QPushButton" name="pushButtonTeteArriere">
                    <property name="text">
-                    <string>9 : Arrière</string>
+                    <string>8 : Arrière</string>
                    </property>
                   </widget>
                  </item>
@@ -1612,7 +1624,7 @@ p, li { white-space: pre-wrap; }
                  <item row="3" column="0">
                   <widget class="QPushButton" name="pushButtonMainDDevant">
                    <property name="text">
-                    <string>1 : Devant</string>
+                    <string>0 : Devant</string>
                    </property>
                   </widget>
                  </item>
@@ -1639,35 +1651,35 @@ p, li { white-space: pre-wrap; }
                  <item row="3" column="2">
                   <widget class="QPushButton" name="pushButtonMainDArriere">
                    <property name="text">
-                    <string>3 : Arrière</string>
+                    <string>2 : Arrière</string>
                    </property>
                   </widget>
                  </item>
                  <item row="3" column="1">
                   <widget class="QPushButton" name="pushButtonMainDDessus">
                    <property name="text">
-                    <string>2 : Dessus</string>
+                    <string>1 : Dessus</string>
                    </property>
                   </widget>
                  </item>
                  <item row="5" column="1">
                   <widget class="QPushButton" name="pushButtonMainGDessus">
                    <property name="text">
-                    <string>5 : Dessus</string>
+                    <string>4 : Dessus</string>
                    </property>
                   </widget>
                  </item>
                  <item row="5" column="0">
                   <widget class="QPushButton" name="pushButtonMainGDevant">
                    <property name="text">
-                    <string>4 : Devant</string>
+                    <string>3 : Devant</string>
                    </property>
                   </widget>
                  </item>
                  <item row="5" column="2">
                   <widget class="QPushButton" name="pushButtonMainGArriere">
                    <property name="text">
-                    <string>6 : Arrière</string>
+                    <string>5 : Arrière</string>
                    </property>
                   </widget>
                  </item>
@@ -1883,6 +1895,9 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="actionCommenter"/>
     <addaction name="actionDecommenter"/>
+    <addaction name="separator"/>
+    <addaction name="actionIndenter"/>
+    <addaction name="actionDedenter"/>
    </widget>
    <widget class="QMenu" name="menuAide">
     <property name="title">
@@ -1907,7 +1922,10 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionNaoT14"/>
     <addaction name="actionNaoH21"/>
     <addaction name="actionNaoH25"/>
+    <addaction name="separator"/>
     <addaction name="menuCouleur"/>
+    <addaction name="separator"/>
+    <addaction name="actionAfficherPosition"/>
     <addaction name="actionInitPosition"/>
    </widget>
    <widget class="QMenu" name="menuAffichage">
@@ -2223,7 +2241,22 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionRelancer">
    <property name="text">
-    <string>Relancer</string>
+    <string>Relancer (Python 2.7.4+)</string>
+   </property>
+  </action>
+  <action name="actionIndenter">
+   <property name="text">
+    <string>Augmenter l'indentation</string>
+   </property>
+  </action>
+  <action name="actionDedenter">
+   <property name="text">
+    <string>Réduire l'indentation</string>
+   </property>
+  </action>
+  <action name="actionAfficherPosition">
+   <property name="text">
+    <string>Afficher Position</string>
    </property>
   </action>
  </widget>

@@ -1,14 +1,40 @@
 
 import os
-from PySide.QtGui import QFileDialog
+from PySide.QtGui import QFileDialog, QUndoCommand, QUndoStack
+from PySide.QtCore import QObject
 
-##from pygments import highlight
-##from pygments.lexers import PythonLexer
-##from pygments.formatters import HtmlFormatter
+class UndoFormat(QUndoCommand):
+    def __init__(self):
+        self.target = None
+        self.modif = []
+        self.originalText = ""
+        self.next = ""
 
-class EditeurPython(object):
-    def __init__(a=None):
-        pass
+    def setOriginal(self, text):
+        self.modif.append(text)
+        self.originalText = text
+
+    def setNext(self, text):
+        self.next = text
+
+    def undo(self):
+        self.next = self.target.toPlainText()
+        self.target.setPlainText(self.originalText)
+
+    def redo(self):
+        self.originalText = self.target.toPlainText()
+        if self.next.strip()!="":
+            self.target.setPlainText(self.next)
+
+class EditeurPython(QObject):
+    def __init__(self, a=None):
+        self.undoFormat = UndoFormat()
+        self.undoFormat.target = self.textEdit
+
+        self.lastModif = "else"
+        self.cancelFormat = False
+
+        #self.undoStack = QUndoStack()
         ###################################### INTERFACE   #####################################################
     def initEditeur(self):
         fenX=self.centralwidget.width()
@@ -56,20 +82,53 @@ class EditeurPython(object):
     ###################################### MENU FORMAT #####################################################
 
     def uncomment(self):
-        fullText=self.textEdit.toPlainText()#
-        text=self.getHighLightedText(self.textEdit)#
+        fullText=unicode(self.textEdit.toPlainText())#
+        text=unicode(self.getHighLightedText(self.textEdit))#
+        if text.strip() == "":return
+        self.undoFormat.setOriginal(fullText)
+        self.lastModif = "format"
         if text=="":return
         a,b=self.getPosInText(fullText,text)
         fullText=fullText[:a]+fullText[a:b].replace("\n##","\n")+fullText[b:]
         self.textEdit.setPlainText(fullText)
 
     def comment(self):
-        fullText=self.textEdit.toPlainText()#
+        fullText=unicode(self.textEdit.toPlainText())#
+        text=unicode(self.getHighLightedText(self.textEdit))#
+        if text.strip() == "":return
+        self.undoFormat.setOriginal(fullText)
+        self.lastModif = "format"
         text=self.getHighLightedText(self.textEdit)#
         if text=="":return
         a,b=self.getPosInText(fullText,text)
         fullText=fullText[:a]+fullText[a:b].replace("\n","\n##")+fullText[b:]
         self.textEdit.setPlainText(fullText)
+
+    def unindent(self):
+        fullText=unicode(self.textEdit.toPlainText())#
+        text=unicode(self.getHighLightedText(self.textEdit))#
+        if text.strip() == "":return
+        self.undoFormat.setOriginal(fullText)
+        self.lastModif = "format"
+        text=self.getHighLightedText(self.textEdit)#
+        if text=="":return
+        a,b=self.getPosInText(fullText,text)
+        fullText=fullText[:a]+fullText[a:b].replace("\n\t","\n").replace("\n\ ","\n")+fullText[b:]
+        self.textEdit.setPlainText(fullText)
+        self.undoFormat.setNext(fullText)
+
+    def indent(self):
+        fullText=unicode(self.textEdit.toPlainText())#
+        text=unicode(self.getHighLightedText(self.textEdit))#
+        if text.strip() == "":return
+        self.undoFormat.setOriginal(fullText)
+        self.lastModif = "format"
+        text=self.getHighLightedText(self.textEdit)#
+        if str(text)=="":return
+        a,b=self.getPosInText(fullText,text)
+        fullText=fullText[:a]+fullText[a:b].replace("\n","\n\t")+fullText[b:]
+        self.textEdit.setPlainText(fullText)
+        self.undoFormat.setNext(fullText)
 
     ###################################### MENU EDITION #####################################################
     def paste(self):
@@ -102,19 +161,32 @@ class EditeurPython(object):
         return nb-1,nb+len(piece)
 
     def redo(self):
-        self.textEdit.redo()
+        self.lastModif = "undo"
+        if self.cancelFormat :
+            self.undoFormat.redo()
+        else :
+            self.textEdit.redo()
 
     def undo(self):
-        self.textEdit.undo()
+        self.lastModif = "undo"
+        if self.cancelFormat :
+            self.undoFormat.undo()
+        else :
+            self.textEdit.undo()
 
     ###################################### MENU FICHIER #####################################################
     def setStar(self,modif=True):
+        if self.lastModif == "format":
+            self.cancelFormat = True
+        elif self.lastModif == "else" :
+            self.cancelFormat = False
         if modif and not self.modified:
             self.setWindowTitle(self.windowTitle()+" *")
             self.modified = True
         elif not modif:
             self.setWindowTitle(self.windowTitle().replace(" *",""))
             self.modified = False
+        self.lastModif = "else"
 
     def setColors(self):
         #boucle infinie sinon
