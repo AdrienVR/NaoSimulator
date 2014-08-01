@@ -228,6 +228,7 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
 
         ################# INITIALISATION #####################################
 
+        self.initName()
         self.actionStop_2.setShortcut(None)
 
         self.colors.setColorVar("wallpaper",self.Viewer3DWidget.background)
@@ -720,6 +721,7 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         Affiche les jambes pour le H25
         """
         ALProxy.setType("H25")
+        self.setName("H25")
         for widget in self.differenceRobots:
             widget.setEnabled(True)
 
@@ -737,6 +739,7 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         Affiche les jambes pour le H21
         """
         ALProxy.setType("H21")
+        self.setName("H21")
         for widget in self.differenceRobots:
             widget.setEnabled(False)
 
@@ -754,6 +757,7 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         Cache les jambes pour le T14
         """
         ALProxy.setType("T14")
+        self.setName("T14")
         for widget in self.differenceRobots:
             widget.setEnabled(True)
 
@@ -766,6 +770,54 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
                 self.pop[1]=self.virtualNao.getMembre("torseSG").underObjects.pop("hancheG")
             self.virtualNao.changeLegs()
             self.Viewer3DWidget.update()
+
+    def initName(self):
+        self.buttonTexts = []
+        self.buttonNames = [self.pushButtonTeteGD,self.pushButtonTeteHB,
+                            self.pushButtonBicepsG,self.pushButtonCoudeG,self.pushButtonMainG,self.pushButtonDoigtsG,
+                            self.pushButtonHanche,
+                            self.pushButtonCuisseG, self.pushButtonMolletG, self.pushButtonPiedG,
+                            self.pushButtonCuisseD, self.pushButtonMolletD, self.pushButtonPiedD,
+                            self.pushButtonBicepsD,self.pushButtonCoudeD,self.pushButtonMainD,self.pushButtonDoigtsD
+                            ]
+        self.buttonNamesY = [self.pushButtonBicepsG,self.pushButtonCoudeG,
+                            self.pushButtonCuisseG, self.pushButtonPiedG,
+                            self.pushButtonCuisseD, self.pushButtonPiedD,
+                            self.pushButtonBicepsD,self.pushButtonCoudeD]
+        for a in self.buttonNames:
+            self.buttonTexts.append(unicode(a.text()))
+
+        self.numberType={"T14":[0,1,
+                               2,3,4,5,6,7,
+                               -1,-1,-1,-1,-1,-1,
+                               -1,-1,-1,-1,-1,
+                               8,9,10,11,12,13],
+                        "H21":[0,1,
+                               2,3,4,5,-1,-1,
+                               6,7,8,9,10,11,
+                               12,13,14,15,16,17,
+                               18,19,20,21,-1,-1],
+                       "H25":range(26)}
+
+    def setName(self, type = "T14"):
+        numbers = self.numberType[type]
+        iNumberButton = 0
+        iNumberEngine = 0
+        while True:
+            button = self.buttonNames[iNumberButton]
+            text = self.buttonTexts[iNumberButton]
+            number = numbers[iNumberEngine]
+            button.setText(text.replace("XX",str(number)))
+            iNumberEngine += 1
+            if button in self.buttonNamesY:
+                text = unicode(button.text())
+                number = numbers[iNumberEngine]
+                button.setText(text.replace("YY",str(number)))
+                iNumberEngine += 1
+            iNumberButton+=1
+
+            if (iNumberEngine >= len(self.numberType[type])) or (iNumberButton >= len(self.buttonNames)):
+                break
 
     ## On doit implémenter le resizement des widgets ajoutés dans le code
     def resizeViewer3DWidget(self):
