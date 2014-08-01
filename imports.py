@@ -7,4 +7,4 @@
 import NaoStructureVirtual
 import NaoCommunicationVirtual
 
-from nao_training import *
+from nao_api import *

@@ -11,7 +11,7 @@ import time, threading, struct;
 from Tkinter import Tk, Canvas, SUNKEN, X, TOP, YES, Button, Label, LEFT, StringVar, Entry;
 from PIL import ImageTk, Image;
 
-from nao_training.NaoXML import XML;
+from nao_api.NaoXML import XML;
 
 #PROBLEMES :
 
@@ -22,18 +22,16 @@ from nao_training.NaoXML import XML;
     lors de l'affichage sur le terminal.
 '''
 
-#    Parallelisation des actions :
-'''
-    Rajouter des fonctions pour permettre de faire des actions en parallele
-	en rajoutant .post à tous les proxy.
-'''
-class Nao:
+#Les actions qui peuvent être parallélisées : voix, moteurs, leds.
+
+class NaoAPI:
     
     def __init__(self, naoAddress, naoPort):
         self.__address = naoAddress;
         self.__port = naoPort;
         self.__xml = XML("files","nao.xml");
         self.__xml.parse();
+        self.__parallelism = False;
 
         try :
             ttsProxy = ALProxy("ALTextToSpeech", self.__address, self.__port);
@@ -43,10 +41,14 @@ class Nao:
             speechRecoProxy = ALProxy("ALSpeechRecognition",self.__address, self.__port);
             faceRecoProxy = ALProxy("ALFaceDetection",self.__address, self.__port);
             videoProxy = ALProxy("ALVideoDevice",self.__address, self.__port);
+            audioProxy = ALProxy("ALAudioDevice", self.__address, self.__port);
+            playerProxy = ALProxy("ALAudioPlayer", self.__address, self.__port);
     
             self.__voice = VoiceActuator(ttsProxy);
             self.__motors = MotorsActuator(motorsProxy);
             self.__leds = LedsActuator(ledsProxy);
+            self.__sound = SoundActuator(audioProxy);
+            self.__player = PlayerActuator(playerProxy);
             self.__memory = memoryProxy;
             self.__speechReco = SpeechRecognitionSensor(speechRecoProxy);
             self.__visualReco = VisualRecognition(videoProxy, faceRecoProxy, self.__xml);
@@ -55,15 +57,22 @@ class Nao:
         except Exception,e:
             print "Could not communicate with the robot";
             print "Error was :",e;
-            raise e
+            sys.exit(1);
 
     def __createBroker(self):
         self.__broker = ALBroker("ENIB_EventBroker","0.0.0.0", 0, self.__address,self.__port)
+		
+    def setParallelism(self, value):
+        self.__voice.setParallelism(value);
+        self.__motors.setParallelism(value);
+        self.__leds.setParallelism(value);
+        self.__sound.setParallelism(value);
+        self.__player.setParallelism(value);
 
     def stop(self):
         self.__broker.shutdown();
 
-    def getVoice(self):
+    def getVoice(self):	    
         return self.__voice;
 
     def getMotors(self):
@@ -71,6 +80,12 @@ class Nao:
 
     def getLeds(self):
         return self.__leds;
+		
+    def getSound(self):
+        return self.__sound;
+		
+    def getPlayer(self):
+        return self.__player;
 
     def getMemory(self):
         return self.__memory;
@@ -84,17 +99,23 @@ class Nao:
     def getVisualReco(self):
         return self.__visualReco;
 
-
 #Validated class
 class VoiceActuator:
     def __init__(self, proxy):
         assert type(proxy) is ALProxy;
         self.__proxy = proxy;
         self.__languages = self.__proxy.getAvailableLanguages();
+        self.__parallelism = False;
+
+    def setParallelism(self, value):
+		self.__parallelism = value;
 
     #test OK
     def say(self, text):
-        self.__proxy.say(str(text));
+        if self.__parallelism == False :
+            self.__proxy.say(str(text));
+        else :
+		    self.__proxy.post.say(str(text));
 
     #test OK
     def setVolume(self, value):
@@ -125,7 +146,11 @@ class MotorsActuator:
         self.__joints = self.__proxy.getJointNames("Body");
         self.__limits = self.__proxy.getLimits("Body");
         self.__animation = Animation();
+        self.__parallelism = False;
 
+    def setParallelism(self, value):
+		self.__parallelism = value;
+		
     #test OK
     def getJointNames(self):
         return self.__joints;
@@ -154,7 +179,8 @@ class MotorsActuator:
     #test OK
     def setStiffnesses(self, value):
         assert value >= 0 and value <= 1;
-        self.__proxy.setStiffnesses("Body", value);
+        self.__proxy.stiffnessInterpolation ("Body", value, 0.5)
+        #self.__proxy.setStiffnesses("Body", value);
 
     #test OK
     def getStiffness(self, motorNumber):
@@ -168,7 +194,8 @@ class MotorsActuator:
     #test OK
     def setStiffness(self, motorNumber, value):
         name = self.getMotorName(motorNumber);
-        self.__proxy.setStiffnesses(name, value);
+        self.__proxy.stiffnessInterpolation (name, value, 0.5)
+        #self.__proxy.setStiffnesses(name, value);
 
     #test OK
     def getMotorAngles(self):
@@ -192,7 +219,10 @@ class MotorsActuator:
         isAbsolute = True;
         #TODO print à enlever après les tests
         print "%s en position %s en %s secondes" %(name, motorAngle, time);
-        self.__proxy.angleInterpolation(name, motorAngle, time, isAbsolute);
+        if self.__parallelism == False :
+			self.__proxy.angleInterpolation(name, motorAngle, time, isAbsolute);
+        else :
+			self.__proxy.post.angleInterpolation(name, motorAngle, time, isAbsolute);
 
     #test OK
     def addMotionAnimation(self, motorNumber, motorAngle, time):
@@ -287,69 +317,16 @@ class Animation:
     def getTimes(self):
         return self.__times.values();
 
-'''
-class Animation:
-    def __init__(self):
-	self.__names = []
-        self.__values = []
-        self.__times = []
-
-    #test OK
-    def addValue(self, name, value, time):
-        self.__names.append(name)
-        self.__values.append(value);
-        self.__times.append(time);
-
-    #test OK
-    def reset(self):
-        del(self.__names[:])
-        del(self.__values[:])
-        del(self.__times[:])
-
-    #test OK
-    def getNames(self):
-        return self.__names
-
-    #test OK
-    def getValues(self):
-        return self.__values
-
-    #test OK
-    def getTimes(self):
-        return self.__times
-
-    #test OK
-    def getValuesDico(self):
-	values = {}
-	for i in range(len(self.__names)):
-	    name = self.__names[i]
-	    value = self.__values[i]
-
-	    if name not in values.keys() :
-		values[name] = []
-	    values[name].append(value)
-
-	return values
-
-    #test OK
-    def getTimesDico(self):
-	times = {}
-	for i in range(len(self.__names)):
-	    name = self.__names[i]
-	    time = self.__times[i]
-
-	    if name not in times.keys() :
-		times[name] = []
-	    times[name].append(time)
-
-	return times
-'''
 class LedsActuator:
     def __init__(self, proxy):
         assert type(proxy) is ALProxy;
         self.__proxy = proxy;
         self.__ledsNames, self.__colorsNames = self.__getLedsNames();
-        self.__animation = Animation(); 
+        self.__animation = Animation();
+        self.__parallelism = False;
+
+    def setParallelism(self, value):
+		self.__parallelism = value;
 
     #test OK
     def getLedsNames(self):
@@ -389,35 +366,48 @@ class LedsActuator:
     def getLedsNumber(self):
         return len(self.__ledsNames);
 
+    def __on(self, name):
+        if self.__parallelism == False :
+            self.__proxy.on(name);
+        else :
+            self.__proxy.post.on(name);	
+
+    def __off(self, name):
+        if self.__parallelism == False :
+            self.__proxy.off(name);
+        else :
+            self.__proxy.post.off(name);				
+		
     #test OK
     def allLedsOn(self):
         name = "FaceLeds";
-        self.__proxy.on(name);
+        self.__on(name);
 
     #test OK
     def rightLedsOn(self):
         name = "RightFaceLeds";
-        self.__proxy.on(name);
+        self.__on(name);
+		
 
     #test OK
     def leftLedsOn(self):
         name = "LeftFaceLeds";
-        self.__proxy.on(name); 
+        self.__on(name); 
 
     #test OK
     def allLedsOff(self):
         name = "FaceLeds";
-        self.__proxy.off(name);
+        self.__off(name); 
 
     #test OK
     def rightLedsOff(self):
         name = "RightFaceLeds";
-        self.__proxy.off(name);
+        self.__off(name); 
 
     #test OK
     def leftLedsOff(self):
         name = "LeftFaceLeds";
-        self.__proxy.off(name);
+        self.__off(name); 
 
     #test OK
     def getIntensity(self, ledNumber):
@@ -445,22 +435,34 @@ class LedsActuator:
     #test OK
     def setIntensity(self, ledNumber, intensity):
         name = self.getLedName(ledNumber);
-        print name
-        self.__proxy.setIntensity(name, intensity);
+        #print name
+        if self.__parallelism == False :
+            self.__proxy.setIntensity(name, intensity);
+        else :
+            self.__proxy.post.setIntensity(name, intensity);	
 
     #test OK
     def setIntensities(self, ledNumber, redIntensity, greenIntensity, blueIntensity):
         name = self.getLedName(ledNumber);
         tabColor = self.__colorsNames[name];
-        print tabColor
-        self.__proxy.setIntensity(tabColor[0], redIntensity);
-        self.__proxy.setIntensity(tabColor[1], greenIntensity);
-        self.__proxy.setIntensity(tabColor[2], blueIntensity);
+        #print tabColor
+        if self.__parallelism == False :
+            self.__proxy.setIntensity(tabColor[0], redIntensity);
+            self.__proxy.setIntensity(tabColor[1], greenIntensity);
+            self.__proxy.setIntensity(tabColor[2], blueIntensity);
+        else :
+            self.__proxy.post.setIntensity(tabColor[0], redIntensity);
+            self.__proxy.post.setIntensity(tabColor[1], greenIntensity);
+            self.__proxy.post.setIntensity(tabColor[2], blueIntensity);
 
     #test OK
     def fadeIntensity(self, ledsNumber, intensity, duration):
         name = self.getLedName(ledsNumber);
-        self.__proxy.fade(name, intensity, duration);
+        if self.__parallelism == False :
+            self.__proxy.fade(name, intensity, duration);
+        else :
+            self.__proxy.post.fade(name, intensity, duration);
+        
 
     #test OK
     def setColor(self, ledsNumber, red, green, blue):
@@ -488,17 +490,26 @@ class LedsActuator:
         if blue != 0 :
             blueIntensity = blue/255.0;
         
-        self.__proxy.setIntensity(tabColor[0], redIntensity);
-        self.__proxy.setIntensity(tabColor[1], greenIntensity);
-        self.__proxy.setIntensity(tabColor[2], blueIntensity);       
+        if self.__parallelism == False :
+            self.__proxy.setIntensity(tabColor[0], redIntensity);
+            self.__proxy.setIntensity(tabColor[1], greenIntensity);
+            self.__proxy.setIntensity(tabColor[2], blueIntensity);  
+        else :
+            self.__proxy.post.setIntensity(tabColor[0], redIntensity);
+            self.__proxy.post.setIntensity(tabColor[1], greenIntensity);
+            self.__proxy.post.setIntensity(tabColor[2], blueIntensity); 
+     
         
 
     #test OK
     def fadeColor(self, ledNumber, red, green, blue, duration):
         name = self.getLedName(ledNumber);
         color = self.__RGBToInt(red, green, blue);
-
-        self.__proxy.fadeRGB (name, color, duration);
+        if self.__parallelism == False :
+            self.__proxy.fadeRGB (name, color, duration);
+        else :
+            self.__proxy.post.fadeRGB (name, color, duration);
+        
 
     #test OK
     def addLedAnimation(self, ledNumber, red, green, blue, time):
@@ -622,6 +633,44 @@ class LedsActuator:
     def test(self):
         rgb = self.__RGBToInt(85,127,12);
         print self.__intToRGB(rgb);
+		
+class SoundActuator:
+    def __init__(self, proxy):
+        assert type(proxy) is ALProxy;
+        self.__proxy = proxy;
+        self.__parallelism = False;
+
+    def setParallelism(self, value):
+		self.__parallelism = value;
+		
+	#int frequence in Hertz
+	#int gain : volume between 0 and 100
+	#int pan : Stereo pan -1, 0, +1
+	#float duration in seconds
+    def playSine(self, frequence, gain, pan, duration):
+        if self.__parallelism == False :
+            self.__proxy.playSine(frequence, gain, pan, duration);
+        else :
+            self.__proxy.post.playSine(frequence, gain, pan, duration);
+		
+#il faut verifier		
+class PlayerActuator:
+    def __init__(self, proxy):
+        assert type(proxy) is ALProxy;
+        self.__proxy = proxy;
+        self.__parallelism = False;
+
+    def setParallelism(self, value):
+		self.__parallelism = value;
+		
+    def playFile(self, filePath):
+        if self.__parallelism == False :
+            self.__proxy.playFile(filePath);
+        else :
+            self.__proxy.post.playFile(filePath);
+			
+    def stop(self):
+        self.__proxy.stopAll();
 
 class SpeechRecognitionSensor:
     def __init__(self, proxy):
@@ -662,14 +711,23 @@ class SpeechRecognitionSensor:
     #test OK
     def stopSpeechRecognition(self):
         print "STOP SPEECH RECOGNITION 1";
-        self.__proxy.unsubscribe("naoEnib");
+        try:
+            self.__proxy.subscribe("naoEnib");
+            self.__proxy.unsubscribe("naoEnib");
+        except RuntimeError, message:
+            try:
+                self.__proxy.subscribe("naoEnib");
+                print "Runtime Error : ", str(message);
+                self.__proxy.unsubscribe("naoEnib");
+            except RuntimeError, message2 :
+                print "Runtime Error 2 : ", str(message2);
         print "STOP SPEECH RECOGNITION 2";      
 
 class VisualRecognition():
     def __init__(self, videoProxy, faceRecoProxy, naoXML):
         assert type(videoProxy) is ALProxy;
         assert type(faceRecoProxy) is ALProxy;
-        self.__videoProxy = videoProxy
+	self.__videoProxy = videoProxy
         self.__recoProxy = faceRecoProxy;
         self.__xml = naoXML;
         self.__frame = None;

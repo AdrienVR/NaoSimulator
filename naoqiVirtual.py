@@ -42,7 +42,7 @@ class ALProxy():
                        'LShoulderPitch', 'LShoulderRoll', 'LElbowYaw', 'LElbowRoll', "LWristYaw", "LHand",
                        'LHipYawPitch', 'LHipRoll', 'LHipPitch', 'LKneePitch', 'LAnklePitch', 'LAnkleRoll',
                        'RHipYawPitch', 'RHipRoll', 'RHipPitch', 'RKneePitch', 'RAnklePitch', 'RAnkleRoll',
-                       'RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll',"RWristYaw", "RHand"],
+                       'RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll',"RWristYaw", "RHand"]
                 }
 
     def __init__(self,name=0,adress=0,port=0):
@@ -147,6 +147,7 @@ class ALProxy():
     @staticmethod
     def setType(robot="T14"):
         ALProxy.typeRobot=robot
+        #reconstruction des membres
         ALProxy.membres={}
         for a in range(len(ALProxy.jointsAll[robot])):
             ALProxy.membres[a]=ALProxy.jointsAll[robot][a]

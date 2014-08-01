@@ -1,21 +1,27 @@
 # -*- coding: utf-8 -*-
 import sys, time
 sys.path.append("..")
-from nao_training.NaoStructure import Nao;
-from nao_training.NaoEvent import EventManagerAbstractModule;
+from nao_api.NaoAPI import NaoAPI;
+from nao_api.NaoEvent import EventManagerAbstractModule;
 
 
-class NaoControle:
+class Nao:
     
     def __init__(self, nao):
         self.__nao = nao;
 
     def stop(self):
         self.__nao.stop();
+		
+    def demarrerParallelisation(self):
+		self.__nao.setParallelism(True);
+		
+    def arreterParallelisation(self):
+		self.__nao.setParallelism(False);
 
-    ################################################################
+    #///////////////////////////////////////////////////////////////
     #       Fonctions permettant de manipuler la voix de Nao       #
-    ################################################################
+    #///////////////////////////////////////////////////////////////
 
     #test OK
     def dire(self, texte):
@@ -45,10 +51,69 @@ class NaoControle:
     def afficherLangagesDisponibles(self):
         for language in self.__nao.getVoice().getAvailableLanguages():
             print language;
+			
+			
+    #///////////////////////////////////////////////////////////////
+    #        Fonctions permettant de manipuler le son de Nao       /
+    #///////////////////////////////////////////////////////////////
+	
+    def jouerMusique(self, fichier):
+		self.__nao.getPlayer().playFile(fichier);
+		
+    def arreterMusique(self):
+		self.__nao.getPlayer().stop();
+	
+    def jouerSon(self, frequence, gain, pan, duree):
+        self.__nao.getSound().playSine(frequence, gain, pan, duree);
+		
+    def jouerSi2(self, duree):
+        self.jouerSon(247, 100, 0, duree);   
+		
+    def jouerDo3(self, duree):
+        self.jouerSon(262, 100, 0, duree);
+		
+    def jouerDod3(self, duree):
+		self.jouerSon(277, 100, 0, duree);
+		
+    def jouerRe3(self, duree):
+		self.jouerSon(294, 100, 0, duree);
+		
+    def jouerRed3(self, duree):
+		self.jouerSon(311, 100, 0, duree);
+		
+    def jouerMi3(self, duree):
+		self.jouerSon(330, 100, 0, duree);
+		
+    def jouerFa3(self, duree):
+		self.jouerSon(349, 100, 0, duree);
+		
+    def jouerFad3(self, duree):
+		self.jouerSon(370, 100, 0, duree);
+		
+    def jouerSol3(self, duree):
+		self.jouerSon(392, 100, 0, duree);
+		
+    def jouerSold3(self, duree):
+		self.jouerSon(415, 100, 0, duree);
+		
+    def jouerLa3(self, duree):
+		self.jouerSon(440, 100, 0, duree);
+		
+    def jouerLad3(self, duree):
+		self.jouerSon(466, 100, 0, duree);
+		
+    def jouerSi3(self, duree):
+		self.jouerSon(494, 100, 0, duree);
+		
+    def jouerDo4(self, duree):
+        self.jouerSon(523, 100, 0, duree);
+		
+	def jouerDod4(self, duree):
+		self.jouerSon(554, 100, 0, duree);
 
-    ################################################################
+    #///////////////////////////////////////////////////////////////
     #     Fonctions permettant de manipuler les moteurs de Nao     #
-    ################################################################
+    #///////////////////////////////////////////////////////////////
 
     #test OK
     def afficherNumeroMoteurs(self):
@@ -72,19 +137,19 @@ class NaoControle:
             data = "%s : %s" %(joint, normPosition);
             print data
     #test OK
-    def bloquerTousMoteurs(self):
+    def activerTousMoteurs(self):
         self.__nao.getMotors().setStiffnesses(1);
 
     #test OK
-    def bloquerMoteur(self, numeroMoteur):
+    def activerMoteur(self, numeroMoteur):
         self.__nao.getMotors().setStiffness(numeroMoteur, 1);
 
     #test OK
-    def libererTousMoteurs(self):
+    def desactiverTousMoteurs(self):
         self.__nao.getMotors().setStiffnesses(0);
 
     #test OK
-    def libererMoteur(self, numeroMoteur):
+    def desactiverMoteur(self, numeroMoteur):
         self.__nao.getMotors().setStiffness(numeroMoteur, 0);
 
     #test OK
@@ -195,12 +260,23 @@ class NaoControle:
 
         return moteurs;
 
-    ################################################################
-    #       Fonctions permettant de manipuler les leds de Nao      #
-    ################################################################
-
-    #test OK
+    #///////////////////////////////////////////////////////////////
+    #       Fonctions permettant de manipuler les leds de Nao      /
+    #///////////////////////////////////////////////////////////////
+    ##@name Fonctions permettant de manipuler les leds de Nao
+    
+    #@{
+    
+    #TEST OK
     #doublon avec afficherNumeroMoteurs
+    ##Cette méthode récupère le nom et le numéro des leds et les affiche dans la console.
+    #exemple : nao.afficherNumeroLeds()
+    #@n affichera :
+    #@n Led 0  : OEIL DROITE 1
+    #@n Led 1  : OEIL DROITE 2
+    #@n Led 2  : OEIL DROITE 3
+    #@n Led 3  : OEIL DROITE 4
+    #@n ...
     def afficherNumeroLeds(self):
         leds = self.__nao.getLeds().getLedsNames();
         frenchLeds = self.__recupererNomLeds();
@@ -211,37 +287,72 @@ class NaoControle:
             frenchLedName = "%s : %s" %(label, frenchLeds[numeroLed]);
             print frenchLedName;
 
-    #test OK
+    #TEST OK
+    ##Cette méthode allume toutes les Leds (yeux) de Nao.
+    #exemple : nao.allumerLeds()
+    #@n Toutes les Leds de Nao se sont allumées
     def allumerLeds(self):
         self.__nao.getLeds().allLedsOn();
-    #test OK
+        
+    #TEST OK
+    ##Cette méthode allume toutes les Leds de l'oeil droit de Nao.
+    #exemple : nao.allumerOeilDroite()
+    #@n Toutes les Leds de l'oeil droit de Nao se sont allumées
     def allumerOeilDroite(self):
         self.__nao.getLeds().rightLedsOn();
 
-    #test OK
+    #TEST OK
+    ##Cette méthode allume toutes les Leds de l'oeil gauche de Nao.
+    #exemple : nao.allumerOeilGauche()
+    #
+    #Toutes les Leds de l'oeil gauche de Nao se sont allumées
     def allumerOeilGauche(self):
         self.__nao.getLeds().leftLedsOn();
 
+    #TEST OK
+    ##Cette méthode allume la Led choisie.
+    #exemple : nao.allumerLed(1)
+    #@n La Led 1  : OEIL DROITE 2  vient de s'allumer
+    #@param numeroLed entier [0,15] : Le numero de la Led à allumer 
     def allumerLed(self, numeroLed):
         self.__nao.getLeds().setIntensity(numeroLed, 1);
         
-    #test OK
+    #TEST OK
+    ##Cette méthode éteint toutes les Leds (yeux) de Nao.
+    #exemple : nao.eteindreLeds()
+    #@n Toutes les Leds de Nao se sont éteintes
     def eteindreLeds(self):
         self.__nao.getLeds().allLedsOff();
 
-    #test OK
+    #TEST OK
+    ##Cette méthode éteint toutes les Leds de l'oeil droit de Nao.
+    #exemple : nao.eteindreOeilDroite()
+    #@n Toutes les Leds de l'oeil droit de Nao se sont éteintes
     def eteindreOeilDroite(self):
         self.__nao.getLeds().rightLedsOff();
 
-    #test OK
+    #TEST OK
+    ##Cette méthode éteint toutes les Leds de l'oeil gauche de Nao.
+    #exemple : nao.eteindreOeilGauche()
+    #@n Toutes les Leds de l'oeil gauche de Nao se sont éteintes
     def eteindreOeilGauche(self):
         self.__nao.getLeds().leftLedsOff();
 
-    #test OK
+    #TEST OK
+    ##Cette méthode éteint la Led choisie.
+    #exemple : nao.eteindreLed(1)
+    #@n La Led 1  : OEIL DROITE 2  vient de s'éteindre
+    #@param numeroLed entier [0,15] : Le numero de la Led à éteindre
     def eteindreLed(self, numeroLed):
         self.__nao.getLeds().setIntensity(numeroLed, 0);
 
-    #test OK
+    #""""""""""" TEST KO"""""""""" : si on modifie la couleur d'une led et qu'on fait estAllume() sans time.sleep avant on retourne une valeur fausse
+    ##Cette méthode teste si la Led choisie est allumée.
+    #exemple : test=nao.estAllume(1)
+    #@n test = true si la Led 1  : OEIL DROITE 2 est allumée
+    #@n test = false sinon
+    #@param numeroLed entier [0,15] : Le numero de la Led à tester
+    #@return Un boolean qui vaut true si la led est allumée, false sinon
     def estAllume(self, numeroLed):
         estAllume = False;
         
@@ -252,49 +363,116 @@ class NaoControle:
         
         return estAllume;
 
-    #test OK
+    #TEST OK
+    ##Cette méthode règle la couleur de la Led choisie.
+    #exemple : nao.reglerCouleur(1, 255, 0, 0)
+    #@n La Led 1  : OEIL DROITE 2 devient uniquement rouge
+    #@n @n exemple nao.reglerCouleur(2, 125, 100, 240)
+    #@n La Led 2  : OEIL DROITE 3 devient une couleur à prédominance bleue
+    #@param numeroLed entier [0,15] : le numéro de la led dont on veut modifier la couleur
+    #@param rouge entier [0,255] : l'intensité de rouge pour la couleur de la Led
+    #@param vert entier [0,255] : l'intensité de vert pour la couleur de la Led
+    #@param bleu entier [0,255] : l'intensité de bleu pour la couleur de la Led
     def reglerCouleur(self, numeroLed, rouge, vert, bleu):
         self.__nao.getLeds().setColor(numeroLed, rouge, vert, bleu);
 
-    #test OK
+    #""""""""""" TEST KO"""""""""" : si on modifie la couleur d'une led et qu'on fait recupererCouleur() sans time.sleep avant on retourne une valeur fausse
+    ##Cette méthode récupère la couleur d'une Led.
+    #exemple : tab = nao.recupererCouleur(1)
+    #@n tab = (255, 255, 255) les couleurs de la led
+    #@param numeroLed entier [0,15] : le numéro de la led dont on veut récupérer la couleur
+    #@return Un tableau de trois entiers [0,255] : (rouge, vert, bleu)
+    #@warning Il y a un léger temps de latence lorsqu'on veut récupérer la couleur d'une Led qui vient d'être changée récemment.
+    #@n exemple : nao.reglerCouleur(1, 255,0,255)
+    #@n print nao.recupererCouleur(1)
+    #@n Peut ne pas afficher (255,0,255), mais une autre valeur
+    #@n @n De ce fait, il est conseillé de placer un time.sleep(0.25) entre les deux :
+    #@n nao.reglerCouleur(1, 255,0,255)
+    #@n time.sleep(0.25)
+    #@n print nao.recupererCouleur(1)
     def recupererCouleur(self, numeroLed):
         return self.__nao.getLeds().getColor(numeroLed);
 
-    #test OK
+    #TEST OK
+    ##Cette méthode modifie progressivement la couleur d'une Led sur une durée choisie.
+    #exemple : nao.apparitionCouleur(1,0,255,0,2)
+    #@n La Led 1  : OEIL DROITE 2 va progressivement passer de sa couleur actuelle, au vert, en 2 secondes
+    #@n @n exemple : nao.apparitionCouleur(2,200,10,125,5)
+    #@n La Led 2  : OEIL DROITE 3 va progressivement passer de sa couleur actuelle, à une couleur à prédominance rouge, en 5 secondes
+    #@param numeroLed entier [0,15] : le numéro de la led dont on veut changer progressivement la couleur
+    #@param rouge entier [0,255] : l'intensité de rouge pour la couleur de la Led
+    #@param vert entier [0,255] : l'intensité de vert pour la couleur de la Led
+    #@param bleu entier [0,255] : l'intensité de bleu pour la couleur de la Led
+    #@param temps entier positif : temps en secondes que prendra la modification progressive de couleur
     def apparitionCouleur(self, numeroLed, rouge, vert, bleu, temps):
         self.__nao.getLeds().fadeColor(numeroLed, rouge, vert, bleu, temps);
 
-    
+    #TEST OK
+    ##Cette méthode efface toutes les animations préalablement enregistrées.
+    #exemple : nao.effacerAnimationLed()
+    #@n va effacer toutes les animations préalablement enregistrées.
     def effacerAnimationLed(self):
         self.__nao.getLeds().resetAnimation();
 
-
+    #TEST OK
+    ##Cette méthode va enregistrer une animation sur une Led(il faudra ensuite la jouer avec nao.jouerAnimationLed() ).
+    #exemple : nao.ajouterAnimationLed(1,0,255,0,2)
+    #@n nao.jouerAnimationLed() 
+    #@n La Led 1  : OEIL DROITE 2 va devenir verte au bout de 2 secondes
+    #@n @n exemple : nao.ajouterAnimationLed(2,200,10,125,1.5)
+    #@n nao.jouerAnimationLed() 
+    #@n La Led 2  : OEIL DROITE 3 va devenir une couleur à prédominance rouge au bout de 1,5 secondes
+    #@param numeroLed entier [0,15] : le numéro de la led sur laquelle on veut ajouter une animation
+    #@param rouge entier [0,255] : l'intensité de rouge pour la couleur de la Led
+    #@param vert entier [0,255] : l'intensité de vert pour la couleur de la Led
+    #@param bleu entier [0,255] : l'intensité de bleu pour la couleur de la Led
+    #@param temps entier positif : temps en secondes au bout duquel la modification sera prise en compte
+    #@warning Un code de ce type va provoquer une erreur : 
+    #@n on ajoute deux animations sur la même Led (pas de soucis), mais avec un temps supérieur en première déclaration (2>1) 
+    #@n nao.ajouterAnimationLed(1,255,0,0,2)
+    #@n nao.ajouterAnimationLed(1,0,255,0,1)
+    #@n nao.jouerAnimationLed()
     def ajouterAnimationLed(self, numeroLed, rouge, vert, bleu, temps):
         self.__nao.getLeds().addLedAnimation(numeroLed, rouge, vert, bleu, temps);
 
 
+    #""""""""""""""""""TEST KO""""""""" il faut trier les animations avant
+    ##Cette méthode lance les animations préalablement enregistrées.
+    #exemple : nao.jouerAnimationLed()
+    #@n va jouer toutes les animations préalablement enregistrées.
     def jouerAnimationLed(self):
         self.__nao.getLeds().playAnimation();
 
-
+    #TEST OK
+    ##Cette méthode affiche les animations préalablement enregistrées.
+    #exemple : 
+    #@n nao.ajouterAnimationLed(1,255,0,0,1)
+    #@n nao.ajouterAnimationLed(4,0,255,0,2)
+    #@n nao.afficherAnimationLed()
+    #@n va afficher :
+    #@n Led 1  : 
+    #@n Couleur : 0xff0000 - Temps : 1
+    #@n Led 4  : 
+    #@n Couleur : 0xff00 - Temps : 2
     def afficherAnimationLed(self):
         self.__nao.getLeds().displayAnimation("Led", "Couleur", "Temps", 15);
-                
+    
+    #utilite ?            
     def __recupererIntensite(self, numeroLed):
         return self.__nao.getLeds().getIntensity(numeroLed);
 
-    #test OK
+    #TEST OK
     def __recupererNomLeds(self):
 
         leds = {
-            "RightFaceLed1" : "OEIL DROIT 1",
-            "RightFaceLed2" : "OEIL DROIT 2",
-            "RightFaceLed3" : "OEIL DROIT 3",
-            "RightFaceLed4" : "OEIL DROIT 4",
-            "RightFaceLed5" : "OEIL DROIT 5",
-            "RightFaceLed6" : "OEIL DROIT 6",
-            "RightFaceLed7" : "OEIL DROIT 7",
-            "RightFaceLed8" : "OEIL DROIT 8",
+            "RightFaceLed1" : "OEIL DROITE 1",
+            "RightFaceLed2" : "OEIL DROITE 2",
+            "RightFaceLed3" : "OEIL DROITE 3",
+            "RightFaceLed4" : "OEIL DROITE 4",
+            "RightFaceLed5" : "OEIL DROITE 5",
+            "RightFaceLed6" : "OEIL DROITE 6",
+            "RightFaceLed7" : "OEIL DROITE 7",
+            "RightFaceLed8" : "OEIL DROITE 8",
             "LeftFaceLed1" : "OEIL GAUCHE 1",
             "LeftFaceLed2" : "OEIL GAUCHE 2",
             "LeftFaceLed3" : "OEIL GAUCHE 3",
@@ -306,10 +484,12 @@ class NaoControle:
             }
 
         return leds;
+        
+    ##@}
 
-    ################################################################
+    #///////////////////////////////////////////////////////////////
     #     Fonction permettant de gérer la reconnaissance vocale    #
-    ################################################################
+    #///////////////////////////////////////////////////////////////
 
     #test OK
     def attribuerVocabulaire(self, *args):
@@ -344,18 +524,18 @@ class NaoControle:
         print "ARRET RECONNAISSANCE VOCALE";
         self.__nao.getSpeechReco().stopSpeechRecognition();
 
-    ################################################################
+    #///////////////////////////////////////////////////////////////
     #            Fonction permettant d'afficher la vidéo           #
-    ################################################################
+    #///////////////////////////////////////////////////////////////
 
     #test OK
     def afficherVideo(self):
         print self.__nao.getVisualReco().displayVideo("Vue de Nao", "Nom du visage : ","Enregistrer");
 
 
-    ################################################################
+    #///////////////////////////////////////////////////////////////
     #   Fonctions permettant de gérer la reconnaissance visuelle   #
-    ################################################################
+    #///////////////////////////////////////////////////////////////
 
     #test OK
     def apprendreVisage(self):
@@ -398,9 +578,9 @@ class NaoControle:
     def afficherObjets(self):
         self.__nao.getVisualReco().displayObjects();
 
-    ################################################################
+    #///////////////////////////////////////////////////////////////
     #        Classe permettant de gérer les événéments de Nao      #
-    ################################################################
+    #///////////////////////////////////////////////////////////////
 
 class AbstractNaoEvenement(EventManagerAbstractModule):
 
@@ -416,6 +596,10 @@ class AbstractNaoEvenement(EventManagerAbstractModule):
         self.objetReconnu = ""
         self.tauxRessemblance = 0.0
         self.ratio = 0.0
+        self.capteursTactiles = ["HandRightLeftTouched", "HandRightBackTouched", "HandRightRightTouched", "HandLeftLeftTouched", "HandLeftBackTouched", "HandLeftRightTouched", "FrontTactilTouched", "MiddleTactilTouched", "RearTactilTouched"]
+        self.recoTactile = False
+        self.location = -1
+        self.etat = 0
 
     ####### FACE DETECTION #######
 
@@ -446,7 +630,7 @@ class AbstractNaoEvenement(EventManagerAbstractModule):
         self.visageReconnu = ""
         self.stopFaceDetection();
 
-    ####### OBJET DETECTION #######
+    #///// OBJET DETECTION /////
 
     #test OK
     def demarrerDetectionObjet(self):
@@ -478,7 +662,7 @@ class AbstractNaoEvenement(EventManagerAbstractModule):
         self.ratio = 0.0
         self.stopPictureDetection();
 
-    ####### SPEECH DETECTION #######
+    #///// SPEECH DETECTION /////
 
     #test OK
     def demarrerDetectionParole(self):
@@ -501,7 +685,7 @@ class AbstractNaoEvenement(EventManagerAbstractModule):
         self.recoParole = False;
         self.stopSpeechDetection();
 
-    ####### SPEECH RECOGNITION #######
+    #///// SPEECH RECOGNITION /////
 
     def demarrerReconnaissanceVocale(self):
         self.recoVocale= False
@@ -525,4 +709,53 @@ class AbstractNaoEvenement(EventManagerAbstractModule):
         self.motReconnu = ""
         self.tauxReconnaissance = 0.0
         self.stopWordRecognition();   
+
+    #///// CAPTEUR TACTILE /////
+
+    def afficherNumeroCapteursTactiles(self):
+        for i in range(len(self.capteursTactiles)):
+            if self.capteursTactiles[i]=="HandRightBackTouched":
+                 print("%s : MAIN DROITE - ZONE DU MILIEU" %(i))
+            elif self.capteursTactiles[i]=="HandRightLeftTouched":
+                 print("%s : MAIN DROITE - ZONE DE GAUCHE" %(i))
+            elif self.capteursTactiles[i]=="HandRightRightTouched":
+                 print("%s : MAIN DROITE - ZONE DE DROITE" %(i))
+            elif self.capteursTactiles[i]=="HandLeftBackTouched":
+                 print("%s : MAIN GAUCHE - ZONE DU MILIEU" %(i))
+            elif self.capteursTactiles[i]=="HandLeftLeftTouched":
+                 print("%s : MAIN GAUCHE - ZONE DE GAUCHE" %(i))
+            elif self.capteursTactiles[i]=="HandLeftRightTouched":
+                 print("%s : MAIN GAUCHE - ZONE DE DROITE" %(i))
+            elif self.capteursTactiles[i]=="FrontTactilTouched":
+                 print("%s : TETE - ZONE DE DEVANT" %(i))
+            elif self.capteursTactiles[i]=="MiddleTactilTouched":
+                 print("%s : TETE - ZONE DU MILIEU" %(i))
+            elif self.capteursTactiles[i]=="RearTactilTouched":
+                 print("%s : TETE - ZONE DE DERRIERE" %(i))
+
+        print("\n")
+        print("ETAT 1 : CONTACT AVEC LE CAPTEUR")
+        print("ETAT 0 : CAPTEUR RELACHE")
+
+    def demarrerReconnaissanceTactile(self):
+        self.recoTactile = False
+        self.location = -1
+        self.etat = 0
+        self.startTactileEventRecognition();
+
+    def traiterReconnaissanceTactile(self, location, etat):
+        pass;
+    
+    
+    def _tactileEvent(self, location, state):
+        self.recoTactile = True
+        self.location = self.capteursTactiles.index(location)
+        self.etat = int(state)
+        self.traiterReconnaissanceTactile(self.location, self.etat);
+
+    def arreterReconnaissanceTactile(self):
+        self.recoTactile = False
+        self.location = -1
+        self.etat = 0
+        self.stopTactileEventRecognition()   
 
