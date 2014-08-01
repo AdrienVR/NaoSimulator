@@ -19,13 +19,13 @@ class UndoFormat(QUndoCommand):
     def undo(self):
         if self.originalText == unicode(self.target.toPlainText()):
             return
-        self.next = self.target.toPlainText()
+        self.next = unicode(self.target.toPlainText())
         self.target.setPlainText(self.originalText)
 
     def redo(self):
         if self.next == unicode(self.target.toPlainText()):
             return
-        self.originalText = self.target.toPlainText()
+        self.originalText = unicode(self.target.toPlainText())
         if self.next.strip()!="":
             self.target.setPlainText(self.next)
 
