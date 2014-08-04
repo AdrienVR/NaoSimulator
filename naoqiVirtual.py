@@ -281,7 +281,7 @@ class ALProxy():
         for i in range(len(times)):
             duration = durations[i];
             motorAngle = values[i];
-            #time.sleep(duration);
+            time.sleep(duration);
             self.angleInterpolation(name, motorAngle, duration, True);
 
     #test OK
@@ -316,12 +316,12 @@ class ALProxy():
         return self.membres[number]
 
     def getNamesFromPart(self, part):
-        if part=="body":
+        if part.lower()=="body":
             return self.membresVirtual.values()
         for x in self.membres.keys():
             if self.membres[x]==part:
                 return [self.membresVirtual[x]]
-        print "error Names part"
+        print "error Names part", part
         return []
 
 
