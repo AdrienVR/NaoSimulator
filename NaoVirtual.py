@@ -8,7 +8,7 @@ from naoqiVirtual import ALProxy
 import time
 
 """
-Utilise NaoStructureVirtual (interface anglaise)
+Utilise NaoAPIVirtual (interface anglaise)
 """
 
 class Nao:

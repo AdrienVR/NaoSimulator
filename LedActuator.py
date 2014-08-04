@@ -2,6 +2,8 @@
 from naoqiVirtual import ALProxy
 from Animation import Animation
 
+import time, threading, struct;
+
 """
 LED
 """
@@ -39,7 +41,7 @@ class LedsActuator:
             blue = "Face/Led/Blue/Left/%sDeg/Actuator/Value" %(degree);
             tab = [red,green,blue];
             colorsNames[name] = tab;
-  
+
         return names, colorsNames;
 
     #test OK
@@ -64,7 +66,7 @@ class LedsActuator:
     #test OK
     def leftLedsOn(self):
         name = "LeftFaceLeds";
-        self.__proxy.on(name); 
+        self.__proxy.on(name);
 
     #test OK
     def allLedsOff(self):
@@ -102,7 +104,7 @@ class LedsActuator:
         red = int(redIntensity*255);
         green = int(greenIntensity*255);
         blue = int(blueIntensity*255);
-        
+
         return red, green, blue;
 
     #test OK
@@ -144,7 +146,7 @@ class LedsActuator:
 
         if red != 0 :
             redIntensity = red/255.0;
-        if green != 0 :    
+        if green != 0 :
             greenIntensity = green/255.0;
         if blue != 0 :
             blueIntensity = blue/255.0;
@@ -154,8 +156,8 @@ class LedsActuator:
 ##        print self.__colorsNames
         self.__proxy.setIntensity(tabColor[0], redIntensity);
         self.__proxy.setIntensity(tabColor[1], greenIntensity);
-        self.__proxy.setIntensity(tabColor[2], blueIntensity);       
-        
+        self.__proxy.setIntensity(tabColor[2], blueIntensity);
+
 
     #test OK
     def fadeColor(self, ledNumber, red, green, blue, duration):
@@ -239,7 +241,7 @@ class LedsActuator:
             print ledWord,ledNumber," : ";
             for j in range(len(values[i])):
                 string = "    %s : %s" %(valueWord, hex(values[i][j]));
-                string = self.addSpaces(string, characterNumbers); 
+                string = self.addSpaces(string, characterNumbers);
                 print string,"-",timeWord,":",times[i][j];
 
     #test OK
@@ -249,18 +251,18 @@ class LedsActuator:
         if characterTotalNumbers > characterNumbers:
             spaceNumbers = characterTotalNumbers - characterNumbers;
             string = string+spaceNumbers*' ';
-        return string;  
-        
+        return string;
+
     #test OK
     def __displayColorsNames(self):
-        
+
         for name in self.__ledsNames:
             print name,' :';
             tab = self.__colorsNames[name];
             print "   ",tab[0];
             print "   ",tab[1];
-            print "   ",tab[2];   
-        
+            print "   ",tab[2];
+
 
     #test OK
     def __RGBToInt(self, red, green, blue):
@@ -282,7 +284,7 @@ class LedsActuator:
     def __intToRGB(self, rgb):
         blue, green, red = [(rgb >> (8*i)) & 255 for i in range(3)];
         return red,green,blue;
-    
+
     def test(self):
         rgb = self.__RGBToInt(85,127,12);
         print self.__intToRGB(rgb);

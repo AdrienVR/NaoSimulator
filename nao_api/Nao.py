@@ -6,16 +6,16 @@ from nao_api.NaoEvent import EventManagerAbstractModule;
 
 
 class Nao:
-    
+
     def __init__(self, nao):
         self.__nao = nao;
 
     def stop(self):
         self.__nao.stop();
-		
+
     def demarrerParallelisation(self):
 		self.__nao.setParallelism(True);
-		
+
     def arreterParallelisation(self):
 		self.__nao.setParallelism(False);
 
@@ -51,63 +51,63 @@ class Nao:
     def afficherLangagesDisponibles(self):
         for language in self.__nao.getVoice().getAvailableLanguages():
             print language;
-			
-			
+
+
     #///////////////////////////////////////////////////////////////
     #        Fonctions permettant de manipuler le son de Nao       /
     #///////////////////////////////////////////////////////////////
-	
+
     def jouerMusique(self, fichier):
 		self.__nao.getPlayer().playFile(fichier);
-		
+
     def arreterMusique(self):
 		self.__nao.getPlayer().stop();
-	
+
     def jouerSon(self, frequence, gain, pan, duree):
         self.__nao.getSound().playSine(frequence, gain, pan, duree);
-		
+
     def jouerSi2(self, duree):
-        self.jouerSon(247, 100, 0, duree);   
-		
+        self.jouerSon(247, 100, 0, duree);
+
     def jouerDo3(self, duree):
         self.jouerSon(262, 100, 0, duree);
-		
+
     def jouerDod3(self, duree):
 		self.jouerSon(277, 100, 0, duree);
-		
+
     def jouerRe3(self, duree):
 		self.jouerSon(294, 100, 0, duree);
-		
+
     def jouerRed3(self, duree):
 		self.jouerSon(311, 100, 0, duree);
-		
+
     def jouerMi3(self, duree):
 		self.jouerSon(330, 100, 0, duree);
-		
+
     def jouerFa3(self, duree):
 		self.jouerSon(349, 100, 0, duree);
-		
+
     def jouerFad3(self, duree):
 		self.jouerSon(370, 100, 0, duree);
-		
+
     def jouerSol3(self, duree):
 		self.jouerSon(392, 100, 0, duree);
-		
+
     def jouerSold3(self, duree):
 		self.jouerSon(415, 100, 0, duree);
-		
+
     def jouerLa3(self, duree):
 		self.jouerSon(440, 100, 0, duree);
-		
+
     def jouerLad3(self, duree):
 		self.jouerSon(466, 100, 0, duree);
-		
+
     def jouerSi3(self, duree):
 		self.jouerSon(494, 100, 0, duree);
-		
+
     def jouerDo4(self, duree):
         self.jouerSon(523, 100, 0, duree);
-		
+
 	def jouerDod4(self, duree):
 		self.jouerSon(554, 100, 0, duree);
 
@@ -211,7 +211,7 @@ class Nao:
                     rate = (maxPosition - minPosition) /(denominateur);
                     normPosition = 100/rate;
                 string = "    position : %s" %(normPosition);
-                string = self.__nao.getMotors().addSpaces(string, 20); 
+                string = self.__nao.getMotors().addSpaces(string, 20);
                 print string,"- temps :",times[i][j];
 
     #test OK
@@ -237,7 +237,7 @@ class Nao:
             "RElbowRoll" : "COUDE DROITE ROTATION BAS HAUT",
             "LWristYaw" : "POIGNET GAUCHE ROTATION GAUCHE DROITE",
             "RWristYaw" : "POIGNET DROITE ROTATION GAUCHE DROITE",
-            "LHand" : "MAIN GAUCHE FERMEE OUVERTE",             
+            "LHand" : "MAIN GAUCHE FERMEE OUVERTE",
             "RHand" : "MAIN DROITE FERMEE OUVERTE",
             "LHipYawPitch" : "HANCHE_GAUCHE",
             "RHipYawPitch" : "HANCHE_DROITE",
@@ -264,9 +264,9 @@ class Nao:
     #       Fonctions permettant de manipuler les leds de Nao      /
     #///////////////////////////////////////////////////////////////
     ##@name Fonctions permettant de manipuler les leds de Nao
-    
+
     #@{
-    
+
     #TEST OK
     #doublon avec afficherNumeroMoteurs
     ##Cette méthode récupère le nom et le numéro des leds et les affiche dans la console.
@@ -293,7 +293,7 @@ class Nao:
     #@n Toutes les Leds de Nao se sont allumées
     def allumerLeds(self):
         self.__nao.getLeds().allLedsOn();
-        
+
     #TEST OK
     ##Cette méthode allume toutes les Leds de l'oeil droit de Nao.
     #exemple : nao.allumerOeilDroite()
@@ -313,10 +313,10 @@ class Nao:
     ##Cette méthode allume la Led choisie.
     #exemple : nao.allumerLed(1)
     #@n La Led 1  : OEIL DROITE 2  vient de s'allumer
-    #@param numeroLed entier [0,15] : Le numero de la Led à allumer 
+    #@param numeroLed entier [0,15] : Le numero de la Led à allumer
     def allumerLed(self, numeroLed):
         self.__nao.getLeds().setIntensity(numeroLed, 1);
-        
+
     #TEST OK
     ##Cette méthode éteint toutes les Leds (yeux) de Nao.
     #exemple : nao.eteindreLeds()
@@ -355,12 +355,12 @@ class Nao:
     #@return Un boolean qui vaut true si la led est allumée, false sinon
     def estAllume(self, numeroLed):
         estAllume = False;
-        
+
         tabIntensity = self.__nao.getLeds().getIntensity(numeroLed);
         if len(tabIntensity) == 3:
             if tabIntensity[0]>0.06 and tabIntensity[1]>0.06 and tabIntensity[2]>0.06 :
                 estAllume = True;
-        
+
         return estAllume;
 
     #TEST OK
@@ -417,18 +417,18 @@ class Nao:
     #TEST OK
     ##Cette méthode va enregistrer une animation sur une Led(il faudra ensuite la jouer avec nao.jouerAnimationLed() ).
     #exemple : nao.ajouterAnimationLed(1,0,255,0,2)
-    #@n nao.jouerAnimationLed() 
+    #@n nao.jouerAnimationLed()
     #@n La Led 1  : OEIL DROITE 2 va devenir verte au bout de 2 secondes
     #@n @n exemple : nao.ajouterAnimationLed(2,200,10,125,1.5)
-    #@n nao.jouerAnimationLed() 
+    #@n nao.jouerAnimationLed()
     #@n La Led 2  : OEIL DROITE 3 va devenir une couleur à prédominance rouge au bout de 1,5 secondes
     #@param numeroLed entier [0,15] : le numéro de la led sur laquelle on veut ajouter une animation
     #@param rouge entier [0,255] : l'intensité de rouge pour la couleur de la Led
     #@param vert entier [0,255] : l'intensité de vert pour la couleur de la Led
     #@param bleu entier [0,255] : l'intensité de bleu pour la couleur de la Led
     #@param temps entier positif : temps en secondes au bout duquel la modification sera prise en compte
-    #@warning Un code de ce type va provoquer une erreur : 
-    #@n on ajoute deux animations sur la même Led (pas de soucis), mais avec un temps supérieur en première déclaration (2>1) 
+    #@warning Un code de ce type va provoquer une erreur :
+    #@n on ajoute deux animations sur la même Led (pas de soucis), mais avec un temps supérieur en première déclaration (2>1)
     #@n nao.ajouterAnimationLed(1,255,0,0,2)
     #@n nao.ajouterAnimationLed(1,0,255,0,1)
     #@n nao.jouerAnimationLed()
@@ -445,19 +445,19 @@ class Nao:
 
     #TEST OK
     ##Cette méthode affiche les animations préalablement enregistrées.
-    #exemple : 
+    #exemple :
     #@n nao.ajouterAnimationLed(1,255,0,0,1)
     #@n nao.ajouterAnimationLed(4,0,255,0,2)
     #@n nao.afficherAnimationLed()
     #@n va afficher :
-    #@n Led 1  : 
+    #@n Led 1  :
     #@n Couleur : 0xff0000 - Temps : 1
-    #@n Led 4  : 
+    #@n Led 4  :
     #@n Couleur : 0xff00 - Temps : 2
     def afficherAnimationLed(self):
         self.__nao.getLeds().displayAnimation("Led", "Couleur", "Temps", 15);
-    
-    #utilite ?            
+
+    #utilite ?
     def __recupererIntensite(self, numeroLed):
         return self.__nao.getLeds().getIntensity(numeroLed);
 
@@ -484,7 +484,7 @@ class Nao:
             }
 
         return leds;
-        
+
     ##@}
 
     #///////////////////////////////////////////////////////////////
@@ -611,10 +611,10 @@ class AbstractNaoEvenement(EventManagerAbstractModule):
         self.startFaceDetection();
 
     #test OK
-    
+
     def traiterDetectionVisage(self, visage, tauxReco):
         pass;
-    
+
 
     #test OK
     def _faceDetectedEvent(self, visage, tauxReco):
@@ -641,11 +641,11 @@ class AbstractNaoEvenement(EventManagerAbstractModule):
         self.startPictureDetection();
 
     #test OK
-    
+
     def traiterDetectionObjet(self, nomObjet, coteObjet, ressemblance, ratio):
         pass;
-    
-    
+
+
     #test OK
     def _pictureDetectedEvent(self, objectName, objectSide, matching, ratio):
         self.recoObjet = True
@@ -670,11 +670,11 @@ class AbstractNaoEvenement(EventManagerAbstractModule):
         self.startSpeechDetection();
 
     #test OK
-    
+
     def traiterDetectionParole(self):
         pass;
-    
-    
+
+
     #test OK
     def _speechDetectedEvent(self):
         self.recoParole = True;
@@ -693,11 +693,11 @@ class AbstractNaoEvenement(EventManagerAbstractModule):
         self.tauxReconnaissance = 0.0
         self.startWordRecognition();
 
-    
+
     def traiterReconnaissanceVocale(self, mot, tauxReco):
         pass;
-    
-    
+
+
     def _wordRecognizedEvent(self, word, rate):
         self.recoVocale= True
         self.motReconnu = word
@@ -708,7 +708,7 @@ class AbstractNaoEvenement(EventManagerAbstractModule):
         self.recoVocale= False
         self.motReconnu = ""
         self.tauxReconnaissance = 0.0
-        self.stopWordRecognition();   
+        self.stopWordRecognition();
 
     #///// CAPTEUR TACTILE /////
 
@@ -745,8 +745,8 @@ class AbstractNaoEvenement(EventManagerAbstractModule):
 
     def traiterReconnaissanceTactile(self, location, etat):
         pass;
-    
-    
+
+
     def _tactileEvent(self, location, state):
         self.recoTactile = True
         self.location = self.capteursTactiles.index(location)
@@ -757,5 +757,5 @@ class AbstractNaoEvenement(EventManagerAbstractModule):
         self.recoTactile = False
         self.location = -1
         self.etat = 0
-        self.stopTactileEventRecognition()   
+        self.stopTactileEventRecognition()
 

@@ -44,7 +44,7 @@ class VoiceActuator:
     def setLanguage(self, language):
         assert language in self.__languages;
         self.__proxy.setLanguage(language);
-    
+
 class MotorsActuator:
     def __init__(self, proxy):
         #assert type(proxy) is ALProxy;
@@ -105,12 +105,12 @@ class MotorsActuator:
     #test OK
     def getMotorAngle(self, motorNumber):
         angle = None;
-        
+
         name = self.getMotorName(motorNumber);
         tab = self.__proxy.getAngles(name, True);
         if len(tab)>0:
             angle = tab[0];
-        
+
         return angle;
 
     #test OK
@@ -122,27 +122,19 @@ class MotorsActuator:
 
     #test OK
     def addMotionAnimation(self, motorNumber, motorAngle, time):
-        name = self.getMotorName(motorNumber);
-        self.__animation.addValue(name, motorAngle, time);
+        self.__proxy.addMotionAnimation(motorNumber, motorAngle, time)
 
     #test OK
     def resetAnimation(self):
-        self.__animation.reset();
+        self.__proxy.resetAnimation();
 
     #test OK
     #blocking call
     def playAnimation(self):
-        names = self.__animation.getNames();
-        angles = self.__animation.getValues();
-        times = self.__animation.getTimes();
-        isAbsolute = True;
-        self.__proxy.angleInterpolation(names, angles, times, isAbsolute);
+        self.__proxy.playAnimation();
 
     def getAnimationData(self):
-        names = self.__animation.getNames();
-        angles = self.__animation.getValues();
-        times = self.__animation.getTimes();
-        return names, angles, times;
+        return self.__proxy.getAnimationData();
 
     #test OK
     def displayAnimation(self, motorWord, angleWord, timeWord, characterNumbers):
@@ -155,7 +147,7 @@ class MotorsActuator:
             print motorWord,motorNumber," : ";
             for j in range(len(angles[i])):
                 string = "    %s : %s" %(angleWord, angles[i][j]);
-                string = self.addSpaces(string, characterNumbers); 
+                string = self.addSpaces(string, characterNumbers);
                 print string,"-",timeWord,":",times[i][j];
 
     #test OK

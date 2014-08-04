@@ -1,6 +1,6 @@
 ﻿
 """
-Extrait originalement de NaoStructure.py
+Extrait à l'origine du module NaoAPI.py
 """
 
 class Animation:

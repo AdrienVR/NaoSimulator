@@ -37,6 +37,7 @@ class EditeurPython():
 
         self.lastModif = "else"
         self.cancelFormat = False
+        self.scroll = 0
 
         #self.undoStack = QUndoStack()
 
@@ -87,44 +88,40 @@ class EditeurPython():
     ###################################### MENU FORMAT #####################################################
 
     def uncomment(self):
-        fullText=unicode(self.textEdit.toPlainText())#
-        text=unicode(self.getHighLightedText(self.textEdit))#
-        if text.strip() == "":return
-        self.undoFormat.setOriginal(fullText)
-        self.lastModif = "format"
-        a,b=self.getPosInText(fullText,text)
-        fullText=fullText[:a]+fullText[a:b].replace("\n##","\n")+fullText[b:]
-        self.textEdit.setPlainText(fullText)
+        def todo(ft,a,b):
+            ft = ft[:a]+ft[a:b].replace("\n##","\n")+ft[b:]
+            return ft
+        self.action(todo)
 
     def comment(self):
-        fullText=unicode(self.textEdit.toPlainText())#
-        text=unicode(self.getHighLightedText(self.textEdit))#
-        if text.strip() == "":return
-        self.undoFormat.setOriginal(fullText)
-        self.lastModif = "format"
-        a,b=self.getPosInText(fullText,text)
-        fullText=fullText[:a]+fullText[a:b].replace("\n","\n##")+fullText[b:]
-        self.textEdit.setPlainText(fullText)
+        def todo(ft,a,b):
+            ft = ft[:a]+ft[a:b].replace("\n","\n##")+ft[b:]
+            return ft
+        self.action(todo)
 
     def unindent(self):
-        fullText=unicode(self.textEdit.toPlainText())#
-        text=unicode(self.getHighLightedText(self.textEdit))#
-        if text.strip() == "":return
-        self.undoFormat.setOriginal(fullText)
-        self.lastModif = "format"
-        a,b=self.getPosInText(fullText,text)
-        fullText=fullText[:a]+fullText[a:b].replace("\n\t","\n").replace("\n\    ","\n")+fullText[b:]
-        self.textEdit.setPlainText(fullText)
+        def todo(ft,a,b):
+            ft = ft[:a]+ft[a:b].replace("\n\t","\n").replace("\n    ","\n")+ft[b:]
+            return ft
+        self.action(todo)
 
     def indent(self):
+        def todo(ft,a,b):
+            ft = ft[:a]+ft[a:b].replace("\n","\n\t")+ft[b:]
+            return ft
+        self.action(todo)
+
+    def action(self, todo):
+        self.scroll = self.textEdit.verticalScrollBar().value()
         fullText=unicode(self.textEdit.toPlainText())#
         text=unicode(self.getHighLightedText(self.textEdit))#
         if text.strip() == "":return
         self.undoFormat.setOriginal(fullText)
         self.lastModif = "format"
         a,b=self.getPosInText(fullText,text)
-        fullText=fullText[:a]+fullText[a:b].replace("\n","\n\t")+fullText[b:]
+        fullText=todo(fullText,a,b)
         self.textEdit.setPlainText(fullText)
+        self.textEdit.verticalScrollBar().setValue(self.scroll)
 
     ###################################### MENU EDITION #####################################################
     def paste(self):
