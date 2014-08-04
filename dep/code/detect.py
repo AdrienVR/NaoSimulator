@@ -1,16 +1,16 @@
 
 from time import sleep
-from NaoCommunication import *
+from Nao import *
 
-nao=NaoControle(Nao())
+nao=Nao(NaoAPI())
 
-naoEvenement = AbstractNaoEvenement("naoEvenement", Nao().getMemory(), nao);
+naoEvenement = AbstractNaoEvenement("naoEvenement", NaoAPI().getMemory(), nao);
 naoEvenement.demarrerReconnaissanceVocale();
 
 #tests parole
 nao.dire("bonjour")
 
-nao.dire("Demarrage de la detection d'objet. Montrez un objet à la caméra.");
+nao.dire("Demarrage de la detection d'objet. Montrez un objet a la camera.");
 naoEvenement.demarrerDetectionObjet();
 while not naoEvenement.recoObjet:
 	time.sleep(0.5)
@@ -21,7 +21,7 @@ if naoEvenement.recoObjet:
 	naoEvenement.arreterDetectionObjet();
 
 #tests detection visage
-nao.dire("Demarrage de la detection de visage. Montrez un visage à la caméra.");
+nao.dire("Demarrage de la detection de visage. Montrez un visage a la camera.");
 naoEvenement.demarrerDetectionVisage();
 while not naoEvenement.recoVisage:
 	time.sleep(0.5)

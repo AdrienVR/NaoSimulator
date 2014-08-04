@@ -1,8 +1,8 @@
 
 from time import sleep
-from NaoCommunication import *
+from Nao import *
 
-nao=NaoControle(Nao())
+nao=Nao(NaoAPI())
 
 for a in range(0,22):
         nao.bloquerMoteur(a)

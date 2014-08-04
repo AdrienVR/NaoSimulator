@@ -926,7 +926,7 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
             a,b=self.config.getProxy()
             h=str("Nao("+'"'+str(a)+'"'+","+str(b)+")")
             realT = realT.replace("Nao()",h)
-        t=t.replace("from NaoCommunication import","from NaoCommunicationVirtual import")
+        t=t.replace("from Nao import","from NaoVirtual import")
 
         #try:
         if self.runReal:

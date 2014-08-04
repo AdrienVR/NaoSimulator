@@ -8,6 +8,8 @@ du virtualNao de ALProxy et surcharger les méthodes
 mais ca serait pas bien pour les fonctions non surchargées
 """
 import time as TimerT
+from Animation import Animation
+import time, threading, struct;
 
 class ALProxy():
     # staticNao = NaoCommunicationVirtual.AbstractNaoEvenement
@@ -58,6 +60,7 @@ class ALProxy():
         # Après copie de la liste renvoyée par le naoqi réel,
         # on copie tous les éléments de la partie gauche pour les coller et remplacer ceux de
         # la partie droite.
+        # Données : [angleMin, angleMax, vitesseMin, vitesseMax]
         self.limitsAll={"T14":[[-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.671951770782 , 0.514872133732 , 7.19407272339 , 1.20000004768 ],
                                [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ],
                                [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ]],
@@ -108,6 +111,8 @@ class ALProxy():
         self.language="french"
         self.volume=0
         self.listLimits={"Body":[]}
+
+        self.animation = Animation()
 
     #test ok
     @staticmethod
@@ -232,6 +237,70 @@ class ALProxy():
         #print self.virtualNao.getMembre(nom).angle,self.virtualNao.getMembre(nom).timeMove
         TimerT.sleep(time)
 
+
+    def getAnimationData(self):
+        names = self.animation.getNames()
+        values = self.animation.getValues()
+        times = self.animation.getTimes()
+        return names, angles, times
+
+    def addMotionAnimation(self, numeroMoteur, position, temps):
+        self.animation.addValue(self.getNameFromNumber(numeroMoteur), position, temps);
+
+    def resetAnimation(self):
+        self.animation.reset();
+
+    #test OK
+    def playAnimation(self):
+        names = self.animation.getNames();
+        values = self.animation.getValues();
+        times = self.animation.getTimes();
+        threads = [];
+
+        i = 0;
+        for name in names :
+            valuesTab = values[i];
+            timesTab = times[i];
+            thread = threading.Thread(None, self.__playMotorAnimation, None, (name, valuesTab, timesTab), {});
+            threads.append(thread);
+            i=i+1;
+
+        for thread in threads:
+            thread.start();
+
+    #test OK
+    def __playMotorAnimation(self, name, values, times):
+        assert len(values) == len(times);
+        durations = self.__getDurations(times);
+        for i in range(len(times)):
+            duration = durations[i];
+            motorAngle = values[i];
+            #time.sleep(duration);
+            self.angleInterpolation(name, motorAngle, duration, True);
+
+    #test OK
+    def __getDurations(self, timesTab):
+        durationTab = [];
+        previousTime = -1;
+
+        if len(timesTab)>0:
+            previousTime = timesTab[0];
+            durationTab.append(previousTime);
+            for i in range(1, len(timesTab)):
+                currentTime = timesTab[i];
+                if currentTime <= previousTime :
+                    string = "Times must be inscreasing at index %s : %s" %(i, timesTab[i])
+                    raise Exception("TimeError", string);
+                else:
+                    duration = currentTime - previousTime;
+                    previousTime = currentTime;
+                    durationTab.append(duration);
+
+        return durationTab;
+
+    def getNameFromNumber(self, number):
+        return self.membres[number]
+
     def getNumberFromName(self, name):
         num=0
         for x in self.membres:
@@ -241,7 +310,7 @@ class ALProxy():
         return num
 
     def getNamesFromPart(self, part):
-        if part=="body":
+        if part.lower()=="body":
             return self.membresVirtual.values()
         for x in self.membres.keys():
             if self.membres[x]==part:
