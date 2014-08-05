@@ -23,6 +23,7 @@ class NaoAPI():
             #self.__xml = XML("files/nao.xml");
             #self.__xml.parse();
             self.__parallelism = False;
+            self.setParallelism(False)
 
         #try :
             ttsProxy = ALProxy("ALTextToSpeech", self.__address, self.__port);
