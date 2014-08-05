@@ -20,8 +20,9 @@ class NaoAPI():
     def __init__(self, naoAddress=0, naoPort=0):
             self.__address = naoAddress;
             self.__port = naoPort;
-        #self.__xml = XML("files/nao.xml");
-        #self.__xml.parse();
+            #self.__xml = XML("files/nao.xml");
+            #self.__xml.parse();
+            self.__parallelism = False;
 
         #try :
             ttsProxy = ALProxy("ALTextToSpeech", self.__address, self.__port);
@@ -49,6 +50,14 @@ class NaoAPI():
     def __createBroker(self):
         #self.__broker = ALBroker("ENIB_EventBroker","0.0.0.0", 0, self.__address,self.__port)
         pass
+
+    def setParallelism(self, value):
+        ALProxy.setParallelism(value)
+#         self.__voice.setParallelism(value);
+#         self.__motors.setParallelism(value);
+#         self.__leds.setParallelism(value);
+#         self.__sound.setParallelism(value);
+#         self.__player.setParallelism(value);
 
     def stop(self):
         self.__broker.shutdown();

@@ -47,6 +47,8 @@ class ALProxy():
                        'RHipYawPitch', 'RHipRoll', 'RHipPitch', 'RKneePitch', 'RAnklePitch', 'RAnkleRoll',
                        'RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll',"RWristYaw", "RHand"]
                 }
+    parallelism = False;
+
 
     def __init__(self,name=0,adress=0,port=0):
         self.name=name
@@ -63,7 +65,7 @@ class ALProxy():
         # Données : [angleMin, angleMax, vitesseMin, vitesseMax]
         self.limitsAll={"T14":[[-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.671951770782 , 0.514872133732 , 7.19407272339 , 1.20000004768 ],
                                [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ],
-                               [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ]],
+                               [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [1.32645022869, -0.314159274101 , 7.19407272339 , 1.20000004768 ], [2.08566856384 , -2.08566856384 , 8.26797389984 , 1.20000004768 ], [ -0.0349065847695, -1.54461634159 , 7.19407272339 , 1.20000004768 ], [1.82386910915 , -1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ]],
 
                         "H21":[[-2.0856685638427734, 2.0856685638427734, 8.267973899841309, 1.2000000476837158], [-0.6719517707824707, 0.514872133731842, 7.194072723388672, 1.2000000476837158],
                                [-2.0856685638427734, 2.0856685638427734, 8.267973899841309, 1.2000000476837158], [-0.3141592741012573, 1.326450228691101, 7.194072723388672, 1.2000000476837158], [-2.0856685638427734, 2.0856685638427734, 8.267973899841309, 1.2000000476837158], [-1.5446163415908813, -0.03490658476948738, 7.194072723388672, 1.2000000476837158],
@@ -178,6 +180,25 @@ class ALProxy():
                                 20:"bicepsD0", 21:"bicepsD2", 22:"coudeD1", 23:"coudeD2", 24:"mainD1", 25:"doigt1D0"
                                 }
 
+
+    @staticmethod
+    def getKeys():
+        l = []
+        Virtual={0:"teteG2", 1:"teteG0",#ok
+                                2:"bicepsG0", 3:"bicepsG2", 4:"coudeG1", 5:"coudeG2", 6:"mainG1", 7:"doigt1G0",
+                                8:'hancheG1', 9:'cuisseG1', 10:'cuisseG0', 11:'molletG0', 12:'piedG0', 13:'piedG1',
+                                14:'hancheD1', 15:'cuisseD1', 16:'cuisseD0', 17:'molletD0', 18:'piedD0', 19:'piedD1',
+                                20:"bicepsD0", 21:"bicepsD2", 22:"coudeD1", 23:"coudeD2", 24:"mainD1", 25:"doigt1D0"
+                                }
+        for a in range(len(Virtual)):
+            l.append(Virtual[a])
+        return l
+
+
+    @staticmethod
+    def setParallelism(paral):
+        ALProxy.parallelism = paral
+
     #test ok
     def setLanguage(self, language):
         self.language=language
@@ -190,6 +211,9 @@ class ALProxy():
     def say(self, text):
         #print "NAO dit : "+str(text)
         self.virtualNao.addSpeaking(text)
+        if not ALProxy.parallelism:
+            self.timePerCharacter=0.1
+            TimerT.sleep(len(text)*self.timePerCharacter)
 
     def setVolume(self, value):
         self.volume=value
@@ -240,9 +264,16 @@ class ALProxy():
         num=self.getNumberFromName(name)
         nom=self.membresVirtual[num][:-1]
         n=int(self.membresVirtual[num][-1])
-        self.virtualNao.getMembre(nom).setAngle(n,motorAngle/3.14*180,time)        #print self.virtualNao.getMembre(nom).rotate, nom
-        #print self.virtualNao.getMembre(nom).angle,self.virtualNao.getMembre(nom).timeMove
-        TimerT.sleep(time)
+        #print self.virtualNao.getMembre(nom).rotate, nom
+        if nom[:5] == "doigt":
+            self.virtualNao.getMembre("doigt3"+nom[-1]).setAngleFromPercent(0,100-motorAngle)
+            self.virtualNao.getMembre("doigt2"+nom[-1]).setAngleFromPercent(0,100-motorAngle)
+            self.virtualNao.getMembre("doigt1"+nom[-1]).setAngleFromPercent(0,100)#=fixe
+        else :
+            self.virtualNao.getMembre(nom).setAngle(n,motorAngle/3.14*180,time)
+
+        if not ALProxy.parallelism:
+            TimerT.sleep(time)
 
     def getAnimationData(self):
         names = self.animation.getNames()

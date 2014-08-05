@@ -18,6 +18,10 @@ class VoiceActuator:
         assert proxy.__class__ is ALProxy;
         self.__proxy = proxy;
         self.__languages = self.__proxy.getAvailableLanguages();
+        self.__parallelism = False;
+
+    def setParallelism(self, value):
+        self.__parallelism = value;
 
     #test OK
     def say(self, text):
@@ -53,6 +57,10 @@ class MotorsActuator:
         self.__joints = self.__proxy.getJointNames("Body");
         self.__limits = self.__proxy.getLimits("Body");
         self.__animation = None#Animation();
+        self.__parallelism = False;
+
+    def setParallelism(self, value):
+        self.__parallelism = value;
 
     #test OK
     def getJointNames(self):

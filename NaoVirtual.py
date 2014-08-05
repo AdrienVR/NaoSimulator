@@ -19,6 +19,12 @@ class Nao:
     def stop(self):
         self.__nao.stop();
 
+    def demarrerParallelisation(self):
+        self.__nao.setParallelism(True);
+
+    def arreterParallelisation(self):
+        self.__nao.setParallelism(False);
+
     ################################################################
     #       Fonctions permettant de manipuler la voix de Nao       #
     ################################################################
@@ -76,19 +82,19 @@ class Nao:
             data = "%s : %s" %(joint, normPosition);
             print data
     #test OK
-    def bloquerTousMoteurs(self):
+    def activerTousMoteurs(self):
         self.__nao.getMotors().setStiffnesses(1);
 
     #test OK
-    def bloquerMoteur(self, numeroMoteur):
+    def activerMoteur(self, numeroMoteur):
         self.__nao.getMotors().setStiffness(numeroMoteur, 1);
 
     #test OK
-    def libererTousMoteurs(self):
+    def desactiverTousMoteurs(self):
         self.__nao.getMotors().setStiffnesses(0);
 
     #test OK
-    def libererMoteur(self, numeroMoteur):
+    def desactiverMoteur(self, numeroMoteur):
         self.__nao.getMotors().setStiffness(numeroMoteur, 0);
 
     def bougerMoteur(self, numeroMoteur, position, temps):
@@ -99,6 +105,9 @@ class Nao:
         if position!=0:
             rate = 100 / float(position);
             vraiPosition = (maxPosition - minPosition) / rate + minPosition;
+        if numeroMoteur in [7,13]:
+            self.__nao.getMotors().setMotorAngle(numeroMoteur, position, temps);
+            return
         self.__nao.getMotors().setMotorAngle(numeroMoteur, vraiPosition, temps);
     #test OK
     def recupererPositionMoteur(self, numeroMoteur):

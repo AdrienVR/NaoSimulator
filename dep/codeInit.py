@@ -7,6 +7,8 @@ nao=Nao(NaoAPI())
 naoEvenement = AbstractNaoEvenement("naoEvenement", NaoAPI().getMemory(), nao);
 naoEvenement.demarrerReconnaissanceVocale();
 
+nao.demarrerParallelisation()
+
 #tests parole
 nao.dire("bonjour")
 #tests leds
@@ -29,20 +31,20 @@ nao.allumerLed(i+8)
 #moteur 1 : tete haut bas
 
 nao.dire("Tests des moteurs. Regardez ma tete.")
-nao.bloquerMoteur(0)
-nao.bloquerMoteur(1)
+nao.activerMoteur(0)
+nao.activerMoteur(1)
 
 nao.bougerMoteur(0, 80, 2)
 nao.bougerMoteur(1, 80, 2)
 
-nao.bougerMoteur(0, 20, 2)
-nao.bougerMoteur(1, 20, 2)
-
+sleep(2)
 nao.bougerMoteur(0, 50, 2)
 nao.bougerMoteur(1, 50, 2)
 
-nao.libererMoteur(0)
-nao.libererMoteur(1)
+sleep(2)
+
+nao.desactiverMoteur(0)
+nao.desactiverMoteur(1)
 
 #tests reconnaissance vocale en francais
 #nao.attribuerVocabulaire("bonjour", "oui", "non");

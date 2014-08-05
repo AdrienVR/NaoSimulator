@@ -14,6 +14,10 @@ class LedsActuator:
         self.__proxy = proxy;
         self.__ledsNames, self.__colorsNames = self.__getLedsNames();
         self.__animation = Animation();
+        self.__parallelism = False;
+
+    def setParallelism(self, value):
+        self.__parallelism = value;
 
     #test OK
     def getLedsNames(self):

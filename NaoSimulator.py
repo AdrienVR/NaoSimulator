@@ -103,61 +103,43 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.Viewer3DWidget.virtualNao=self.virtualNao
         ##########
 
-        self.sliders=[self.horizontalSliderPiedG0,self.horizontalSliderPiedG1,
-                      self.horizontalSliderMolletG0,
-                      self.horizontalSliderCuisseG0,self.horizontalSliderCuisseG1,
+        self.buttonNames = [self.pushButtonTeteGD,self.pushButtonTeteHB,
+                            self.pushButtonBicepsG,self.pushButtonCoudeG,self.pushButtonMainG,self.pushButtonDoigtsG,
+                            self.pushButtonHanche,
+                            self.pushButtonCuisseG, self.pushButtonMolletG, self.pushButtonPiedG,
+                            self.pushButtonCuisseD, self.pushButtonMolletD, self.pushButtonPiedD,
+                            self.pushButtonBicepsD,self.pushButtonCoudeD,self.pushButtonMainD,self.pushButtonDoigtsD
+                            ]
+
+        self.sliders=[
+        ## Haut
                       self.horizontalSliderTete0,self.horizontalSliderTete2,
                       self.horizontalSliderBicepsG0,self.horizontalSliderBicepsG2,
                       self.horizontalSliderCoudeG0,self.horizontalSliderCoudeG1,
                       self.horizontalSliderMainG1,
                       self.horizontalSliderDoigtsG0,
-
-        ## Partie Droite
-                      self.horizontalSliderPiedD0,self.horizontalSliderPiedD1,
-                      self.horizontalSliderMolletD0,
+        ## Bas
+                      self.horizontalSliderHanche15,
+                      self.horizontalSliderCuisseG0,self.horizontalSliderCuisseG1,
+                      self.horizontalSliderMolletG0,
+                      self.horizontalSliderPiedG0,self.horizontalSliderPiedG1,
+        ## Partie Droite Bas
+                      self.horizontalSliderHanche15,
                       self.horizontalSliderCuisseD0,self.horizontalSliderCuisseD1,
+                      self.horizontalSliderMolletD0,
+                      self.horizontalSliderPiedD0,self.horizontalSliderPiedD1,
+        ## Haut
                       self.horizontalSliderBicepsD0,self.horizontalSliderBicepsD2,
                       self.horizontalSliderCoudeD0,self.horizontalSliderCoudeD1,
                       self.horizontalSliderMainD1,
                       self.horizontalSliderDoigtsD0]
 
-        #permet de savoir quel slider a changé de valeur (old)
+        #permet de savoir quel slider a changé de valeur (= old)
         self.valueList=[]
         for a in range(len(self.sliders)):
             self.valueList.append(self.sliders[a].value())
 
-        self.sliderEq=["piedG","piedG",
-                       "molletG",
-                       "cuisseG","cuisseG",
-                       "teteG","teteG",
-                       "bicepsG","bicepsG",
-                       "coudeG","coudeG",
-                       "mainG",
-                       "doigt2G",
-
-                       "piedD","piedD",
-                       "molletD",
-                       "cuisseD","cuisseD",
-                       "bicepsD","bicepsD",
-                       "coudeD","coudeD",
-                       "mainD",
-                       "doigt2D"]
-        self.sliderAxis=[0,1,
-                         0,
-                         0,1,
-                         0,2,#tete
-                         0,2,#biceps
-                         2,1,
-                         1,
-                         0,
-                         ## Partie Droite
-                         0,1,
-                         0,
-                         0,1,
-                         0,2,#biceps
-                         2,1,
-                         1,
-                         0]
+        self.sliderAxis=[0,2,0,2,2,1,1,0,3,0,1,0,0,1,3,0,1,0,0,1,0,2,2,1,1,0]
 
         self.target=0
         self.targets={self.pushButtonTeteHB:("teteG","teteD"),self.pushButtonTeteGD:("teteG","teteD"),
@@ -361,7 +343,6 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         #sliders des membres du robot
         for a in self.sliders:
             self.connect(a, SIGNAL("valueChanged (int)"), self.motor)
-        self.connect(self.horizontalSliderHanche15, SIGNAL("valueChanged (int)"), self.motor)
 
         #correction affichage widgets sur la réorganisation des widgets
         self.connect(self.splitter, SIGNAL("splitterMoved (int,int)"), self.resizeEvent)
@@ -489,16 +470,21 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         """
         Permet de mettre à jour les sliders selon leur valeur.
         """
-        for a in range(len(self.sliders)):
-            self.sliders[a].setValue(self.virtualNao.getMembre(self.sliderEq[a]).getPercentFromAxis(self.sliderAxis[a]))
-        self.horizontalSliderHanche15.setValue(self.virtualNao.getMembre("hancheD").getPercentFromAxis(0))
+        sliderEq = ALProxy.getKeys()
+        for a in range(len(sliderEq)):
+            if (a in [8,14]):
+                self.sliders[a].setValue(self.virtualNao.getMembre(sliderEq[a][:-1]).getPercentFromAxis(1))
+                continue
+            #print a
+            self.sliders[a].setValue(self.virtualNao.getMembre(sliderEq[a][:-1]).getPercentFromAxis(self.sliderAxis[a]))
 
     def printState(self):
         """
-        Permet de mettre à jour les sliders selon leur valeur.
+        debug
         """
+        sliderEq = ALProxy.getKeys()
         for a in range(len(self.sliders)):
-            print self.sliders[a].value(),self.sliderEq[a]
+            print self.sliders[a].value(),sliderEq[a]
         for a in self.virtualNao.getMembreKeys():
             print a, self.virtualNao.getMembre(a).getPercentFromAxis(0),self.virtualNao.getMembre(a).getPercentFromAxis(1),self.virtualNao.getMembre(a).getPercentFromAxis(2)
 
@@ -566,39 +552,38 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         Affiche la valeur de l'angle actuel dans le ToolTip
         """
         #récupère le moteur qui a bougé
-        if self.running:
-            return
+        if self.thread_code.isRunning():
+             return
         nb=self.hasChanged()
 
         if not self.boolOmbre:
             self.boolOmbre= not self.boolOmbre
             return
 
-        if nb!=-1:
+        sliderEq = ALProxy.getKeys()
+        if self.sliderAxis[nb]!=3:
             #maj le bon trouvé
-            self.virtualNao.getMembre(self.sliderEq[nb]).setAngleFromPercent(self.sliderAxis[nb],self.sliders[nb].value())
+            self.virtualNao.getMembre(sliderEq[nb][:-1]).setAngleFromPercent(self.sliderAxis[nb],self.sliders[nb].value())
             QToolTip.showText(self.cursor.pos(),str(self.sliders[nb].value()))
         else :
             self.virtualNao.getMembre("hancheD").setAngleFromPercentList([self.horizontalSliderHanche15.value(),0,self.horizontalSliderHanche15.value()])
             self.virtualNao.getMembre("hancheG").setAngleFromPercentList([self.horizontalSliderHanche15.value(),0,self.horizontalSliderHanche15.value()])
             QToolTip.showText(self.cursor.pos(),str(self.horizontalSliderHanche15.value()))
 
-        #self.virtualNao.getMembre("doigt1D").rotate[0]=-self.horizontalSliderDoigtsD0.value()
-        self.virtualNao.getMembre("doigt3D").setAngleFromPercent(0,self.horizontalSliderDoigtsD0.value())
-        self.virtualNao.getMembre("doigt2D").setAngleFromPercent(0,self.horizontalSliderDoigtsD0.value())
-        #self.virtualNao.getMembre("doigt1D").setAngleFromPercent(0,self.horizontalSliderDoigtsD0.value())
+        self.virtualNao.getMembre("doigt3D").setAngleFromPercent(0,100-self.horizontalSliderDoigtsD0.value())
+        self.virtualNao.getMembre("doigt2D").setAngleFromPercent(0,100-self.horizontalSliderDoigtsD0.value())
+        self.virtualNao.getMembre("doigt1D").setAngleFromPercent(0,100)#=fixe
 
-        #self.virtualNao.getMembre("doigt1G").rotate[0]=-self.horizontalSliderDoigtsG0.value()
-        self.virtualNao.getMembre("doigt3G").setAngleFromPercent(0,self.horizontalSliderDoigtsG0.value())
-        self.virtualNao.getMembre("doigt2G").setAngleFromPercent(0,self.horizontalSliderDoigtsG0.value())
-        #self.virtualNao.getMembre("doigt1G").setAngleFromPercent(0,-self.horizontalSliderDoigtsG0.value())
+        self.virtualNao.getMembre("doigt3G").setAngleFromPercent(0,100-self.horizontalSliderDoigtsG0.value())
+        self.virtualNao.getMembre("doigt2G").setAngleFromPercent(0,100-self.horizontalSliderDoigtsG0.value())
+        self.virtualNao.getMembre("doigt1G").setAngleFromPercent(0,100)#=fixe
 
         self.updatePhysics()
         self.Viewer3DWidget.update()
 
     def updatePhysics(self):
         """
-        Modifie l'angle des moteurs qui sont dépendants d'autres
+        Modifie l'angle des moteurs qui sont dépendants d'autres : collisions physiques
         """
         self.virtualNao.getMembre("epauleG").rotate[0]=self.virtualNao.getMembre("bicepsG").rotate[0]
         self.virtualNao.getMembre("epauleD").rotate[0]=self.virtualNao.getMembre("bicepsD").rotate[0]
@@ -613,6 +598,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.virtualNao.getMembre("epauleBicepsG").rotate[0]=self.virtualNao.getMembre("bicepsG").rotate[0]
         self.virtualNao.getMembre("epauleBicepsD").rotate[0]=self.virtualNao.getMembre("bicepsD").rotate[0]
 
+        #correction affichage
         self.virtualNao.getMembre("teteD").rotate[0]=self.virtualNao.getMembre("teteG").rotate[0]
         self.virtualNao.getMembre("teteD").rotate[2]=-self.virtualNao.getMembre("teteG").rotate[2]
 
@@ -841,6 +827,10 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.Viewer3DWidget.updateDt(dt)
         self.virtualNao.updateSpeaking(dt)
 
+        if self.virtualNao.finishedSpeaking and self.thread_code.isFinished():
+            self.timer.stop()
+            self.virtualNao.resetSpeaking()
+
     def stopSimu(self):
         """
         Assure l'arrêt de la simulation car les sliders ne peuvent
@@ -910,8 +900,8 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         if self.runReal:
             realT=t[:]
             a,b=self.config.getProxy()
-            h=str("Nao("+'"'+str(a)+'"'+","+str(b)+")")
-            realT.replace("Nao()",h)
+            h=str("NaoAPI("+'"'+str(a)+'"'+","+str(b)+")")
+            realT.replace("NaoAPI()",h)
         t.replace("from Nao import",
                       "from NaoVirtual import")
         if self.runReal:
@@ -939,7 +929,6 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
                 self.thread_both_terminated=False
         #self.thread.stop()
         self.stop()
-        self.timer.stop()
         self.resizeShell()
         self.textBrowserConsole.finish()
         self.tabWidget.setTabEnabled(0,True)
@@ -955,7 +944,6 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.actionNaoH21.setEnabled(True)
         self.actionNaoH25.setEnabled(True)
         self.actionInitPosition.setEnabled(True)
-        self.virtualNao.resetSpeaking()
 
     def changeReseau(self):
         """
@@ -964,7 +952,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.runReal=self.actionRunReal.isChecked()
         if self.runReal:
             sys.path.remove(os.getcwd())
-            os.chdir("nao_training")
+            os.chdir("nao_api")
             sys.path.append(os.getcwd())
         else :
             sys.path.remove(os.getcwd())
