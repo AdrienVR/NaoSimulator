@@ -48,6 +48,8 @@ class ALProxy():
                        'RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll',"RWristYaw", "RHand"],
                 }
 
+    parallelism = False
+
     def __init__(self,name=0,adress=0,port=0):
         self.name=name
         self.membre=None
@@ -60,10 +62,12 @@ class ALProxy():
         # Après copie de la liste renvoyée par le naoqi réel,
         # on copie tous les éléments de la partie gauche pour les coller et remplacer ceux de
         # la partie droite.
-        # Données : [angleMin, angleMax, vitesseMin, vitesseMax]
+        # Données : [angleMin, angleMax, (vitesseMin, vitesseMax] pas sur, ptetre velocite)
+        # Attention :
+        # inversion des limites aussi sur certains membres de la partie de droite (et aussi mais un peu moins sur partie de gauche, sans doute probleme de capture sur partie de gauche)
         self.limitsAll={"T14":[[-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.671951770782 , 0.514872133732 , 7.19407272339 , 1.20000004768 ],
                                [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ],
-                               [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ]],
+                               [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [1.32645022869, -0.314159274101 , 7.19407272339 , 1.20000004768 ], [2.08566856384 , -2.08566856384 , 8.26797389984 , 1.20000004768 ], [ -0.0349065847695, -1.54461634159 , 7.19407272339 , 1.20000004768 ], [1.82386910915 , -1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ]],
 
                         "H21":[[-2.0856685638427734, 2.0856685638427734, 8.267973899841309, 1.2000000476837158], [-0.6719517707824707, 0.514872133731842, 7.194072723388672, 1.2000000476837158],
                                [-2.0856685638427734, 2.0856685638427734, 8.267973899841309, 1.2000000476837158], [-0.3141592741012573, 1.326450228691101, 7.194072723388672, 1.2000000476837158], [-2.0856685638427734, 2.0856685638427734, 8.267973899841309, 1.2000000476837158], [-1.5446163415908813, -0.03490658476948738, 7.194072723388672, 1.2000000476837158],
@@ -75,7 +79,7 @@ class ALProxy():
                                [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ],
                                [-1.1452850103378296, 0.7407177090644836, 4.161737442016602, 3.200000047683716], [-0.37943458557128906, 0.7904596328735352, 4.161737442016602, 3.200000047683716], [-1.535889744758606, 0.4839797914028168, 6.40239143371582, 3.200000047683716], [-0.09232791513204575, 2.112546443939209, 6.40239143371582, 3.200000047683716], [-1.1894419193267822, 0.9225810170173645, 6.40239143371582, 3.200000047683716], [-0.3977605402469635, 0.7689920663833618, 4.161737442016602, 3.200000047683716],
                                [-1.1452850103378296, 0.7407177090644836, 4.161737442016602, 3.200000047683716], [-0.37943458557128906, 0.7904596328735352, 4.161737442016602, 3.200000047683716], [-1.535889744758606, 0.4839797914028168, 6.40239143371582, 3.200000047683716], [-0.09232791513204575, 2.112546443939209, 6.40239143371582, 3.200000047683716], [-1.1894419193267822, 0.9225810170173645, 6.40239143371582, 3.200000047683716], [-0.3977605402469635, 0.7689920663833618, 4.161737442016602, 3.200000047683716],
-                               [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ]]
+                               [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [1.32645022869, -0.314159274101 , 7.19407272339 , 1.20000004768 ], [2.08566856384 , -2.08566856384 , 8.26797389984 , 1.20000004768 ], [ -0.0349065847695, -1.54461634159 , 7.19407272339 , 1.20000004768 ], [1.82386910915 , -1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ]],
                         }
 
         self.ledMnM={'RightFaceLed8':"eye1D", 'RightFaceLed7':"eye2D",
@@ -177,6 +181,24 @@ class ALProxy():
                                 20:"bicepsD0", 21:"bicepsD2", 22:"coudeD1", 23:"coudeD2", 24:"mainD1", 25:"doigt1D0"
                                 }
 
+    @staticmethod
+    def getKeys():
+        l = []
+        Virtual={0:"teteG2", 1:"teteG0",#ok
+                                2:"bicepsG0", 3:"bicepsG2", 4:"coudeG1", 5:"coudeG2", 6:"mainG1", 7:"doigt1G0",
+                                8:'hancheG1', 9:'cuisseG1', 10:'cuisseG0', 11:'molletG0', 12:'piedG0', 13:'piedG1',
+                                14:'hancheD1', 15:'cuisseD1', 16:'cuisseD0', 17:'molletD0', 18:'piedD0', 19:'piedD1',
+                                20:"bicepsD0", 21:"bicepsD2", 22:"coudeD1", 23:"coudeD2", 24:"mainD1", 25:"doigt1D0"
+                                }
+        for a in range(len(Virtual)):
+            l.append(Virtual[a])
+        return l
+
+
+    @staticmethod
+    def setParallelism(paral):
+        ALProxy.parallelism = paral
+
     #test ok
     def setLanguage(self, language):
         self.language=language
@@ -188,9 +210,10 @@ class ALProxy():
     #test ok
     def say(self, text):
         #print "NAO dit : "+str(text)
-        self.timePerCharacter=0.1
         self.virtualNao.addSpeaking(text)
-        TimerT.sleep(len(text)*self.timePerCharacter)
+        if not ALProxy.parallelism:
+            self.timePerCharacter=0.1
+            TimerT.sleep(len(text)*self.timePerCharacter)
 
     def setVolume(self, value):
         self.volume=value
@@ -233,10 +256,16 @@ class ALProxy():
         num=self.getNumberFromName(name)
         nom=self.membresVirtual[num][:-1]
         n=int(self.membresVirtual[num][-1])
-        self.virtualNao.getMembre(nom).setAngle(n,motorAngle/3.14*180,time)        #print self.virtualNao.getMembre(nom).rotate, nom
-        #print self.virtualNao.getMembre(nom).angle,self.virtualNao.getMembre(nom).timeMove
-        TimerT.sleep(time)
+        #print self.virtualNao.getMembre(nom).rotate, nom
+        if nom[:5] == "doigt":
+            self.virtualNao.getMembre("doigt3"+nom[-1]).setAngleFromPercent(0,100-motorAngle)
+            self.virtualNao.getMembre("doigt2"+nom[-1]).setAngleFromPercent(0,100-motorAngle)
+            self.virtualNao.getMembre("doigt1"+nom[-1]).setAngleFromPercent(0,100)#=fixe
+        else :
+            self.virtualNao.getMembre(nom).setAngle(n,motorAngle/3.14*180,time)
 
+        if not ALProxy.parallelism:
+            TimerT.sleep(time)
 
     def getAnimationData(self):
         names = self.animation.getNames()
@@ -315,7 +344,7 @@ class ALProxy():
         for x in self.membres.keys():
             if self.membres[x]==part:
                 return [self.membresVirtual[x]]
-        print "error Names part"
+        print "error Names part", part
         return []
 
 
