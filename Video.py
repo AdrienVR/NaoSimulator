@@ -1,7 +1,6 @@
 ﻿
 from naoqiVirtual import ALProxy
 
-
 """
 2 classes définies dans ce fichier
 
@@ -37,7 +36,7 @@ class VideoDisplayer:
         self.__frame.quit();
         self.__unsubscribeVideo();
         self.__isRunning = False;
-        
+
     #test OK
     def __subscribeVideo(self):
         self.__name = self.__proxy.subscribe(self.__name, self.__resolution, self.__colorSpace, self.__fps);
@@ -54,10 +53,10 @@ class VideoDisplayer:
         width = image[0];
         height = image[1];
         data =  image[6];
-        
+
         picture = Image.fromstring("RGB", (width, height), data);
         self.__proxy.releaseImage(self.__name);
-        
+
         return picture;
 
     #test OK
@@ -72,12 +71,12 @@ class VideoDisplayer:
 
         self.__frame = Tk();
         self.__frame.title(title);
-            
+
         canvas = Canvas(self.__frame)
         canvas.configure(width=640, height=480)
         canvas.configure(bg="white", bd =2, relief=SUNKEN)
         canvas.pack(fill=X, side=TOP, expand=YES)
-            
+
         self.__subscribeVideo()
         self.__tick(canvas)
         self.__frame.protocol("WM_DELETE_WINDOW", self.__frameClosing);
@@ -108,20 +107,20 @@ class VisualRecognition():
             self.__xml.removeFace(name);
             isRemoved = True;
         return isRemoved;
-		
+
     #test OK
-    def removeAllFaces(self): 
+    def removeAllFaces(self):
         isRemoved = False;
         if self.__recoProxy.clearDatabase() :
             self.__xml.removeAllFaces();
             isRemoved = True;
         return isRemoved;
 
-    #test OK		
+    #test OK
     def getFaces(self):
 	return self.__xml.getFaces();
 
-    #test OK	
+    #test OK
     def displayFaces(self):
 	faces = self.__xml.getFaces();
 	for face in faces:
@@ -144,7 +143,7 @@ class VisualRecognition():
     def getObjects(self):
 	return self.__xml.getObjects();
 
-    #test OK	
+    #test OK
     def displayObjects(self):
 	objects = self.__xml.getObjects();
 	for tabObject in objects:
@@ -169,7 +168,7 @@ class VisualRecognition():
         #textArea = Entry(self.__win, textvariable=visageNameStringVar);
         textArea.focus_set();
         textArea.pack();
-            
+
         button=Button(self.__frame, text=boutonTitle, command=lambda:self.__onButtonClicked(visageNameStringVar));
         #button=Button(self.__win, text=boutonTitle, command=lambda:self.__onButtonClicked(visageNameStringVar));
         button.pack()
@@ -204,4 +203,4 @@ class VisualRecognition():
         self.__frame.destroy();
 
 
-        
+

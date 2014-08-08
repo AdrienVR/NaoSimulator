@@ -1,4 +1,6 @@
 ﻿
+import sys
+
 #from naoqi import ALProxy, ALBroker;
 from naoqiVirtual import ALProxy, ALBroker;
 
@@ -7,8 +9,6 @@ from LedActuator import *
 from Sensor import *
 from Animation import Animation
 from Video import *
-
-import sys
 
 #FakeALProxy
 

@@ -1,14 +1,13 @@
 
-
 import weakref
 import types
+import time
+
 from threading import Event
 from functools import partial
 from multiprocessing.pool import ThreadPool
 
 from PySide import QtGui, QtCore
-import time
-
 
 class ref(object):
     """

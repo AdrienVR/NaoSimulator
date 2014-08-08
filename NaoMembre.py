@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from Loader import *
+import time
+import operator
+
+import numpy
 
 from OpenGL.arrays import vbo
 from OpenGL.GL import *
 
-import numpy
-import time
-
-import operator
+from Loader import *
 
 """
 Permet de charger chaque membre à partir de chaque

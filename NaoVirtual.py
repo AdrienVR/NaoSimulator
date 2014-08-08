@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
+import time
+from NaoAPIVirtual import NaoAPI
+from naoqiVirtual import ALProxy
+
 #from NaoVirtual import Nao;
 #from Nao import Nao
 #nao = NaoControle(Nao())
-from NaoAPIVirtual import NaoAPI
-from naoqiVirtual import ALProxy
-import time
 
 """
 Utilise NaoAPIVirtual (interface anglaise)

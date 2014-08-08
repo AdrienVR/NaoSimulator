@@ -8,8 +8,9 @@ du virtualNao de ALProxy et surcharger les méthodes
 mais ca serait pas bien pour les fonctions non surchargées
 """
 import time as TimerT
+import threading, struct;
+
 from Animation import Animation
-import time, threading, struct;
 
 class ALProxy():
     # staticNao = NaoCommunicationVirtual.AbstractNaoEvenement

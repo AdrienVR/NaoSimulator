@@ -1,6 +1,7 @@
 ﻿
-from NaoMembre import Membre
 import time
+
+from NaoMembre import Membre
 ## Calcul du gris des yeux
 FORMAT_COLORS = 255.0
 EYES_GREY = 175.0

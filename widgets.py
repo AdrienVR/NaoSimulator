@@ -11,7 +11,6 @@ from PySide.QtCore import SIGNAL
 from PySide import QtCore
 from PySide import QtGui
 
-
 QWEB_ENABLE = True
 if QWEB_ENABLE:
     from PySide.QtWebKit import QWebView
