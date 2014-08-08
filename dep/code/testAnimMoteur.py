@@ -13,7 +13,7 @@ nao.dire("bonjour")
 
 nao.dire(u"Debut du test des moteurs")
 
-nao.bloquerTousMoteurs()
+nao.activerTousMoteurs()
 #mains fermees
 nao.ajouterMouvementAnimationMoteur(0, 0, 1)
 nao.ajouterMouvementAnimationMoteur(1, 0, 1)
@@ -23,3 +23,4 @@ nao.jouerAnimationMoteur()
 nao.effacerAnimationMoteur()
 
 sleep(4)
+nao.desactiverTousMoteurs()

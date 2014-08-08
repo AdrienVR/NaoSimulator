@@ -17,18 +17,25 @@ from PyQt4.QtGui import QMessageBox,QFont
 from PyQt4.QtCore import QRect, QUrl
 from PyQt4.QtCore import Qt, SIGNAL, QTimer
 from PyQt4.QtCore import QObject, QThread
-from PyQt4 import QtCore
 from PyQt4 import QtGui
+from PyQt4 import QtCore
 
-#Partie 3D
+#Partie 3D :
 from Viewer3DWidget import Viewer3DWidget
 from Loader import Objet3D
-#Affichage accents
-from DecoderAll import Decoder
-from syntaxColor import *
 #API NAO
 from Nao3D import Nao3D
 from naoqiVirtual import ALProxy
+#thread for worker and event, thread safe
+from threaders import *
+#compilation :
+from imports import *
+#Gui :
+from widgets import *
+from Editeur import EditeurPython
+#Affichage accents
+from DecoderAll import Decoder
+from syntaxColor import *
 
 #pour activer ou desactiver la redirection des
 #affichages de texte vers la console intégrée
@@ -38,8 +45,6 @@ DEBUGOUT = True
 DEBUGOUT = False
 
 ENABLE_SPACES_TO_TAB=True
-
-from imports import *
 
 ## Calcul du gris des yeux
 FORMAT_COLORS = 255.0
@@ -52,8 +57,6 @@ R_COLOR = EYES_GREY / FORMAT_COLORS
 Ssaveout = sys.stdout
 Ssaveerr = sys.stderr
 
-from widgets import *
-from Editeur import EditeurPython
 
 class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
     def __init__(self,  conteneur=None):
@@ -998,7 +1001,7 @@ class Printer(QObject):
                     self.alertCount = 30
                 self.lastTime = time.time()
 
-    # Just worker
+# Worker = launch Code in thread
 class Worker(QtCore.QThread):
 
         def __init__(self, parent=None):
@@ -1019,8 +1022,6 @@ class Worker(QtCore.QThread):
         def stop(self):
             self.__quitting.set()
             self.wait()
-
-from threaders import *
 
 a = QApplication(sys.argv)
 f = MainWindow()
