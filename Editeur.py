@@ -200,7 +200,7 @@ class EditeurPython(QObject):
         else :
             return
         f=open(fileName)
-        self.textEdit.setPlainText(unicode(f.read()))
+        self.textEdit.setPlainText(unicode(f.read().decode('utf8')))
         f.close()
         self.setStar(False)
 
@@ -208,8 +208,8 @@ class EditeurPython(QObject):
         if self.fileName!="":
             try :
                 f=open(self.fileName,"w")
-                txt=self.textEdit.toPlainText()
-                f.write(txt)
+                txt=unicode(self.textEdit.toPlainText())
+                f.write(txt.encode('utf8'))
                 f.close()
             except Exception,e:
                 print "Error :",e;

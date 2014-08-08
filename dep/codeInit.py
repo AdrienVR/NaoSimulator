@@ -30,7 +30,7 @@ nao.allumerLed(i+8)
 #moteur 0 : tete droite gauche
 #moteur 1 : tete haut bas
 
-nao.dire("Tests des moteurs. Regardez ma tete.")
+nao.dire(u"Tests des moteurs. Regardez ma tête.")
 nao.activerMoteur(0)
 nao.activerMoteur(1)
 
@@ -48,7 +48,7 @@ nao.desactiverMoteur(1)
 
 #tests reconnaissance vocale en francais
 #nao.attribuerVocabulaire("bonjour", "oui", "non");
-nao.dire("Demarrage de la detection vocale. Dites bonjour, oui ou non.");
+nao.dire(u"Démarrage de la détection vocale. Dites bonjour, oui ou non.");
 #nao.demarrerReconnaissanceVocale();
 naoEvenement.demarrerReconnaissanceVocale();
 

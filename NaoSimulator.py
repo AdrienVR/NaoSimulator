@@ -14,23 +14,29 @@ from PySide.QtGui import QApplication,  QMainWindow
 from PySide.QtGui import QFileDialog, QCursor, QToolTip
 from PySide.QtGui import QWidget,QDialog
 from PySide.QtGui import QMessageBox,QFont
-from PySide import QtCore
 from PySide.QtCore import QRect, QUrl
 from PySide.QtCore import Qt, SIGNAL, QTimer
 from PySide.QtCore import QObject, QThread
 from PySide.QtCore import QMutex
+from PySide import QtCore
 
 #Partie 3D
 from Viewer3DWidget import Viewer3DWidget
 from Loader import Objet3D
-#Affichage accents
-from DecoderAll import Decoder
-from syntaxColor import *
 #API NAO
 from Nao3D import Nao3D
 from naoqiVirtual import ALProxy
 #compilation
 from imports import *
+#for Worker, event thread safe
+from threaders import *
+# -- GUI --
+from widgets import *
+#heritage pour simplifier l'editeur
+from Editeur import EditeurPython
+#Affichage accents
+from DecoderAll import Decoder
+from syntaxColor import *
 
 #pour activer ou desactiver la redirection des
 #affichages de texte vers la console intégrée
@@ -52,11 +58,6 @@ Ssaveout = sys.stdout
 Ssaveerr = sys.stderr
 
 Global_repeat = False
-
-from widgets import *
-
-#heritage pour simplifier l'editeur
-from Editeur import EditeurPython
 
 class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
     def __init__(self,  conteneur=None):
@@ -1050,14 +1051,9 @@ class Worker(QtCore.QThread):
             self.__quitting.set()
             self.wait()
 
-from threaders import *
-
 a = QApplication(sys.argv)
 f = MainWindow()
 r = a.exec_()
-
-sys.stdout = Ssaveout
-sys.stderr = Ssaveerr
 
 if Global_repeat:
     #os.execv("launch.bat", ['launch.bat'])

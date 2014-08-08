@@ -2,23 +2,21 @@
 
 import  sys, os
 import math
+import time
 
-import PySide.QtGui as Gui
-import PySide.QtCore as Core
 from PySide.QtOpenGL import QGLWidget
 from PySide.QtCore import Signal
+from PySide import QtGui
+from PySide import QtCore
 
 from OpenGL.arrays import vbo
 from OpenGL.GL import *
-from OpenGL.GLU import *
 
 import numpy as np
 
 from GLDemo.Camera import Camera
 from GLDemo.MyGeom import Point3D
 #from Nao3D import Nao3D  #utilise virtualNao
-
-import time
 
 
 class Viewer3DWidget(QGLWidget):
@@ -55,10 +53,10 @@ class Viewer3DWidget(QGLWidget):
         self.virtualNao = None#Nao3D()
 
         self.size(0)
-        self.font = Gui.QFont("Helvetica",5)
+        self.font = QtGui.QFont("Helvetica",5)
         self.font_offset=[20,20]
 
-        self.background = Gui.QColor(125,125,255)
+        self.background = QtGui.QColor(125,125,255)
 
     def updateDt(self, dt):
         #animation
@@ -142,17 +140,17 @@ class Viewer3DWidget(QGLWidget):
         glEnable(GL_DEPTH_TEST);
 
     def mouseMoveEvent(self, mouseEvent):
-        if int(mouseEvent.buttons()) != Core.Qt.NoButton :
+        if int(mouseEvent.buttons()) != QtCore.Qt.NoButton :
             # user is dragging
             delta_x = mouseEvent.x() - self.oldx
             delta_y = self.oldy - mouseEvent.y()
-            if int(mouseEvent.buttons()) & Core.Qt.LeftButton :
-                if int(mouseEvent.buttons()) & Core.Qt.MidButton :
+            if int(mouseEvent.buttons()) & QtCore.Qt.LeftButton :
+                if int(mouseEvent.buttons()) & QtCore.Qt.MidButton :
                     #pass
                     self.camera.dollyCameraForward( 3*(delta_x+delta_y), False )
                 else:
                     self.camera.orbit(self.oldx,self.oldy,mouseEvent.x(),mouseEvent.y())
-            elif int(mouseEvent.buttons()) & Core.Qt.MidButton :
+            elif int(mouseEvent.buttons()) & QtCore.Qt.MidButton :
                 #self.camera.translateSceneRightAndUp( 0, delta_y )
                 self.decalage+= delta_y/160.0
                 pass
