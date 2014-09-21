@@ -829,10 +829,12 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.oldTime=time.time()
         self.Viewer3DWidget.updateDt(dt)
         self.virtualNao.updateSpeaking(dt)
+        self.virtualNao.updateSinging(dt)
 
         if self.virtualNao.finishedSpeaking and self.thread_code.isFinished():
             self.timer.stop()
             self.virtualNao.resetSpeaking()
+            self.virtualNao.resetSinging()
 
     def stopSimu(self):
         """
@@ -974,7 +976,7 @@ class Printer(QObject):
             self.target = None
             self.lastTime = time.time()
             self.alert = False
-            self.alertCount = 30
+            self.alertCount = 60
             self.alertTime = 8
 
         def write(self, text):
@@ -995,10 +997,10 @@ class Printer(QObject):
                     self.alertCount -= 1
                     if self.alertCount < 0:
                         self.alert = True
-                        self.alertCount = 30
+                        self.alertCount = 60
                         CallbackEvent.post_to(self.target, self.target.afficher, "\nAlert : begin skipping print frames !\n")
                 else :
-                    self.alertCount = 30
+                    self.alertCount = 60
                 self.lastTime = time.time()
 
 # Worker = launch Code in thread
