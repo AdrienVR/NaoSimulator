@@ -116,13 +116,21 @@ class Nao3D():
         #T14, H21 ou H25
         self.type="H21"
 
+
         #private
         self.timePerCharacter=0.1
         self.timeSpeaking=.0
         self.speakingList=[]
         self.speaking=""
 
+        #private
+        self.timePerNote=1
+        self.timeSinging=.0
+        self.singingList=[]
+        self.singing=""
+
         self.finishedSpeaking=True
+        self.finishedSinging=True
 
         #self.membres["eye1G"].replaceColor=[1.0,.0,.0]
         self.legG=self.membres["torseSG"]
@@ -158,6 +166,39 @@ class Nao3D():
         self.speakingList=[]
         self.speaking=""
         self.finishedSpeaking=True
+
+
+    def updateSinging(self, dt):
+        if self.timeSinging>.0:
+            self.timeSinging-=dt
+
+        elif self.timeSinging<=.0 and self.singingList!=[]:
+            self.singing=self.singingList[0]
+            self.singingList=self.singingList[1:]
+            self.timeSinging+=len(self.singing)*self.timePerCharacter
+            if len(self.singing)==1:self.timeSinging+=0.5
+
+        else:
+            self.singing=""
+            self.finishedSinging=True
+
+    def addSinging(self,texte, timeNote=0):
+        texte = "Nao joue : "+texte
+        self.finishedSinging=False
+        if self.singing=="":
+            self.singing=texte
+            if timeNote==0:
+                self.timeSinging+=len(self.singing)*self.timePerNote
+            else:
+                self.timeSinging+=timeNote
+        else:
+            self.singingList.append(texte)
+
+    def resetSinging(self):
+        self.timeSinging=.0
+        self.singingList=[]
+        self.singing=""
+        self.finishedSinging=True
 
     def ImageLoad(self,filename):
         #self.imageText=Gui.QImage(filename,"RGB")

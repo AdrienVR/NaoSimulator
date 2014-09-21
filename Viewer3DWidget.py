@@ -54,7 +54,7 @@ class Viewer3DWidget(QGLWidget):
 
         self.size(0)
         self.font = QtGui.QFont("Helvetica",5)
-        self.font_offset=[20,20]
+        self.font_offset=[20,20,20]
 
         self.background = QtGui.QColor(125,125,255)
 
@@ -107,6 +107,7 @@ class Viewer3DWidget(QGLWidget):
         glLoadIdentity();
 
         # scene pos and size
+        self.renderText(self.font_offset[0],self.font_offset[2],self.virtualNao.singing, self.font)
         self.renderText(self.font_offset[0],self.font_offset[1],self.virtualNao.speaking, self.font)
         time.sleep(0.015)
 
@@ -116,6 +117,7 @@ class Viewer3DWidget(QGLWidget):
         glViewport(0, 0, widthInPixels, heightInPixels)
         self.font.setPointSize(int(2.5*widthInPixels/100))
         self.font_offset[1] = heightInPixels - (20)
+        self.font_offset[2] = 10 + int(2.75*widthInPixels/100)
 
     def initializeGL(self):
         glEnable(GL_BLEND)

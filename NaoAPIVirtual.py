@@ -40,6 +40,7 @@ class NaoAPI():
             self.__memory = memoryProxy;
             self.__speechReco = SpeechRecognitionSensor(speechRecoProxy);
             self.__videoDisplayer = VideoDisplayer(videoProxy);
+            self.__player = ALProxy();
             #self.__visualReco = VisualRecognition(faceRecoProxy, self.__xml);
             self.__createBroker();
 
@@ -86,3 +87,9 @@ class NaoAPI():
 
     def getVisualReco(self):
         return self.__visualReco;
+
+    def getPlayer(self):
+        return self.__player;
+
+    def getSound(self):
+        return self.__player;

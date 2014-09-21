@@ -9,6 +9,12 @@ naoEvenement.demarrerReconnaissanceVocale();
 
 nao.demarrerParallelisation()
 
+
+nao.jouerMusique("Mozart")
+nao.jouerSon(1,1,1,1)
+nao.jouerSi2(1)
+
+
 #tests parole
 nao.dire("bonjour")
 #tests leds
@@ -30,7 +36,7 @@ nao.allumerLed(i+8)
 #moteur 0 : tete droite gauche
 #moteur 1 : tete haut bas
 
-nao.dire(u"Tests des moteurs. Regardez ma tête.")
+nao.dire(u"Tests des moteurs. Regardez ma tete.")
 nao.activerMoteur(0)
 nao.activerMoteur(1)
 
@@ -48,7 +54,7 @@ nao.desactiverMoteur(1)
 
 #tests reconnaissance vocale en francais
 #nao.attribuerVocabulaire("bonjour", "oui", "non");
-nao.dire(u"Démarrage de la détection vocale. Dites bonjour, oui ou non.");
+nao.dire(u"Demarrage de la detection vocale. Dites bonjour, oui ou non.");
 #nao.demarrerReconnaissanceVocale();
 naoEvenement.demarrerReconnaissanceVocale();
 

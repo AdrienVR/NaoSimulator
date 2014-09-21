@@ -420,6 +420,22 @@ class ALProxy():
     def startSpeechRecognition(self):
         pass
 
+    ### SOUND
+    def playFile(self, fichier):
+        self.virtualNao.addSinging(fichier,5)
+        if not ALProxy.parallelism:
+            self.timePerCharacter=1
+            TimerT.sleep(5)
+
+    def stop(self):
+        pass
+
+    def playSine(self, frequence, gain, pan, duree):
+        self.virtualNao.addSinging(" frequence : "+str(frequence), duree)
+        if not ALProxy.parallelism:
+            self.timePerCharacter=1
+            TimerT.sleep(duree)
+
 class ALBroker():
     def __init__(self,name,adress,port,adressRec,portRec):
         self.name=name

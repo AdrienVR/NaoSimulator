@@ -26,6 +26,66 @@ class Nao:
     def arreterParallelisation(self):
         self.__nao.setParallelism(False);
 
+
+    #///////////////////////////////////////////////////////////////
+    #        Fonctions permettant de manipuler le son de Nao       /
+    #///////////////////////////////////////////////////////////////
+
+    def jouerMusique(self, fichier):
+        self.__nao.getPlayer().playFile(fichier);
+
+    def arreterMusique(self):
+        self.__nao.getPlayer().stop();
+
+    def jouerSon(self, frequence, gain, pan, duree):
+        self.__nao.getSound().playSine(frequence, gain, pan, duree);
+
+    def jouerSi2(self, duree):
+        self.jouerSon(247, 100, 0, duree);
+
+    def jouerDo3(self, duree):
+        self.jouerSon(262, 100, 0, duree);
+
+    def jouerDod3(self, duree):
+        self.jouerSon(277, 100, 0, duree);
+
+    def jouerRe3(self, duree):
+        self.jouerSon(294, 100, 0, duree);
+
+    def jouerRed3(self, duree):
+        self.jouerSon(311, 100, 0, duree);
+
+    def jouerMi3(self, duree):
+        self.jouerSon(330, 100, 0, duree);
+
+    def jouerFa3(self, duree):
+        self.jouerSon(349, 100, 0, duree);
+
+    def jouerFad3(self, duree):
+        self.jouerSon(370, 100, 0, duree);
+
+    def jouerSol3(self, duree):
+        self.jouerSon(392, 100, 0, duree);
+
+    def jouerSold3(self, duree):
+        self.jouerSon(415, 100, 0, duree);
+
+    def jouerLa3(self, duree):
+        self.jouerSon(440, 100, 0, duree);
+
+    def jouerLad3(self, duree):
+        self.jouerSon(466, 100, 0, duree);
+
+    def jouerSi3(self, duree):
+        self.jouerSon(494, 100, 0, duree);
+
+    def jouerDo4(self, duree):
+        self.jouerSon(523, 100, 0, duree);
+
+    def jouerDod4(self, duree):
+        self.jouerSon(554, 100, 0, duree);
+
+
     ################################################################
     #       Fonctions permettant de manipuler la voix de Nao       #
     ################################################################
