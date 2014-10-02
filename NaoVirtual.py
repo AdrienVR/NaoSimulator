@@ -33,6 +33,13 @@ class Nao:
 
     def jouerMusique(self, fichier):
         self.__nao.getPlayer().playFile(fichier);
+        import subprocess, os, sys
+        if sys.platform.startswith('darwin'):
+            subprocess.call(('open', fichier))
+        elif os.name == 'nt':
+            os.startfile(fichier)
+        elif os.name == 'posix':
+            subprocess.call(('xdg-open', fichier))
 
     def arreterMusique(self):
         self.__nao.getPlayer().stop();

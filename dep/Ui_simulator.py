@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'simulator.ui'
 #
-# Created: Fri Aug 01 16:15:51 2014
+# Created: Thu Oct 02 20:45:04 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -1088,7 +1088,6 @@ class Ui_MainWindow(object):
         self.actionDocumentation.setText(QtGui.QApplication.translate("MainWindow", "Documentation...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionApropos.setText(QtGui.QApplication.translate("MainWindow", "À propos...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionRun.setText(QtGui.QApplication.translate("MainWindow", "Run", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionRun.setShortcut(QtGui.QApplication.translate("MainWindow", "F5", None, QtGui.QApplication.UnicodeUTF8))
         self.actionPause.setText(QtGui.QApplication.translate("MainWindow", "Pause", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStop.setText(QtGui.QApplication.translate("MainWindow", "Stop", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStop.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+F6", None, QtGui.QApplication.UnicodeUTF8))

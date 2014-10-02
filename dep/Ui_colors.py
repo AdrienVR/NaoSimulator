@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'colors.ui'
 #
-# Created: Fri Aug 01 16:15:53 2014
+# Created: Thu Oct 02 20:45:06 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
