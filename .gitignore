@@ -1,6 +1,5 @@
-# =============== #
-# Unity generated #
-# =============== #
+
+# ignore the following in commit :
 build/
 
 *.pyc
