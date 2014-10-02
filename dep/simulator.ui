@@ -2059,9 +2059,6 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>Run</string>
    </property>
-   <property name="shortcut">
-    <string>F5</string>
-   </property>
   </action>
   <action name="actionPause">
    <property name="icon">

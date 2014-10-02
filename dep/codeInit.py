@@ -9,7 +9,7 @@ naoEvenement.demarrerReconnaissanceVocale();
 
 nao.demarrerParallelisation()
 
-nao.jouerMusique("Mozart")
+nao.jouerMusique("Random Box")
 nao.jouerSon(1,1,1,1)
 nao.jouerSi2(1)
 

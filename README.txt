@@ -7,6 +7,8 @@ main : NaoSimulator.py
 
 compiler : python setup.py build
 
+installation des dépendances sous Linux :
+
 sudo apt-get install python-qt4
 sudo apt-get install python-opengl
 sudo apt-get install python-qt4-gl
