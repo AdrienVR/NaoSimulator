@@ -26,20 +26,22 @@ class Nao:
     def arreterParallelisation(self):
         self.__nao.setParallelism(False);
 
-
     #///////////////////////////////////////////////////////////////
     #        Fonctions permettant de manipuler le son de Nao       /
     #///////////////////////////////////////////////////////////////
 
     def jouerMusique(self, fichier):
-        self.__nao.getPlayer().playFile(fichier);
-        import subprocess, os, sys
-        if sys.platform.startswith('darwin'):
-            subprocess.call(('open', fichier))
-        elif os.name == 'nt':
-            os.startfile(fichier)
-        elif os.name == 'posix':
-            subprocess.call(('xdg-open', fichier))
+        try:
+            self.__nao.getPlayer().playFile(fichier);
+            import subprocess, os, sys
+            if sys.platform.startswith('darwin'):
+                subprocess.call(('open', fichier))
+            elif os.name == 'nt':
+                os.startfile(fichier)
+            elif os.name == 'posix':
+                subprocess.call(('xdg-open', fichier))
+        except Exception,e:
+            print("Error playing music file :", e)
 
     def arreterMusique(self):
         self.__nao.getPlayer().stop();
