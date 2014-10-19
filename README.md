@@ -19,10 +19,8 @@ This tool allows to ease the learning of Python programming with the NAO robot.
 
 main : NaoSimulator.py
 
-| ![Python 2.7](https://www.python.org/static/img/python-logo.png "Python 2.7") |
-|:----:|
-| ![Qt4](http://www.fevrierdorian.com/blog/public/logos/Qt_logo002.png "Qt4") |
-|:----:|
+| ![Python 2.7](https://www.python.org/static/img/python-logo.png "Python 2.7") | ![Qt4](http://www.fevrierdorian.com/blog/public/logos/Qt_logo002.png "Qt4") |
+|:----:|:----:|
 
 ## Author
 
