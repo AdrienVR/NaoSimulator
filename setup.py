@@ -15,8 +15,9 @@ if sys.platform == "win32":
 
 importationCode=[]
 
-
 dependances = ["doc/","dep/","objects/"]
+
+icone = [r"dep/ico.png"]
 
 #QWEB
 includefiles = ["rsc_rc.py",(os.path.join(os.path.dirname(PyQt4.uic.__file__),
@@ -32,9 +33,14 @@ packages = ["encodings",
 
 setup(
     name = "NAO_Simulator_2014",
-    version = "1.0.5",
+    author = "Adrien Vernotte",
+    version = "1.0.0",
     description = "Simulateur gratuit de NAO - Adrien Vernotte - LGPL v2.1",
-    executables = [Executable("NaoSimulator.py", base = base)],
+    executables = [Executable("NaoSimulator.py", 
+                                base = base,
+                                icon = icone[0]
+                              )
+                   ],
     options = {'build_exe': {'excludes':excludes,"compressed":True,
                              'packages':packages,'include_files':includefiles,
                              "includes":includes}}
