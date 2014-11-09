@@ -8,8 +8,8 @@ This tool allows to ease the learning of Python programming with the NAO robot.
 
 ## Download
 * For Windows :   
-		[NS 1.0.0 zip : 22 mo](https://drive.google.com/file/d/0B2xlFxzCEekzR2pkOHpnRlpLRTQ/view?usp=sharing)  
-		[NS 1.0.0 7z : 16 mo](https://drive.google.com/file/d/0B2xlFxzCEekzSGhvUlNXcTM1RkU/view?usp=sharing)  
+		[NS 1.0.0 zip : 25 mo](https://drive.google.com/file/d/0B2xlFxzCEekzbWxFMm56ajJ1UTg/view?usp=sharing)  
+		[NS 1.0.0 7z : 18 mo](https://drive.google.com/file/d/0B2xlFxzCEekzbExqOGtra244Yms/view?usp=sharing)  
 	
 ## Dependency
 
