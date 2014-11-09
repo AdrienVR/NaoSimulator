@@ -21,7 +21,9 @@ importationCode=[]
 
 dependances = ["doc/","dep/","objects/"]
 
-includefiles = importationCode+dependances
+icone = [r"img/ico.png"]
+
+includefiles = importationCode+dependances+icone
 
 includes = []
 excludes = []
@@ -31,9 +33,14 @@ packages = ["encodings",
 
 setup(
     name = "NAO_Simulator",
-    version = "0.9",
-    description = "Simulateur gratuit de NAO",
-    executables = [Executable("NaoSimulator.py", base = base)],
+    author = "Adrien Vernotte",
+    version = "1.0.0",
+    description = "Simulateur de NAO gratuit",
+    executables = [Executable("NaoSimulator.py", 
+                              base = base,
+                              icon = icone[0]
+                              )
+                   ],
     options = {'build_exe': {'excludes':excludes,"compressed":True,
                              'packages':packages,'include_files':includefiles,
                              "includes":includes}}
