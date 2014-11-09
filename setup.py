@@ -17,7 +17,7 @@ importationCode=[]
 
 dependances = ["doc/","dep/","objects/"]
 
-icone = [r"dep/ico.png"]
+icone = [r"dep/48.ico"]
 
 #QWEB
 includefiles = ["rsc_rc.py",(os.path.join(os.path.dirname(PyQt4.uic.__file__),
