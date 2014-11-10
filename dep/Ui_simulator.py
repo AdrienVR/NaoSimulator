@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'simulator.ui'
 #
-# Created: Thu Oct 02 20:45:04 2014
+# Created: Mon Nov 10 14:59:02 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -887,6 +887,7 @@ class Ui_MainWindow(object):
         self.actionColors = QtGui.QAction(MainWindow)
         self.actionColors.setObjectName("actionColors")
         self.actionRelancer = QtGui.QAction(MainWindow)
+        self.actionRelancer.setEnabled(False)
         self.actionRelancer.setObjectName("actionRelancer")
         self.actionIndenter = QtGui.QAction(MainWindow)
         self.actionIndenter.setObjectName("actionIndenter")

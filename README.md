@@ -34,7 +34,7 @@ sudo apt-get install python-imaging-tk
 Master is the PySide branch. An other branch contains code with the PyQt4 API.  
 main : NaoSimulator.py
 
-| ![Python 2.7](https://www.python.org/static/img/python-logo.png "Python 2.7") | ![PySide](https://raw.githubusercontent.com/AdrienVR/NaoSimulator/master/img/pysidelogo.jpg  "PySide") |
+| ![Python 2.7](https://www.python.org/static/img/python-logo.png "Python 2.7") | ![PySide](https://raw.githubusercontent.com/AdrienVR/NaoSimulator/master/img/pysidelogo.png "PySide") |
 |:----:|:----:|
 
 ## Author
