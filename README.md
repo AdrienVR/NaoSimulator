@@ -1,5 +1,11 @@
 NaoSimulator
 ============
+
+WARNING !   
+------
+Please keep in mind that the stable version is [PyQt branch](https://github.com/AdrienVR/NaoSimulator/tree/pyqtBranch)
+------
+
 NaoSimulator is a free open source [NAO robot](http://www.aldebaran.com) simulator.  
 This tool allows to ease the learning of Python programming with the NAO robot.  
 
