@@ -22,6 +22,7 @@ This tool allows to ease the learning of Python programming with the NAO robot.
 ## Linux Dependencies :
 
 sudo apt-get install python-qt4  
+sudo apt-get install python-qt4-gl  
 sudo apt-get install python-opengl  
 sudo apt-get install python-numpy  
 sudo apt-get install python-imaging  
