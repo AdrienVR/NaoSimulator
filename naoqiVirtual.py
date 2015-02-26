@@ -147,7 +147,7 @@ class ALProxy():
                     ALProxy.getFunction(function)()
                     return 1
                 else :
-                    print mot.strip()+"is not in Vocabulary list"
+                    print mot.strip()+" is not in Vocabulary list"
         ##except:
         ##    print "Pas de AbstractNaoEvenement instancié"
         return 0
