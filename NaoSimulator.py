@@ -822,10 +822,8 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
     ##################################### RUN CODE ###############################
 
     def animate(self):
-        #dt=0.05#self.oldTime-time.time()
-        dt=self.oldTime-time.time()
-        #if dt>0.05:dt=0.05
-        if 1:dt=0.05
+        #dt=self.oldTime-time.time()
+        dt=0.05
         self.oldTime=time.time()
         self.Viewer3DWidget.updateDt(dt)
         self.virtualNao.updateSpeaking(dt)
@@ -869,15 +867,42 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
             for x in range(self.tabWidget2.count()-2):
                 self.tabWidget2.setTabEnabled(x,False)
             self.running=True
-            self.runCode()
+            self.runCode2()
         else :
             print "running"
+
+    
+    def runThreadCode(self):
+        wn = WorkerNormal()
+        wn.setUIParent(self)
+        wn.start()
+
+    def runCode2(self):
+        """
+        Démarre le code écrit dans l'éditeur.
+        """
+        if not DEBUGOUT :
+            sys.stdout = self.printer
+            if not DEBUGERR:
+                sys.stderr = self.printer
+
+        if self.runReal:
+            try:
+                import naoqi
+            except:
+                a=QMessageBox()
+                s=u"Erreur, NaoQI pour Python n'est pas installé sur cet ordinateur"
+                a.information(self,u"Erreur à la connexion au robot",s)
+                return
+
+        if self.runReal!=self.actionRunReal.isChecked():
+            self.changeReseau()
+        self.runThreadCode()
 
     def runCode(self):
         """
         Démarre le code écrit dans l'éditeur.
         """
-
         if not DEBUGOUT :
             sys.stdout = self.printer
             if not DEBUGERR:
@@ -970,6 +995,34 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
     def customEvent(self, e):
         e.callback()
 
+def launch(parent):
+        """
+        Démarre le code écrit dans l'éditeur.
+        """
+        p=parent.textEdit.toPlainText()#.toUtf8()
+        t=Decoder().decode(p)
+        t=p.toUtf8()
+        if ENABLE_SPACES_TO_TAB:
+            t.replace("    ","\t")
+
+        if parent.runReal:
+            realT=t[:]
+            a,b=parent.config.getProxy()
+            h=str("NaoAPI("+'"'+str(a)+'"'+","+str(b)+")")
+            realT.replace("NaoAPI()",h)
+        t.replace("from Nao import",
+                      "from NaoVirtual import")
+        if parent.runReal:
+            parent.thread.setCode(unicode(realT))
+            parent.thread.start()
+            time.sleep(1.5)
+
+        if (parent.actionRunFake.isChecked()):
+            parent.thread_code.setCode(unicode(t))
+        else:
+            parent.thread_code.setCode("pass")
+        parent.thread_code.start()
+
 # Printer for shell
 class Printer(QObject):
 
@@ -1014,6 +1067,9 @@ class Worker(QtCore.QThread):
             self.__quitting = Event()
             self.code=""
 
+        def __del__(self):
+            self.wait()
+
         def setCode(self, code):
             self.code = code
 
@@ -1027,6 +1083,19 @@ class Worker(QtCore.QThread):
         def stop(self):
             self.__quitting.set()
             self.wait()
+
+
+# Worker = launch Code in thread
+class WorkerNormal(QtCore.QThread):
+    def __init__(self, parent = None):
+        QtCore.QThread.__init__(self, parent)
+        self.UIparent = None
+    def __del__(self):
+        self.wait()
+    def setUIParent(self, UIparent):
+        self.UIparent = UIparent
+    def run(self):
+        launch(self.UIparent)
 
 a = QApplication(sys.argv)
 f = MainWindow()
