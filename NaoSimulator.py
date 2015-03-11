@@ -914,14 +914,17 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
             self.thread.start()
             time.sleep(1.5)
 
-        self.thread_code.setCode(unicode(t))
+        if (self.actionRunFake.isChecked()):
+            self.thread_code.setCode(unicode(t))
+        else:
+            self.thread_code.setCode("pass")
         self.thread_code.start()
-        #except Exception, error :
-        #    print "error"
-##            a=QMessageBox()
-##            s=u"Erreur, la connexion avec le robot est impossible"
-##            a.information(self,u"Erreur à la connexion au robot",s)
-
+            #except Exception, error :
+            #    print "error"
+    ##            a=QMessageBox()
+    ##            s=u"Erreur, la connexion avec le robot est impossible"
+    ##            a.information(self,u"Erreur à la connexion au robot",s)
+    
 
         return
 

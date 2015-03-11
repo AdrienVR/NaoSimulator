@@ -1950,6 +1950,8 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="actionRunReal"/>
     <addaction name="actionConfiguration"/>
+    <addaction name="separator"/>
+    <addaction name="actionRunFake"/>
    </widget>
    <widget class="QMenu" name="menuRun">
     <property name="title">
@@ -2254,6 +2256,17 @@ p, li { white-space: pre-wrap; }
   <action name="actionAfficherPosition">
    <property name="text">
     <string>Afficher Position</string>
+   </property>
+  </action>
+  <action name="actionRunFake">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Exécuter sur NAO virtuel</string>
    </property>
   </action>
  </widget>
