@@ -118,6 +118,7 @@ class Membre():
 
     def setAngleFromPercent(self, axe, p):
         self.rotate[axe]= p/100.0 *((self.max[axe]-self.min[axe]))+self.min[axe]
+        #print self.rotate[axe], "axe "+str(axe)
 
     def setAngleFromPercentList(self, pl):
         for x in range(len(pl)):

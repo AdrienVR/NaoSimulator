@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import time
-from NaoAPIVirtual import NaoAPI
-from naoqiVirtual import ALProxy
-
 #from NaoVirtual import Nao;
 #from Nao import Nao
-#nao = NaoControle(Nao())
+#nao = Nao(NaoAPI())
+from NaoAPIVirtual import NaoAPI
+from naoqiVirtual import ALProxy
+import time
 
 """
 Utilise NaoAPIVirtual (interface anglaise)
@@ -40,8 +39,8 @@ class Nao:
                 os.startfile(fichier)
             elif os.name == 'posix':
                 subprocess.call(('xdg-open', fichier))
-        except Exception,e:
-            print("Error playing music file :", e)
+        except Exception, e:
+            print("Error while playing music file :", e)
 
     def arreterMusique(self):
         self.__nao.getPlayer().stop();
@@ -151,7 +150,6 @@ class Nao:
             joint = self.__nao.getMotors().addSpaces(joint, 9);
             data = "%s : %s" %(joint, normPosition);
             print data
-
     #test OK
     def activerTousMoteurs(self):
         self.__nao.getMotors().setStiffnesses(1);
@@ -180,7 +178,6 @@ class Nao:
             self.__nao.getMotors().setMotorAngle(numeroMoteur, position, temps);
             return
         self.__nao.getMotors().setMotorAngle(numeroMoteur, vraiPosition, temps);
-
     #test OK
     def recupererPositionMoteur(self, numeroMoteur):
         minPosition, maxPosition = self.__recupererMinMaxMoteur(numeroMoteur);
@@ -611,23 +608,23 @@ class AbstractNaoEvenement():
     def afficherNumeroCapteursTactiles(self):
         for i in range(len(self.capteursTactiles)):
             if self.capteursTactiles[i]=="HandRightBackTouched":
-                    print("%s : MAIN DROITE - ZONE DU MILIEU" %(i))
+                 print("%s : MAIN DROITE - ZONE DU MILIEU" %(i))
             elif self.capteursTactiles[i]=="HandRightLeftTouched":
-                print("%s : MAIN DROITE - ZONE DE GAUCHE" %(i))
+                 print("%s : MAIN DROITE - ZONE DE GAUCHE" %(i))
             elif self.capteursTactiles[i]=="HandRightRightTouched":
-                print("%s : MAIN DROITE - ZONE DE DROITE" %(i))
+                 print("%s : MAIN DROITE - ZONE DE DROITE" %(i))
             elif self.capteursTactiles[i]=="HandLeftBackTouched":
-                print("%s : MAIN GAUCHE - ZONE DU MILIEU" %(i))
+                 print("%s : MAIN GAUCHE - ZONE DU MILIEU" %(i))
             elif self.capteursTactiles[i]=="HandLeftLeftTouched":
-                print("%s : MAIN GAUCHE - ZONE DE GAUCHE" %(i))
+                 print("%s : MAIN GAUCHE - ZONE DE GAUCHE" %(i))
             elif self.capteursTactiles[i]=="HandLeftRightTouched":
-                print("%s : MAIN GAUCHE - ZONE DE DROITE" %(i))
+                 print("%s : MAIN GAUCHE - ZONE DE DROITE" %(i))
             elif self.capteursTactiles[i]=="FrontTactilTouched":
-                print("%s : TETE - ZONE DE DEVANT" %(i))
+                 print("%s : TETE - ZONE DE DEVANT" %(i))
             elif self.capteursTactiles[i]=="MiddleTactilTouched":
-                print("%s : TETE - ZONE DU MILIEU" %(i))
+                 print("%s : TETE - ZONE DU MILIEU" %(i))
             elif self.capteursTactiles[i]=="RearTactilTouched":
-                print("%s : TETE - ZONE DE DERRIERE" %(i))
+                 print("%s : TETE - ZONE DE DERRIERE" %(i))
 
         print("\n")
         print("ETAT 1 : CONTACT AVEC LE CAPTEUR")
@@ -642,6 +639,7 @@ class AbstractNaoEvenement():
     def traiterReconnaissanceTactile(self, location, etat):
         pass;
 
+
     def _tactileEvent(self, location, state):
         self.recoTactile = True
         self.location = location
@@ -653,3 +651,7 @@ class AbstractNaoEvenement():
         self.location = -1
         self.etat = 0
         #self.stopTactileEventRecognition()
+
+
+
+

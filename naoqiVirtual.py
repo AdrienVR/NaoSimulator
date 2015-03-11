@@ -8,9 +8,8 @@ du virtualNao de ALProxy et surcharger les méthodes
 mais ca serait pas bien pour les fonctions non surchargées
 """
 import time as TimerT
-import threading, struct;
-
 from Animation import Animation
+import time, threading, struct;
 
 class ALProxy():
     # staticNao = NaoCommunicationVirtual.AbstractNaoEvenement
@@ -36,20 +35,20 @@ class ALProxy():
                        "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand",
                        "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand"],
 
-                "H21":['HeadYaw', 'HeadPitch',
+               "H21":['HeadYaw', 'HeadPitch',
                        'LShoulderPitch', 'LShoulderRoll', 'LElbowYaw', 'LElbowRoll',
                        'LHipYawPitch', 'LHipRoll', 'LHipPitch', 'LKneePitch', 'LAnklePitch', 'LAnkleRoll',
                        'RHipYawPitch', 'RHipRoll', 'RHipPitch', 'RKneePitch', 'RAnklePitch', 'RAnkleRoll',
                        'RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll'],
-                #not tested, may not work :
-                "H25":['HeadYaw', 'HeadPitch',
+               #not tested, may not work :
+               "H25":['HeadYaw', 'HeadPitch',
                        'LShoulderPitch', 'LShoulderRoll', 'LElbowYaw', 'LElbowRoll', "LWristYaw", "LHand",
                        'LHipYawPitch', 'LHipRoll', 'LHipPitch', 'LKneePitch', 'LAnklePitch', 'LAnkleRoll',
                        'RHipYawPitch', 'RHipRoll', 'RHipPitch', 'RKneePitch', 'RAnklePitch', 'RAnkleRoll',
-                       'RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll',"RWristYaw", "RHand"],
+                       'RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll',"RWristYaw", "RHand"]
                 }
+    parallelism = False;
 
-    parallelism = False
 
     def __init__(self,name=0,adress=0,port=0):
         self.name=name
@@ -63,9 +62,7 @@ class ALProxy():
         # Après copie de la liste renvoyée par le naoqi réel,
         # on copie tous les éléments de la partie gauche pour les coller et remplacer ceux de
         # la partie droite.
-        # Données : [angleMin, angleMax, (vitesseMin, vitesseMax] pas sur, ptetre velocite)
-        # Attention :
-        # inversion des limites aussi sur certains membres de la partie de droite (et aussi mais un peu moins sur partie de gauche, sans doute probleme de capture sur partie de gauche)
+        # Données : [angleMin, angleMax, vitesseMin, vitesseMax]
         self.limitsAll={"T14":[[-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.671951770782 , 0.514872133732 , 7.19407272339 , 1.20000004768 ],
                                [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ],
                                [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [1.32645022869, -0.314159274101 , 7.19407272339 , 1.20000004768 ], [2.08566856384 , -2.08566856384 , 8.26797389984 , 1.20000004768 ], [ -0.0349065847695, -1.54461634159 , 7.19407272339 , 1.20000004768 ], [1.82386910915 , -1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ]],
@@ -80,7 +77,7 @@ class ALProxy():
                                [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ],
                                [-1.1452850103378296, 0.7407177090644836, 4.161737442016602, 3.200000047683716], [-0.37943458557128906, 0.7904596328735352, 4.161737442016602, 3.200000047683716], [-1.535889744758606, 0.4839797914028168, 6.40239143371582, 3.200000047683716], [-0.09232791513204575, 2.112546443939209, 6.40239143371582, 3.200000047683716], [-1.1894419193267822, 0.9225810170173645, 6.40239143371582, 3.200000047683716], [-0.3977605402469635, 0.7689920663833618, 4.161737442016602, 3.200000047683716],
                                [-1.1452850103378296, 0.7407177090644836, 4.161737442016602, 3.200000047683716], [-0.37943458557128906, 0.7904596328735352, 4.161737442016602, 3.200000047683716], [-1.535889744758606, 0.4839797914028168, 6.40239143371582, 3.200000047683716], [-0.09232791513204575, 2.112546443939209, 6.40239143371582, 3.200000047683716], [-1.1894419193267822, 0.9225810170173645, 6.40239143371582, 3.200000047683716], [-0.3977605402469635, 0.7689920663833618, 4.161737442016602, 3.200000047683716],
-                               [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [1.32645022869, -0.314159274101 , 7.19407272339 , 1.20000004768 ], [2.08566856384 , -2.08566856384 , 8.26797389984 , 1.20000004768 ], [ -0.0349065847695, -1.54461634159 , 7.19407272339 , 1.20000004768 ], [1.82386910915 , -1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ]],
+                               [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-0.314159274101 , 1.32645022869 , 7.19407272339 , 1.20000004768 ], [-2.08566856384 , 2.08566856384 , 8.26797389984 , 1.20000004768 ], [-1.54461634159 , -0.0349065847695 , 7.19407272339 , 1.20000004768 ], [-1.82386910915 , 1.82386910915 , 24.6229305267 , 0.759999990463 ], [0.0 , 1.0 , 8.32999992371 , 0.550000011921 ]]
                         }
 
         self.ledMnM={'RightFaceLed8':"eye1D", 'RightFaceLed7':"eye2D",
@@ -150,14 +147,15 @@ class ALProxy():
                     ALProxy.getFunction(function)()
                     return 1
                 else :
-                    print mot.strip()+"is not in Vocabulary list"
+                    print mot.strip()+" is not in Vocabulary list"
         ##except:
         ##    print "Pas de AbstractNaoEvenement instancié"
-        ##return 0
+        return 0
 
     @staticmethod
     def setType(robot="T14"):
         ALProxy.typeRobot=robot
+        #reconstruction des membres
         ALProxy.membres={}
         for a in range(len(ALProxy.jointsAll[robot])):
             ALProxy.membres[a]=ALProxy.jointsAll[robot][a]
@@ -181,6 +179,7 @@ class ALProxy():
                                 14:'hancheD1', 15:'cuisseD1', 16:'cuisseD0', 17:'molletD0', 18:'piedD0', 19:'piedD1',
                                 20:"bicepsD0", 21:"bicepsD2", 22:"coudeD1", 23:"coudeD2", 24:"mainD1", 25:"doigt1D0"
                                 }
+
 
     @staticmethod
     def getKeys():
@@ -253,6 +252,14 @@ class ALProxy():
     def getAngles(self, part="Body", isStg=True):
         return [0,0,0,0]
 
+    #a verifier
+    def getMinAngle(self, numero):
+        return self.limitsAll[self.typeRobot][0]
+
+    #a verifier
+    def getMaxAngle(self, numero):
+        return self.limitsAll[self.typeRobot][1]
+
     def angleInterpolation(self, name, motorAngle, time, isAbsolute):
         num=self.getNumberFromName(name)
         nom=self.membresVirtual[num][:-1]
@@ -305,7 +312,7 @@ class ALProxy():
         for i in range(len(times)):
             duration = durations[i];
             motorAngle = values[i];
-            #time.sleep(duration);
+            time.sleep(duration);
             self.angleInterpolation(name, motorAngle, duration, True);
 
     #test OK
@@ -328,9 +335,6 @@ class ALProxy():
 
         return durationTab;
 
-    def getNameFromNumber(self, number):
-        return self.membres[number]
-
     def getNumberFromName(self, name):
         num=0
         for x in self.membres:
@@ -338,6 +342,9 @@ class ALProxy():
                 return x
         print "error numberName"
         return num
+
+    def getNameFromNumber(self, number):
+        return self.membres[number]
 
     def getNamesFromPart(self, part):
         if part.lower()=="body":
@@ -419,7 +426,6 @@ class ALProxy():
 
     def startSpeechRecognition(self):
         pass
-
     ### SOUND
     def playFile(self, fichier):
         self.virtualNao.addSinging(fichier,5)

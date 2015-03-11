@@ -1,13 +1,9 @@
-
 import sys
-import os
 
 from cx_Freeze import setup, Executable
-from PySide.QtCore import *
-from PySide.QtGui import *
-
-from PySide.QtUiTools import *
-import PySide
+import PyQt4
+import os
+import PyQt4.uic
 
 """
 utiliser : python setup.py build pour compiler.
@@ -21,27 +17,31 @@ importationCode=[]
 
 dependances = ["doc/","dep/","objects/"]
 
-icone = [r"img/ico.png"]
+icone = [r"dep/48.ico"]
 
-includefiles = importationCode+dependances+icone
+#QWEB
+includefiles = ["rsc_rc.py",(os.path.join(os.path.dirname(PyQt4.uic.__file__),
+"widget-plugins"), "PyQt4.uic.widget-plugins")]+importationCode+dependances
+#QWEB!
 
-includes = []
+includes = ["PyQt4.QtNetwork"]
 excludes = []
 packages = ["encodings",
             "OpenGL",
-            "OpenGL.arrays"] # or just this one
+            "OpenGL.arrays" # or just this one
+            ]
 
 setup(
-    name = "NAO_Simulator",
+    name = "NAO_Simulator_2014",
     author = "Adrien Vernotte",
     version = "1.0.0",
-    description = "Simulateur de NAO gratuit",
+    description = "Simulateur gratuit de NAO - Adrien Vernotte - LGPL v2.1",
     executables = [Executable("NaoSimulator.py", 
-                              base = base,
-                              icon = icone[0]
+                                base = base,
+                                icon = icone[0]
                               )
                    ],
     options = {'build_exe': {'excludes':excludes,"compressed":True,
                              'packages':packages,'include_files':includefiles,
                              "includes":includes}}
-     )
+    )

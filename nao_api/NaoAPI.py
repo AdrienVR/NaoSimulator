@@ -57,7 +57,7 @@ class NaoAPI:
         except Exception,e:
             print "Could not communicate with the robot";
             print "Error was :",e;
-            sys.exit(1);
+            #sys.exit(1);
 
     def __createBroker(self):
         self.__broker = ALBroker("ENIB_EventBroker","0.0.0.0", 0, self.__address,self.__port)

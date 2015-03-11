@@ -1,28 +1,22 @@
 # -*- coding: utf-8 -*-
 
-import sys
-import os
+import os, sys
 
-## QT libs
-from PySide.QtGui import QTextBrowser
-from PySide.QtGui import QWidget,QSplashScreen,QDialog
-from PySide.QtGui import QFont
-from PySide.QtCore import SIGNAL
-from PySide import QtCore
-from PySide import QtGui
+from PyQt4.QtGui import QWidget, QTextBrowser
+from PyQt4.QtGui import QFileDialog, QCursor, QToolTip
+from PyQt4.QtGui import QWidget,QSplashScreen,QDialog
+from PyQt4.QtGui import QColorDialog, QPalette, QColor
+from PyQt4.QtGui import QFont
+from PyQt4.QtCore import SIGNAL
+from PyQt4 import QtGui
+from PyQt4 import QtCore
+from PyQt4 import uic
 
-QWEB_ENABLE = True
-if QWEB_ENABLE:
-    from PySide.QtWebKit import QWebView
-
-# UI:
-## Chargement de chaque design de fenetre.
-from dep.Ui_simulator import Ui_MainWindow
-from dep.Ui_aPropos import Ui_widget as Ui_aProposWindow
-from dep.Ui_colors import Ui_Personnalisation
-from dep.Ui_config import Ui_Configuration
-if QWEB_ENABLE:
-    from dep.Ui_documentation import Ui_Form as docu
+###### QWEB
+path = os.path.join(os.path.dirname(sys.argv[0]), "PyQt4.uic.widget-plugins")
+uic.widgetPluginPath.append(path)
+from PyQt4.QtWebKit import QWebView
+###### QWEB!
 
 class PyShell(QTextBrowser):
     """
@@ -35,23 +29,26 @@ class PyShell(QTextBrowser):
         self.setFont(self.font)
         self.clearTT()
     def write(self, text):
-        if text.strip()=="":return
         self.setText(self.toPlainText()+text)
         self.verticalScrollBar().setValue(self.verticalScrollBar().maximum())
     def clearTT(self):
         self.setText(">>>")
     def finish(self):
-        self.write("\n\n>>>")
+        self.write("\n>>>")
     # define a slot with the right signature
-    @QtCore.Slot(str)
-    def slotMessage(self, message="ko"):
-        try:
-            self.write(message)
-        except Exception, e:
-            pass
-        time.sleep(2)
+    @QtCore.pyqtSlot(str)
+    def slotMessage(self, message):
+        self.write(message)
 
-class Configuration(QWidget, Ui_Configuration):
+
+## Chargement de chaque design de fenetre.
+UiMainWindow,  Klass = uic.loadUiType(os.path.join("dep",'simulator.ui'))
+aProposWindow, k = uic.loadUiType(os.path.join("dep",'aPropos.ui'))
+colorWindow, k = uic.loadUiType(os.path.join("dep",'colors.ui'))
+docu, k = uic.loadUiType(os.path.join("dep",'documentation.ui'))
+config, k = uic.loadUiType(os.path.join("dep",'config.ui'))
+
+class Configuration(QWidget, config):
     """
     Fenêtre de configuration d'adresse IP du robot
     et de configuration du port.
@@ -59,7 +56,7 @@ class Configuration(QWidget, Ui_Configuration):
     def __init__(self, conteneur=None):
         if conteneur is None : conteneur = self
         QWidget.__init__(conteneur)
-        Ui_Configuration.__init__(conteneur)
+        config.__init__(conteneur)
         self.setupUi(conteneur)
 
         self.defaultValueIP=""
@@ -106,32 +103,29 @@ class Configuration(QWidget, Ui_Configuration):
         self.save()
         self.hide()
 
-if QWEB_ENABLE:
-    class Documentation(QWidget, docu):
-        ## Elle est initialisée une fois instanciée par MainWindow
-        def __init__(self, conteneur=None):
-            if conteneur is None : conteneur = self
-            QWidget.__init__(conteneur)
-            docu.__init__(conteneur)
-            self.setupUi(conteneur)
-
-class ApWindow(QDialog, Ui_aProposWindow):
-    def __init__(self, conteneur=None):
-        if conteneur is None : conteneur = self
-        QDialog.__init__(conteneur)
-        Ui_aProposWindow.__init__(conteneur)
-        self.setupUi(conteneur)
-
-
-from PySide.QtGui import QColorDialog
-from PySide.QtGui import QPalette, QColor
-
-class ColorWindow(QWidget, Ui_Personnalisation):
+class Documentation(QWidget, docu):
+    ## Elle est initialisée une fois instanciée par MainWindow
     def __init__(self, conteneur=None):
         if conteneur is None : conteneur = self
         QWidget.__init__(conteneur)
-        Ui_Personnalisation.__init__(conteneur)
+        docu.__init__(conteneur)
         self.setupUi(conteneur)
+
+class ApWindow(QDialog, aProposWindow):
+    def __init__(self, conteneur=None):
+        if conteneur is None : conteneur = self
+        QDialog.__init__(conteneur)
+        aProposWindow.__init__(conteneur)
+        self.setupUi(conteneur)
+
+class ColorWindow(QWidget, colorWindow):
+    def __init__(self, conteneur=None):
+        if conteneur is None : conteneur = self
+        QWidget.__init__(conteneur)
+        colorWindow.__init__(conteneur)
+        self.setupUi(conteneur)
+
+        self.colorDialog = QColorDialog(self)
 
         self.listColor = []
         self.changers = [u"Fond d'écran 3D",u"Arrière-plan"]
@@ -149,14 +143,19 @@ class ColorWindow(QWidget, Ui_Personnalisation):
         self.connect(self.buttonBox, SIGNAL("accepted ()"), self.apply)
         self.connect(self.buttonBox, SIGNAL("rejected ()"), self.hide)
 
+        self.connect(self.colorDialog, SIGNAL("colorSelected ()"), self.finishChooseColor)
+
         self.changeColor()
 
     def chooseColor(self):
-        color = QColorDialog.getColor()
+        color = self.colorDialog.getColor()
         if color.getRgb() != (0,0,0,255):
-            self.listColor[self.comboBox.currentIndex()] = color
-            self.changedColor[self.comboBox.currentIndex()] = True
-            self.changeColor()
+            self.finishChooseColor(color)
+
+    def finishChooseColor(self, color):
+        self.listColor[self.comboBox.currentIndex()] = color
+        self.changedColor[self.comboBox.currentIndex()] = True
+        self.changeColor()
 
     def changeColor(self):
         pixmap = QtGui.QPixmap(16, 16)
@@ -182,5 +181,3 @@ class ColorWindow(QWidget, Ui_Personnalisation):
     def setColorVar(self, var, color):
         self.listColor[self.changersVar.index(var)]=color
         self.changeColorN(self.changersVar.index(var))
-
-

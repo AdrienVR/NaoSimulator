@@ -1,7 +1,8 @@
 eclipse.preferences.version=1
-encoding//dep/Ui_documentation.py=utf-8
-encoding//dep/Ui_simulator.py=utf-8
-encoding/DecoderAll.py=utf-8
+encoding//dep/codeInit.py=utf-8
+encoding//nao_api/Nao.py=utf-8
+encoding//nao_api/NaoAPI.py=utf-8
+encoding/Loader.py=utf-8
 encoding/NaoMembre.py=utf-8
 encoding/NaoSimulator.py=utf-8
 encoding/NaoVirtual.py=utf-8

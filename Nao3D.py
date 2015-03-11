@@ -1,7 +1,6 @@
 ﻿
-import time
-
 from NaoMembre import Membre
+
 ## Calcul du gris des yeux
 FORMAT_COLORS = 255.0
 EYES_GREY = 175.0
@@ -116,7 +115,6 @@ class Nao3D():
         #T14, H21 ou H25
         self.type="H21"
 
-
         #private
         self.timePerCharacter=0.1
         self.timeSpeaking=.0
@@ -166,7 +164,6 @@ class Nao3D():
         self.speakingList=[]
         self.speaking=""
         self.finishedSpeaking=True
-
 
     def updateSinging(self, dt):
         if self.timeSinging>.0:

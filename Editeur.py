@@ -1,7 +1,6 @@
 
 import os
-from PySide.QtGui import QFileDialog, QUndoCommand, QUndoStack
-from PySide.QtCore import QObject
+from PyQt4.QtGui import QFileDialog, QUndoCommand, QUndoStack
 
 class UndoFormat(QUndoCommand):
     def __init__(self):
@@ -20,27 +19,28 @@ class UndoFormat(QUndoCommand):
     def undo(self):
         if self.originalText == unicode(self.target.toPlainText()):
             return
-        self.next = self.target.toPlainText()
+        self.next = unicode(self.target.toPlainText())
         self.target.setPlainText(self.originalText)
 
     def redo(self):
         if self.next == unicode(self.target.toPlainText()):
             return
-        self.originalText = self.target.toPlainText()
+        self.originalText = unicode(self.target.toPlainText())
         if self.next.strip()!="":
             self.target.setPlainText(self.next)
 
-class EditeurPython(QObject):
+
+class EditeurPython():
     def __init__(self, a=None):
         self.undoFormat = UndoFormat()
         self.undoFormat.target = self.textEdit
 
         self.lastModif = "else"
         self.cancelFormat = False
-
         self.scroll = 0
 
         #self.undoStack = QUndoStack()
+
         ###################################### INTERFACE   #####################################################
     def initEditeur(self):
         fenX=self.centralwidget.width()
@@ -193,16 +193,19 @@ class EditeurPython(QObject):
 
     def openFile(self):
         fileName = QFileDialog.getOpenFileName(self,
-                 "Ouvrir fichier", "/", "Python Files (*.py)")[0]
+                 "Ouvrir fichier", "/", "Python Files (*.py)")
         if fileName!="":
             self.fileName=fileName
             self.setWindowTitle(self.name+" - "+self.fileName)
         else :
             return
-        f=open(fileName)
-        self.textEdit.setPlainText(unicode(f.read().decode('utf8')))
-        f.close()
-        self.setStar(False)
+        try :
+            f=open(fileName)
+            self.textEdit.setPlainText(unicode(f.read().decode('utf8')))
+            f.close()
+            self.setStar(False)
+        except Exception,e:
+            print "Error :",e;
 
     def save(self):
         if self.fileName!="":
@@ -220,7 +223,7 @@ class EditeurPython(QObject):
 
     def saveUnder(self):
         fileName = QFileDialog.getSaveFileName(self,
-                 "Enregistrer fichier", "/", "Python Files (*.py)")[0]
+                 "Enregistrer fichier", "/", "Python Files (*.py)")
         self.fileName=fileName
         if fileName!="":
             self.save()

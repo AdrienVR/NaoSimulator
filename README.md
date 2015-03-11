@@ -1,11 +1,5 @@
 NaoSimulator
 ============
-
-WARNING !   
-------
-Please keep in mind that the stable version is [PyQt branch](https://github.com/AdrienVR/NaoSimulator/tree/pyqtBranch)
-------
-
 NaoSimulator is a free open source [NAO robot](http://www.aldebaran.com) simulator.  
 This tool allows to ease the learning of Python programming with the NAO robot.  
 
@@ -14,33 +8,33 @@ This tool allows to ease the learning of Python programming with the NAO robot.
 
 ## Download
 * For Windows :   
-		[NS 1.0.0 zip : 25 mo](https://drive.google.com/uc?export=download&id=0B2xlFxzCEekzbWxFMm56ajJ1UTg)  
+		[NS 1.0.0 zip : 26 mo](https://drive.google.com/uc?export=download&id=0B2xlFxzCEekzbWxFMm56ajJ1UTg)  
 		[NS 1.0.0 7z : 18 mo](https://drive.google.com/uc?export=download&id=0B2xlFxzCEekzbExqOGtra244Yms)  
 	
 ## Dependency
 
-* [Python 2.7](https://www.python.org/download/releases/2.7.8/)
-* [PySide](https://pypi.python.org/pypi/PySide#installing-pyside-on-a-windows-system)
+* [Python 2.7](https://www.python.org/download/releases/2.7.8/)  
+* [PyQt4](http://www.riverbankcomputing.co.uk/software/pyqt/download)
 * [pyOpenGL3](https://pypi.python.org/pypi/PyOpenGL/3.1.0)
 * [numpy1.X](https://pypi.python.org/pypi/numpy)
 * (optional) [cx_freeze 4](https://pypi.python.org/pypi/cx_Freeze) **to enable compilation**
 
 ## Linux Dependencies :
 
-sudo apt-get install python-pyside  
+sudo apt-get install python-qt4  
+sudo apt-get install python-qt4-gl  
 sudo apt-get install python-opengl  
 sudo apt-get install python-numpy  
 sudo apt-get install python-imaging  
 sudo apt-get install python-imaging-tk  
 (optional) sudo apt-get install cx-freeze  
-(optional development) sudo apt-get install pyside-tools  
 
 ## Instructions
 
-Master is the PySide branch. An other branch contains code with the PyQt4 API.  
+This is the PyQt4 branch (stable).   
 main : NaoSimulator.py
 
-| ![Python 2.7](https://www.python.org/static/img/python-logo.png "Python 2.7") | ![PySide](https://raw.githubusercontent.com/AdrienVR/NaoSimulator/master/img/pysidelogo.png "PySide") |
+| ![Python 2.7](https://www.python.org/static/img/python-logo.png "Python 2.7") | ![Qt4](http://www.fevrierdorian.com/blog/public/logos/Qt_logo002.png "Qt4") |
 |:----:|:----:|
 
 ## Author

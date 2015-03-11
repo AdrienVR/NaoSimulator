@@ -9,11 +9,9 @@ naoEvenement.demarrerReconnaissanceVocale();
 
 nao.demarrerParallelisation()
 
-
 nao.jouerMusique("Chocobo.mp3")
 nao.jouerSon(1,1,1,1)
 nao.jouerSi2(1)
-
 
 #tests parole
 nao.dire("bonjour")

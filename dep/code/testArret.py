@@ -1,13 +1,11 @@
 
 from time import sleep
-from NaoCommunication import *
+from Nao import *
 
-address = "169.254.16.208"; #A VERIFIER
-port = 9559;
+nao=Nao(NaoAPI())
 
-naoRobot = Nao(address, port);
-nao = NaoControle(naoRobot);
-naoEvenement = AbstractNaoEvenement("naoEvenement", naoRobot.getMemory(), nao);
+naoEvenement = AbstractNaoEvenement("naoEvenement", NaoAPI().getMemory(), nao);
+naoEvenement.demarrerReconnaissanceVocale();
 
 #DEBUT DE LA ZONE DE CODE DES ETUDIANTS
 #A executer en saisissant dans une console :

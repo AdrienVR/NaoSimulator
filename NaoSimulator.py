@@ -10,29 +10,28 @@ import time
 import threading
 
 ## QT libs
-from PySide.QtGui import QApplication,  QMainWindow
-from PySide.QtGui import QFileDialog, QCursor, QToolTip
-from PySide.QtGui import QWidget,QDialog
-from PySide.QtGui import QMessageBox,QFont
-from PySide.QtCore import QRect, QUrl
-from PySide.QtCore import Qt, SIGNAL, QTimer
-from PySide.QtCore import QObject, QThread
-from PySide.QtCore import QMutex
-from PySide import QtCore
+from PyQt4.QtGui import QApplication,  QMainWindow
+from PyQt4.QtGui import QFileDialog, QCursor, QToolTip
+from PyQt4.QtGui import QWidget,QDialog
+from PyQt4.QtGui import QMessageBox,QFont
+from PyQt4.QtCore import QRect, QUrl
+from PyQt4.QtCore import Qt, SIGNAL, QTimer
+from PyQt4.QtCore import QObject, QThread
+from PyQt4 import QtGui
+from PyQt4 import QtCore
 
-#Partie 3D
+#Partie 3D :
 from Viewer3DWidget import Viewer3DWidget
 from Loader import Objet3D
 #API NAO
 from Nao3D import Nao3D
 from naoqiVirtual import ALProxy
-#compilation
-from imports import *
-#for Worker, event thread safe
+#thread for worker and event, thread safe
 from threaders import *
-# -- GUI --
+#compilation :
+from imports import *
+#Gui :
 from widgets import *
-#heritage pour simplifier l'editeur
 from Editeur import EditeurPython
 #Affichage accents
 from DecoderAll import Decoder
@@ -49,6 +48,7 @@ ENABLE_SPACES_TO_TAB=True
 
 ## Calcul du gris des yeux
 FORMAT_COLORS = 255.0
+
 ## plus cette valeur grandit plus les couleurs sont ternes
 ## afin de simuler la faible intensité des leds du robot.
 EYES_GREY = 175.0
@@ -57,9 +57,8 @@ R_COLOR = EYES_GREY / FORMAT_COLORS
 Ssaveout = sys.stdout
 Ssaveerr = sys.stderr
 
-Global_repeat = False
 
-class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
+class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
     def __init__(self,  conteneur=None):
         if conteneur is None : conteneur = self
         QMainWindow.__init__(conteneur)
@@ -70,7 +69,6 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         ######################## ATTRIBUTS ################################
 
         self.colors = ColorWindow()
-
         #Python Shell like
         self.textBrowserConsole = PyShell(self.tabConsole)
 
@@ -82,15 +80,9 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         self.runReal=False
 
         #fenetre documentation
-        if QWEB_ENABLE:
-            self.doc=Documentation()
-            self.doc.webView.load(QUrl(os.path.join("doc","index.html")))
-            self.doc.webView.show()
-        else :
-            self.actionDocumentation.setEnabled(False)
-
-        #stop ne marche pas ...
-        self.actionStop.setEnabled(False)
+        self.doc=Documentation()
+        self.doc.webView.load(QUrl(os.path.join("doc","index.html")))
+        self.doc.webView.show()
 
         #on enregistre les redirections systemes vers le nouveau "shell"
         self.saveout = sys.stdout
@@ -202,20 +194,22 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
 
         self.syntaxColor = PythonHighlighter(self.textEdit.document())
 
-        #self._pool = CallbackThreadPool(4)
         self.touchSensor = -1
 
         self.touchSensors = [self.pushButtonMainDDevant, self.pushButtonMainDDessus, self.pushButtonMainDArriere,
-        self.pushButtonMainGDevant, self.pushButtonMainGDessus, self.pushButtonMainGArriere,
-        self.pushButtonTeteDevant, self.pushButtonTeteDessus, self.pushButtonTeteArriere]
+                         self.pushButtonMainGDevant, self.pushButtonMainGDessus, self.pushButtonMainGArriere,
+                         self.pushButtonTeteDevant, self.pushButtonTeteDessus, self.pushButtonTeteArriere]
 
         ################# INITIALISATION #####################################
 
+        #self.actionStop_2.setShortcut(None)
         self.initName()
-        self.actionStop_2.setShortcut(None)
+        self.setName("T14")
+
+        #stop ne marche pas ...
+        self.actionStop.setEnabled(False)
 
         self.colors.setColorVar("wallpaper",self.Viewer3DWidget.background)
-
         self.initTextEdit()
 
         self.createConnexions()
@@ -250,9 +244,8 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         self.running=False
 
     def __del__(self):
-         sys.stdout = self.saveout
-         sys.stderr = self.saveerr
-         print "goodbye"
+        sys.stdout = self.saveout
+        sys.stderr = self.saveerr
 
     #def OnCloseEvent(self):
     #todo
@@ -289,13 +282,8 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
 
         #fenetres
         self.connect(self.actionApropos,  SIGNAL("triggered()"), self.aProposWindow.show)
-        if QWEB_ENABLE:
-            self.connect(self.actionDocumentation,  SIGNAL("triggered()"), self.doc.show)
+        self.connect(self.actionDocumentation,  SIGNAL("triggered()"), self.doc.show)
         self.connect(self.actionConfiguration,  SIGNAL("triggered()"), self.config.show)
-
-        self.connect(self.actionColors,  SIGNAL("triggered()"), self.colors.show)
-        self.connect(self.colors.buttonBox, SIGNAL("accepted ()"), self.applyColor)
-
 
         #fentre interface
         self.connect(self.actionReinitialiser_Pupitre,  SIGNAL("triggered()"), self.initPupitre)
@@ -305,27 +293,30 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         self.Viewer3DWidget.signalFullscreenOn.connect(self.setFullScreenOn)
         self.Viewer3DWidget.signalFullscreenOff.connect(self.setFullScreenOff)
 
+        self.connect(self.actionColors,  SIGNAL("triggered()"), self.colors.show)
+        self.connect(self.colors.buttonBox, SIGNAL("accepted ()"), self.applyColor)
+
         #actions Editeur de texte
-        #Fichier Menu
-        self.connect(self.actionQuitter, SIGNAL("triggered()"), self.close)
-        self.connect(self.actionRelancer, SIGNAL("triggered()"), self.relaunch)
+        # Fichier
+        self.connect(self.actionQuitter,  SIGNAL("triggered()"), self.close)
+        #self.connect(self.actionRa,  SIGNAL("triggered()"), self.relaunch)
         self.connect(self.actionOuvrir,  SIGNAL("triggered()"), self.openFile)
         self.connect(self.textEdit, SIGNAL("textChanged ()"), self.setStar)
         self.connect(self.textEdit, SIGNAL("textChanged ()"), self.setColors)
         self.connect(self.actionEnregistrer,  SIGNAL("triggered()"), self.save)
         self.connect(self.actionEnregistrer_sous,  SIGNAL("triggered()"), self.saveUnder)
-        #Edition Menu
+        # Edition
         self.connect(self.actionCouper,  SIGNAL("triggered()"), self.cut)
         self.connect(self.actionColler,  SIGNAL("triggered()"), self.paste)
         self.connect(self.actionCopier,  SIGNAL("triggered()"), self.copy)
         self.connect(self.actionAnnuler,  SIGNAL("triggered()"), self.undo)
         self.connect(self.actionRetablir,  SIGNAL("triggered()"), self.redo)
         #self.connect(self.actionSupprimer,  SIGNAL("triggered()"), self.delete)
-        #Format Menu
+        # Format
         self.connect(self.actionCommenter,  SIGNAL("triggered()"), self.comment)
         self.connect(self.actionDecommenter,  SIGNAL("triggered()"), self.uncomment)
-        self.connect(self.actionIndenter, SIGNAL("triggered()"), self.indent)
-        self.connect(self.actionDedenter, SIGNAL("triggered()"), self.unindent)
+        self.connect(self.actionIndenter,  SIGNAL("triggered()"), self.indent)
+        self.connect(self.actionDedenter,  SIGNAL("triggered()"), self.unindent)
 
         self.connect(self.actionEffacer,  SIGNAL("triggered()"), self.textBrowserConsole.clearTT)
 
@@ -334,14 +325,11 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
 
         #actions boutons menu
         self.connect(self.actionRun,  SIGNAL("triggered()"), self.run)
-        self.connect(self.actionRun_2,  SIGNAL("triggered()"), self.run)
-        # marche pas
         #self.connect(self.actionStop,  SIGNAL("triggered()"), self.stop)
+        self.connect(self.actionRun_2,  SIGNAL("triggered()"), self.run)
         #self.connect(self.actionStop_2,  SIGNAL("triggered()"), self.stop)
-        self.connect(self.actionStop,  SIGNAL("triggered()"), self.thread_code.stop)
-        self.connect(self.actionStop,  SIGNAL("triggered()"), self.thread.stop)
 
-        #Robot Menu
+        #Robot
         self.connect(self.actionNaoH25,  SIGNAL("triggered()"), self.showLegs)
         self.connect(self.actionNaoH21,  SIGNAL("triggered()"), self.showLegsH21)
         self.connect(self.actionNaoT14,  SIGNAL("triggered()"), self.hideLegs)
@@ -368,7 +356,7 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         self.connect(self.pushButtonStopLights, SIGNAL("released ()"), self.stopLights)
         self.connect(self.checkBoxSelectAll, SIGNAL("stateChanged (int)"), self.selectAll)
 
-        #led sliders     spins
+        #leds sliders:
         ledsSpins=[self.spinBoxRouge,self.spinBoxVert,self.spinBoxBleu]
         ledsSliders=[self.horizontalSliderRouge,self.horizontalSliderVert,self.horizontalSliderBleu]
         for a in ledsSpins:
@@ -381,10 +369,11 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
             self.connect(a, SIGNAL("pressed()"), self.armReset)
             self.connect(a, SIGNAL("released()"), self.reset)
 
+        #position nao
+        self.connect( self.actionAfficherPosition, SIGNAL("triggered()"), self.afficherPosition)
+
         #Reinitialisation Position Nao
         self.connect( self.actionInitPosition, SIGNAL("triggered()"), self.resetAll)
-
-        self.connect( self.actionAfficherPosition, SIGNAL("triggered()"), self.afficherPosition)
 
         self.connect(self.thread, SIGNAL("finished ()"), self.finishCode)
         self.connect(self.thread_code, SIGNAL("finished ()"), self.finishCode)
@@ -409,11 +398,6 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         for a in range(14):
             line+=str(a)+" : "+str(self.sliders[a].value())+"\n"
         self.afficher(line)
-
-    def relaunch(self):
-        global Global_repeat
-        Global_repeat = True
-        self.close()
 
     def setFullScreenOn(self):
         self.menuBarNaoSimulator.hide()
@@ -445,10 +429,13 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         if (self.Viewer3DWidget.inFullscreen) and key_e.key()==Qt.Key_Escape:
             self.Viewer3DWidget.inFullscreen=False
             self.setFullScreenOff()
-        if key_e.key()==Qt.Key_F5 and (not self.thread_code.isRunning()):
+        if key_e.key()==Qt.Key_F5 and (not self.thread.isRunning()):
             self.run()
 
+
     def protectRunning(self):
+#         if self.thread.isRunning():
+#             self.tabWidget.setTabEnabled(0,False)
         pass
 
     def speakToRobot(self):
@@ -488,7 +475,6 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         """
         sliderEq = ALProxy.getKeys()
         for a in range(len(sliderEq)):
-            #2 slidereq hanche = 1 slider
             if (a in [8,14]):
                 self.sliders[a].setValue(self.virtualNao.getMembre(sliderEq[a][:-1]).getPercentFromAxis(1))
                 continue
@@ -598,10 +584,9 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         self.updatePhysics()
         self.Viewer3DWidget.update()
 
-
     def updatePhysics(self):
         """
-        Modifie l'angle des moteurs qui sont dépendants d'autres : collisions physiques + tete
+        Modifie l'angle des moteurs qui sont dépendants d'autres : collisions physiques
         """
         self.virtualNao.getMembre("epauleG").rotate[0]=self.virtualNao.getMembre("bicepsG").rotate[0]
         self.virtualNao.getMembre("epauleD").rotate[0]=self.virtualNao.getMembre("bicepsD").rotate[0]
@@ -811,8 +796,9 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         """
         Gère la façon dont se resize la vue 3D
         """
-        x=self.widgetGLContainer.property("geometry").width()
-        y=self.widgetGLContainer.property("geometry").height()
+        h=self.widgetGLContainer.property("geometry").toRect()
+        x=h.width()
+        y=h.height()
         g=QRect(0,0,x,y)
         self.Viewer3DWidget.setProperty("geometry",g)
 
@@ -820,8 +806,9 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         """
         Gère la façon dont se resize la console
         """
-        x=self.widgetShellContainer.property("geometry").width()
-        y=self.widgetShellContainer.property("geometry").height()
+        h=self.widgetShellContainer.property("geometry").toRect()
+        x=h.width()
+        y=h.height()
         self.textBrowserConsole.setMaximumSize(x,y)
         self.textBrowserConsole.setMinimumSize(x,y)
 
@@ -835,10 +822,8 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
     ##################################### RUN CODE ###############################
 
     def animate(self):
-        #dt=0.05#self.oldTime-time.time()
-        dt=self.oldTime-time.time()
-        #if dt>0.05:dt=0.05
-        if 1:dt=0.05
+        #dt=self.oldTime-time.time()
+        dt=0.05
         self.oldTime=time.time()
         self.Viewer3DWidget.updateDt(dt)
         self.virtualNao.updateSpeaking(dt)
@@ -865,32 +850,59 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         pass
 
     def afficher(self,text="blarg"):
-        self.textBrowserConsole.write('\n'+text)
+        self.textBrowserConsole.write(text)
 
     def run(self):
         self.running=self.thread_code.isRunning()
         if (not self.running):
             print "launch"
-            self.currentIndex = self.tabWidget2.currentIndex()
             #Démarrage du chrono pour le framerate seulement
+            self.currentIndex = self.tabWidget2.currentIndex()
             self.timer.start(40)
             self.actionNaoT14.setEnabled(False)
             self.actionNaoH21.setEnabled(False)
             self.actionNaoH25.setEnabled(False)
             self.actionInitPosition.setEnabled(False)
+            #self.tabWidget.setTabEnabled(0,False)
             for x in range(self.tabWidget2.count()-2):
                 self.tabWidget2.setTabEnabled(x,False)
             self.running=True
-            self.runCode()
+            self.runCode2()
         else :
             print "running"
+
+    
+    def runThreadCode(self):
+        wn = WorkerNormal()
+        wn.setUIParent(self)
+        wn.start()
+
+    def runCode2(self):
+        """
+        Démarre le code écrit dans l'éditeur.
+        """
+        if not DEBUGOUT :
+            sys.stdout = self.printer
+            if not DEBUGERR:
+                sys.stderr = self.printer
+
+        if self.runReal:
+            try:
+                import naoqi
+            except:
+                a=QMessageBox()
+                s=u"Erreur, NaoQI pour Python n'est pas installé sur cet ordinateur"
+                a.information(self,u"Erreur à la connexion au robot",s)
+                return
+
+        if self.runReal!=self.actionRunReal.isChecked():
+            self.changeReseau()
+        self.runThreadCode()
 
     def runCode(self):
         """
         Démarre le code écrit dans l'éditeur.
         """
-        self.tabWidget.setCurrentIndex(0)
-
         if not DEBUGOUT :
             sys.stdout = self.printer
             if not DEBUGERR:
@@ -908,26 +920,36 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
         if self.runReal!=self.actionRunReal.isChecked():
             self.changeReseau()
 
+        self.tabWidget.setCurrentIndex(0)
         p=self.textEdit.toPlainText()#.toUtf8()
         t=Decoder().decode(p)
-        t=p#.toUtf8()
+        t=p.toUtf8()
         if ENABLE_SPACES_TO_TAB:
-            t=t.replace("    ","\t")
+            t.replace("    ","\t")
 
         if self.runReal:
             realT=t[:]
             a,b=self.config.getProxy()
             h=str("NaoAPI("+'"'+str(a)+'"'+","+str(b)+")")
-            realT = realT.replace("NaoAPI()",h)
-        t=t.replace("from Nao import","from NaoVirtual import")
-
-        #try:
+            realT.replace("NaoAPI()",h)
+        t.replace("from Nao import",
+                      "from NaoVirtual import")
         if self.runReal:
-            self.thread.setCode(realT)
+            self.thread.setCode(unicode(realT))
             self.thread.start()
             time.sleep(1.5)
-        self.thread_code.setCode(unicode(t))
+
+        if (self.actionRunFake.isChecked()):
+            self.thread_code.setCode(unicode(t))
+        else:
+            self.thread_code.setCode("pass")
         self.thread_code.start()
+            #except Exception, error :
+            #    print "error"
+    ##            a=QMessageBox()
+    ##            s=u"Erreur, la connexion avec le robot est impossible"
+    ##            a.information(self,u"Erreur à la connexion au robot",s)
+    
 
         return
 
@@ -973,9 +995,35 @@ class MainWindow(QMainWindow,  Ui_MainWindow, EditeurPython):
     def customEvent(self, e):
         e.callback()
 
+def launch(parent):
+        """
+        Démarre le code écrit dans l'éditeur.
+        """
+        p=parent.textEdit.toPlainText()#.toUtf8()
+        t=Decoder().decode(p)
+        t=p.toUtf8()
+        if ENABLE_SPACES_TO_TAB:
+            t.replace("    ","\t")
 
+        if parent.runReal:
+            realT=t[:]
+            a,b=parent.config.getProxy()
+            h=str("NaoAPI("+'"'+str(a)+'"'+","+str(b)+")")
+            realT.replace("NaoAPI()",h)
+        t.replace("from Nao import",
+                      "from NaoVirtual import")
+        if parent.runReal:
+            parent.thread.setCode(unicode(realT))
+            parent.thread.start()
+            time.sleep(1.5)
 
-    # Printer for shell
+        if (parent.actionRunFake.isChecked()):
+            parent.thread_code.setCode(unicode(t))
+        else:
+            parent.thread_code.setCode("pass")
+        parent.thread_code.start()
+
+# Printer for shell
 class Printer(QObject):
 
         def __init__(self, parent=None):
@@ -986,6 +1034,7 @@ class Printer(QObject):
             self.alert = False
             self.alertCount = 60
             self.alertTime = 8
+
         def write(self, text):
             if self.alert :
                 if time.time()-self.lastTime > 0.5:
@@ -1002,16 +1051,15 @@ class Printer(QObject):
                 CallbackEvent.post_to(self.target, self.target.afficher, self.text)
                 if time.time()-self.lastTime < 0.01:
                     self.alertCount -= 1
-                if self.alertCount < 0:
-                    self.alert = True
-                    self.alertCount = 60
-                    CallbackEvent.post_to(self.target, self.target.afficher, "\nAlert : begin skipping print frames !\n")
+                    if self.alertCount < 0:
+                        self.alert = True
+                        self.alertCount = 60
+                        CallbackEvent.post_to(self.target, self.target.afficher, "\nAlert : begin skipping print frames !\n")
                 else :
                     self.alertCount = 60
                 self.lastTime = time.time()
 
-
-    # Just some random worker
+# Worker = launch Code in thread
 class Worker(QtCore.QThread):
 
         def __init__(self, parent=None):
@@ -1019,45 +1067,38 @@ class Worker(QtCore.QThread):
             self.__quitting = Event()
             self.code=""
 
+        def __del__(self):
+            self.wait()
+
         def setCode(self, code):
             self.code = code
 
         def run(self):
-                # And lets just have one happen from this worker thread too
-#                 if self.code.strip()!="":
-#                     i=0
-#                     line = self.code.splitlines()[i]
-#                     while (i < len(self.code.splitlines())-1 ):
-#                         if line.strip()=="":
-#                             i+=1
-#                             line = self.code.splitlines()[i]
-#                             continue
-#                         if line[-1]==":":
-#                             bloc=""
-#                             while(('\t' in self.code.splitlines()[i+1]) and (i < len(self.code.splitlines())-1 )):
-#                                 i+=1
-#                                 line = self.code.splitlines()[i]
-#                                 bloc+=line+"\n"
-#                             exec(bloc)
-#                         else :
-#                             exec(line)
-#                         if self.__quitting.is_set():
-#                             return
-#                         i+=1
-#                         line = self.code.splitlines()[i]
-#                     exec(self.code.splitlines()[-1])
-            if self.code.strip()!="":
+            # And lets just have one happen from this worker thread too
+            code = self.code
+            code = unicode(code).strip()
+            if code!="":
                 exec(self.code,{})
 
         def stop(self):
             self.__quitting.set()
             self.wait()
 
+
+# Worker = launch Code in thread
+class WorkerNormal(QtCore.QThread):
+    def __init__(self, parent = None):
+        QtCore.QThread.__init__(self, parent)
+        self.UIparent = None
+    def __del__(self):
+        self.wait()
+    def setUIParent(self, UIparent):
+        self.UIparent = UIparent
+    def run(self):
+        launch(self.UIparent)
+
 a = QApplication(sys.argv)
 f = MainWindow()
 r = a.exec_()
-
-if Global_repeat:
-    #os.execv("launch.bat", ['launch.bat'])
-    pass
 f=None
+

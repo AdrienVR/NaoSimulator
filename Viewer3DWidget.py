@@ -4,10 +4,9 @@ import  sys, os
 import math
 import time
 
-from PySide.QtOpenGL import QGLWidget
-from PySide.QtCore import Signal
-from PySide import QtGui
-from PySide import QtCore
+from PyQt4.QtOpenGL import QGLWidget
+from PyQt4 import QtGui
+from PyQt4 import QtCore
 
 from OpenGL.arrays import vbo
 from OpenGL.GL import *
@@ -17,6 +16,7 @@ import numpy as np
 from GLDemo.Camera import Camera
 from GLDemo.MyGeom import Point3D
 #from Nao3D import Nao3D  #utilise virtualNao
+
 
 
 class Viewer3DWidget(QGLWidget):
@@ -29,8 +29,8 @@ class Viewer3DWidget(QGLWidget):
     WheelEvent et MouseMoveEvent sont des callback qui mettent à jour
     l'affichage 3D (fonction update qui appelle la fonction paintGL)
     """
-    signalFullscreenOn = Signal()
-    signalFullscreenOff = Signal()
+    signalFullscreenOn = QtCore.pyqtSignal()
+    signalFullscreenOff = QtCore.pyqtSignal()
     def __init__(self,parent=None):
         QGLWidget.__init__(self,parent)
         self.setMouseTracking(True)
@@ -41,7 +41,6 @@ class Viewer3DWidget(QGLWidget):
 
         self.isPressed = False
         self.inFullscreen = False
-
         self.oldx = 0
         self.oldy = 0
 

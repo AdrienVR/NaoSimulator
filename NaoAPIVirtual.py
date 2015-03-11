@@ -1,11 +1,11 @@
 ﻿
-import sys
-
 #from naoqi import ALProxy, ALBroker;
 from naoqiVirtual import ALProxy, ALBroker;
 
 from Animation import Animation
 import time, threading, struct;
+
+import sys
 
 #FakeALProxy
 
@@ -52,11 +52,11 @@ class NaoAPI():
 
     def setParallelism(self, value):
         ALProxy.setParallelism(value)
-        # self.__voice.setParallelism(value);
-        # self.__motors.setParallelism(value);
-        # self.__leds.setParallelism(value);
-        # self.__sound.setParallelism(value);
-        # self.__player.setParallelism(value);
+#         self.__voice.setParallelism(value);
+#         self.__motors.setParallelism(value);
+#         self.__leds.setParallelism(value);
+#         self.__sound.setParallelism(value);
+#         self.__player.setParallelism(value);
 
     def stop(self):
         self.__broker.shutdown();
@@ -106,6 +106,10 @@ class VoiceActuator:
         assert proxy.__class__ is ALProxy;
         self.__proxy = proxy;
         self.__languages = self.__proxy.getAvailableLanguages();
+        self.__parallelism = False;
+
+    def setParallelism(self, value):
+        self.__parallelism = value;
 
     #test OK
     def say(self, text):
@@ -141,6 +145,10 @@ class MotorsActuator:
         self.__joints = self.__proxy.getJointNames("Body");
         self.__limits = self.__proxy.getLimits("Body");
         self.__animation = None#Animation();
+        self.__parallelism = False;
+
+    def setParallelism(self, value):
+        self.__parallelism = value;
 
     #test OK
     def getJointNames(self):
@@ -222,10 +230,7 @@ class MotorsActuator:
         self.__proxy.playAnimation();
 
     def getAnimationData(self):
-        names = self.__animation.getNames();
-        angles = self.__animation.getValues();
-        times = self.__animation.getTimes();
-        return names, angles, times;
+        return self.__proxy.getAnimationData();
 
     #test OK
     def displayAnimation(self, motorWord, angleWord, timeWord, characterNumbers):
@@ -263,6 +268,7 @@ class MotorsActuator:
             string = string+spaceNumbers*' ';
         return string;
 
+
 """
 LED
 """
@@ -273,6 +279,10 @@ class LedsActuator:
         self.__proxy = proxy;
         self.__ledsNames, self.__colorsNames = self.__getLedsNames();
         self.__animation = Animation();
+        self.__parallelism = False;
+
+    def setParallelism(self, value):
+        self.__parallelism = value;
 
     #test OK
     def getLedsNames(self):
@@ -790,6 +800,7 @@ class VisualRecognition():
     #test OK
     def __frameClosing(self):
         self.__frame.destroy();
+
 
 
 
