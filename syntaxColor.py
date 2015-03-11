@@ -2,8 +2,8 @@
 
 import sys
 
-from PySide.QtCore import QRegExp
-from PySide.QtGui import QColor, QTextCharFormat, QFont, QSyntaxHighlighter
+from PyQt4.QtCore import QRegExp
+from PyQt4.QtGui import QColor, QTextCharFormat, QFont, QSyntaxHighlighter
 
 def format(color, style=''):
     """Return a QTextCharFormat with the given attributes.
@@ -123,7 +123,7 @@ class PythonHighlighter (QSyntaxHighlighter):
             while index >= 0:
                 # We actually want the index of the nth match
                 index = expression.pos(nth)
-                length = len(expression.cap(nth))
+                length = expression.cap(nth).length()
                 self.setFormat(index, length, format)
                 index = expression.indexIn(text, index + length)
 
