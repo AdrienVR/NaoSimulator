@@ -19,6 +19,16 @@ This tool allows to ease the learning of Python programming with the NAO robot.
 * [numpy1.X](https://pypi.python.org/pypi/numpy)
 * (optional) [cx_freeze 4](https://pypi.python.org/pypi/cx_Freeze) **to enable compilation**
 
+### Windows Dependencies using pip (python.exe in system path)
+python.exe -m pip install PyOpenGL cx-Freeze
+numpy dependency : Microsoft Visual C++ Compiler for Python 2.7  http://www.microsoft.com/en-us/download/details.aspx?id=44266
+try:
+	python.exe -m pip install numpy
+except:
+	install : Microsoft Visual C++ Compiler for Python 2.7  http://www.microsoft.com/en-us/download/details.aspx?id=44266
+	python.exe -m pip install numpy
+
+
 ## Linux Dependencies :
 
 sudo apt-get install python-qt4  
