@@ -21,7 +21,6 @@ This tool allows to ease the learning of Python programming with the NAO robot.
 
 ### Windows Dependencies using pip (python.exe in system path)  
 python.exe -m pip install PyOpenGL cx-Freeze  
-numpy dependency : Microsoft Visual C++ Compiler for Python 2.7  http://www.microsoft.com/en-us/download/details.aspx?id=44266  
 try:  
 	python.exe -m pip install numpy  
 except:  
