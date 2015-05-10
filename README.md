@@ -19,7 +19,7 @@ This tool allows to ease the learning of Python programming with the NAO robot.
 * [numpy1.X](https://pypi.python.org/pypi/numpy)
 * (optional) [cx_freeze 4](https://pypi.python.org/pypi/cx_Freeze) **to enable compilation**
 
-### Install them on Windows using pip (python.exe in system path)  
+### Install them on Windows using pip :   
 * With python.exe in system path :  
 	
 	  
@@ -41,7 +41,7 @@ Install the Microsoft Visual C++ Compiler for Python 2.7  http://www.microsoft.c
 	sudo apt-get install python-qt4 python-qt4-gl python-numpy python-imaging python-imaging-tk  
 	(optional) sudo apt-get install cx-freeze  
 	
-	or
+or
 	
 	sudo apt-get install python-qt4  
 	sudo apt-get install python-qt4-gl  
@@ -54,7 +54,7 @@ Install the Microsoft Visual C++ Compiler for Python 2.7  http://www.microsoft.c
 ## Instructions
 
 This is the PyQt4 branch (stable).   
-main : NaoSimulator.py
+The main file is : NaoSimulator.py
 
 | ![Python 2.7](https://www.python.org/static/img/python-logo.png "Python 2.7") | ![Qt4](http://www.fevrierdorian.com/blog/public/logos/Qt_logo002.png "Qt4") |
 |:----:|:----:|
