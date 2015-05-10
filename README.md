@@ -8,8 +8,8 @@ This tool allows to ease the learning of Python programming with the NAO robot.
 
 ## Download
 * For Windows :   
-		[NS 1.0.0 zip : 26 mo](https://drive.google.com/uc?export=download&id=0B2xlFxzCEekzbWxFMm56ajJ1UTg)  
-		[NS 1.0.0 7z : 18 mo](https://drive.google.com/uc?export=download&id=0B2xlFxzCEekzbExqOGtra244Yms)  
+			[NS 1.0.0 zip : 26 mo](https://drive.google.com/uc?export=download&id=0B2xlFxzCEekzbWxFMm56ajJ1UTg)  
+			[NS 1.0.0 7z : 18 mo](https://drive.google.com/uc?export=download&id=0B2xlFxzCEekzbExqOGtra244Yms)  
 	
 ## Dependency
 
@@ -21,22 +21,25 @@ This tool allows to ease the learning of Python programming with the NAO robot.
 
 ### Windows Dependencies using pip (python.exe in system path)  
 python.exe -m pip install PyOpenGL cx-Freeze  
-try:  
-	python.exe -m pip install numpy  
-except:  
-	install : Microsoft Visual C++ Compiler for Python 2.7  http://www.microsoft.com/en-us/download/details.aspx?id=44266  
-	python.exe -m pip install numpy  
+
+        try:
+                python.exe -m pip install numpy  
+
+        except:
+                install : Microsoft Visual C++ Compiler for Python 2.7  http://www.microsoft.com/en-us/download/details.aspx?id=44266
+                python.exe -m pip install numpy  
 
 
 ## Linux Dependencies :
 
-sudo apt-get install python-qt4  
-sudo apt-get install python-qt4-gl  
-sudo apt-get install python-opengl  
-sudo apt-get install python-numpy  
-sudo apt-get install python-imaging  
-sudo apt-get install python-imaging-tk  
-(optional) sudo apt-get install cx-freeze  
+
+        sudo apt-get install python-qt4  
+        sudo apt-get install python-qt4-gl  
+        sudo apt-get install python-opengl  
+        sudo apt-get install python-numpy  
+        sudo apt-get install python-imaging  
+        sudo apt-get install python-imaging-tk  
+        (optional) sudo apt-get install cx-freeze  
 
 ## Instructions
 
