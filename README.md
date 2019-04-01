@@ -1,7 +1,8 @@
 NaoSimulator
 ============
-NaoSimulator is a free open source [NAO robot](http://www.aldebaran.com) simulator.  
-This tool allows to ease the learning of Python programming with the NAO robot.  
+NaoSimulator is a free open source [NAO robot](https://www.softbankrobotics.com/emea/en/nao?q=emea/fr/nao) simulator.  
+This tool is made to help students to learn Python programming with the NAO robot.  
+Feel free to [submit issues](https://github.com/AdrienVR/NaoSimulator/issues) or even better: [Pull requests](https://gist.github.com/Chaser324/ce0505fbed06b947d962#creating-a-fork)!
 
 | ![NaoSimulator](https://raw.githubusercontent.com/AdrienVR/NaoSimulator/master/ns1.jpg "NaoSimulator") |
 |:----:|
@@ -19,27 +20,27 @@ This tool allows to ease the learning of Python programming with the NAO robot.
 * [numpy1.X](https://pypi.python.org/pypi/numpy)
 * (optional) [cx_freeze 4](https://pypi.python.org/pypi/cx_Freeze) **to enable compilation**
 
-### Install them on Windows using pip :   
-* With python.exe in system path :  
+### Install them on Windows using pip:   
+* With [python.exe in system path](https://superuser.com/questions/143119/how-do-i-add-python-to-the-windows-path):  
 
 
-	python.exe -m pip install PyOpenGL cx-Freeze  
+	python -m pip install PyOpenGL cx-Freeze  
 
-	try:
-		python.exe -m pip install numpy  
+	try:  
+		python -m pip install numpy  
 
-	except:
+	except:  
 		Install the Microsoft Visual C++ Compiler for Python 2.7  http://www.microsoft.com/en-us/download/details.aspx?id=44266
         python.exe -m pip install numpy  
 				
-	[How to install PyQt4 on Windows using pip?](https://stackoverflow.com/a/48078369)
+* [How to install PyQt4 on Windows using pip?](https://stackoverflow.com/a/48078369)  
 	Download the appropriate version of the PyQt4 from here: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyqt4
 	
-	From the download repository:
+	From the download repository: 
 	pip install PyQt4-4.11.4-cp27-cp27m-win_amd64.whl
 	
 
-### Install them on Linux :
+### Install them on Linux:
 
 
 	sudo apt-get install python-qt4 python-qt4-gl python-numpy python-imaging python-imaging-tk  
@@ -58,7 +59,7 @@ or
 ## Instructions
 
 This is the PyQt4 branch (stable).   
-The main file is : NaoSimulator.py
+The main file is: NaoSimulator.py
 
 | ![Python 2.7](https://www.python.org/static/img/python-logo.png "Python 2.7") | ![Qt4](http://www.fevrierdorian.com/blog/public/logos/Qt_logo002.png "Qt4") |
 |:----:|:----:|
