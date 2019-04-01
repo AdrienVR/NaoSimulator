@@ -23,21 +23,18 @@ Feel free to [submit issues](https://github.com/AdrienVR/NaoSimulator/issues) or
 ### Install them on Windows using pip:   
 * With [python.exe in system path](https://superuser.com/questions/143119/how-do-i-add-python-to-the-windows-path):  
 
-
-	python -m pip install PyOpenGL cx-Freeze  
-
-	try:  
-		python -m pip install numpy  
-
-	except:  
-		Install the Microsoft Visual C++ Compiler for Python 2.7  http://www.microsoft.com/en-us/download/details.aspx?id=44266
-        python.exe -m pip install numpy  
+      python -m pip install PyOpenGL cx-Freeze  
+      python -m pip install numpy  
+     In case it doesn't work, install the [Microsoft Visual C++ Compiler for Python 2.7](http://www.microsoft.com/en-us/download/details.aspx?id=44266), then retry:
+     
+      python -m pip install numpy  
 				
 * [How to install PyQt4 on Windows using pip?](https://stackoverflow.com/a/48078369)  
-	Download the appropriate version of the PyQt4 from here: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyqt4
+
+	Download the appropriate version of the PyQt4 from here: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyqt4  
+	From the download repository:
 	
-	From the download repository: 
-	pip install PyQt4-4.11.4-cp27-cp27m-win_amd64.whl
+       pip install PyQt4-4.11.4-cp27-cp27m-win_amd64.whl
 	
 
 ### Install them on Linux:
