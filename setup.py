@@ -24,7 +24,7 @@ includefiles = ["rsc_rc.py",(os.path.join(os.path.dirname(PyQt4.uic.__file__),
 "widget-plugins"), "PyQt4.uic.widget-plugins")]+importationCode+dependances
 #QWEB!
 
-includes = ["PyQt4.QtNetwork"]
+includes = ["PyQt4.QtNetwork", "atexit", "numpy.core._methods", "numpy.lib.format"]
 excludes = []
 packages = ["encodings",
             "OpenGL",
@@ -41,7 +41,7 @@ setup(
                                 icon = icone[0]
                               )
                    ],
-    options = {'build_exe': {'excludes':excludes,"compressed":True,
+    options = {'build_exe': {'excludes':excludes,
                              'packages':packages,'include_files':includefiles,
                              "includes":includes}}
     )
