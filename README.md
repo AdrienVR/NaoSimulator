@@ -36,6 +36,9 @@ Feel free to [submit issues](https://github.com/AdrienVR/NaoSimulator/issues) or
 	
        pip install PyQt4-4.11.4-cp27-cp27m-win32.whl
 	
+	To execute all functionalities you will also need [PIL](https://stackoverflow.com/a/20061019) (Pillow) and [pynaoqi](https://community.ald.softbankrobotics.com/en/dl/ZmllbGRfY29sbGVjdGlvbl9pdGVtLTc4OC1maWVsZF9zb2Z0X2RsX2V4dGVybmFsX2xpbmstMC0yOGE5Zjk%3D?width=500&height=auto) (run installer in admin mode)
+	
+       pip install Pillow
 
 ### Install them on Linux:
 
