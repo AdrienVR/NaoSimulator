@@ -205,7 +205,7 @@ class EditeurPython():
             f.close()
             self.setStar(False)
         except Exception,e:
-            print "Error :",e;
+            print("Error :",e);
 
     def save(self):
         if self.fileName!="":
@@ -215,7 +215,7 @@ class EditeurPython():
                 f.write(txt.encode('utf8'))
                 f.close()
             except Exception,e:
-                print "Error :",e;
+                print("Error :",e);
             self.setStar(False)
             self.setWindowTitle(self.name+" - "+self.fileName)
         else:

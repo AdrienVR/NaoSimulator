@@ -454,7 +454,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         if self.thread_code.isRunning():
             name=str(self.comboBox.currentText())
             if  name != "":
-                #print  str(self.comboBox.currentText())
+                #print( str(self.comboBox.currentText()))
                 ALProxy.eventCall( "onFaceDetected", (name, 100) )
                 ALProxy.eventCall( "onPictureDetected", (name, "face", 100, 100) )
 
@@ -478,7 +478,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
             if (a in [8,14]):
                 self.sliders[a].setValue(self.virtualNao.getMembre(sliderEq[a][:-1]).getPercentFromAxis(1))
                 continue
-            #print a
+            #print(a)
             self.sliders[a].setValue(self.virtualNao.getMembre(sliderEq[a][:-1]).getPercentFromAxis(self.sliderAxis[a]))
 
     def printState(self):
@@ -487,9 +487,9 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         """
         sliderEq = ALProxy.getKeys()
         for a in range(len(self.sliders)):
-            print self.sliders[a].value(),sliderEq[a]
+            print(self.sliders[a].value(),sliderEq[a])
         for a in self.virtualNao.getMembreKeys():
-            print a, self.virtualNao.getMembre(a).getPercentFromAxis(0),self.virtualNao.getMembre(a).getPercentFromAxis(1),self.virtualNao.getMembre(a).getPercentFromAxis(2)
+            print(a, self.virtualNao.getMembre(a).getPercentFromAxis(0),self.virtualNao.getMembre(a).getPercentFromAxis(1),self.virtualNao.getMembre(a).getPercentFromAxis(2))
 
     def armTouch(self):
         """
@@ -608,15 +608,15 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
         self.Viewer3DWidget.update()
 
     def changeMaterial(self):
-        #print "changing"
+        #print("changing")
         for a in self.materials:
-            #print a,self.oldMaterial
+            #print(a,self.oldMaterial)
             if a!=self.oldMaterial and a.isChecked():
                 self.oldMaterial.setChecked(False)
                 self.oldMaterial=a
-                #print self.eqMtlNames[a],Objet3D.materiaux['Material.002\n'].getColor()
+                #print(self.eqMtlNames[a],Objet3D.materiaux['Material.002\n'].getColor())
                 Objet3D.materiaux['Material.002'].setColor(self.eqMtlNames[a])
-                #print self.eqMtlNames[a],Objet3D.materiaux['Material.002\n'].getColor()
+                #print(self.eqMtlNames[a],Objet3D.materiaux['Material.002\n'].getColor())
                 break
         self.Viewer3DWidget.update()
         return
@@ -855,7 +855,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
     def run(self):
         self.running=self.thread_code.isRunning()
         if (not self.running):
-            print "launch"
+            print("launch")
             #Démarrage du chrono pour le framerate seulement
             self.currentIndex = self.tabWidget2.currentIndex()
             self.timer.start(40)
@@ -869,7 +869,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
             self.running=True
             self.runCode2()
         else :
-            print "running"
+            print("running")
 
     
     def runThreadCode(self):
@@ -945,7 +945,7 @@ class MainWindow(QMainWindow,  UiMainWindow, EditeurPython):
             self.thread_code.setCode("pass")
         self.thread_code.start()
             #except Exception, error :
-            #    print "error"
+            #    print("error")
     ##            a=QMessageBox()
     ##            s=u"Erreur, la connexion avec le robot est impossible"
     ##            a.information(self,u"Erreur à la connexion au robot",s)
@@ -1010,6 +1010,7 @@ def launch(parent):
             a,b=parent.config.getProxy()
             h=str("NaoAPI("+'"'+str(a)+'"'+","+str(b)+")")
             realT.replace("NaoAPI()",h)
+
         t.replace("from Nao import",
                       "from NaoVirtual import")
         if parent.runReal:
@@ -1046,6 +1047,7 @@ class Printer(QObject):
                     self.alert = False
                     self.alertTime = 8
                     CallbackEvent.post_to(self.target, self.target.afficher, "\nAlert : end skipping print frames !\n")
+
             else :
                 self.text = text
                 CallbackEvent.post_to(self.target, self.target.afficher, self.text)

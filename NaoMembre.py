@@ -23,7 +23,7 @@ class Membre():
     dt=0.02
     membres={}#dictionnaire des VBO créées par typeMembre
     membresRecup={}#recup des obj par name
-    print "Chargement des objets 3D en cours..."
+    print("Chargement des objets 3D en cours...")
 
     extrema = {"teteG":[(-38.5,29.5),(.0,.0),(-119.5,119.5)],
                      "bicepsG":[(-119.5,119.5),(.0,.0),(-18.0,76.0)],
@@ -68,10 +68,10 @@ class Membre():
             self.construct()
         else :
             self.recopy(Membre.membresRecup[partie+"G"])
-            if partie=="torseS" : print "25 %"
-            elif partie=="torse" : print "50 %"
-            elif partie=="tete" : print "75 %"
-            elif partie=="pied" : print "100 %"
+            if partie=="torseS" : print("25 %")
+            elif partie=="torse" : print("50 %")
+            elif partie=="tete" : print("75 %")
+            elif partie=="pied" : print("100 %")
 
         self.size=[1.0,1.0,1.0]
         self.rotate=[0.0,0.0,0.0]
@@ -112,13 +112,13 @@ class Membre():
             #self.rotate[x]+=1
 
     def getPercentFromAxis(self, axe):
-        #print self.max[axe]==self.min[axe],self.max[axe],self.min[axe],self.max[axe]-self.min[axe]
+        #print(self.max[axe]==self.min[axe],self.max[axe],self.min[axe],self.max[axe]-self.min[axe])
         if (self.max[axe]==self.min[axe]): return .0
         return (self.rotate[axe]-self.min[axe])/(self.max[axe]-self.min[axe])*100.0
 
     def setAngleFromPercent(self, axe, p):
         self.rotate[axe]= p/100.0 *((self.max[axe]-self.min[axe]))+self.min[axe]
-        #print self.rotate[axe], "axe "+str(axe)
+        #print(self.rotate[axe], "axe "+str(axe))
 
     def setAngleFromPercentList(self, pl):
         for x in range(len(pl)):

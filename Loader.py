@@ -80,7 +80,7 @@ class Objet3D():
         #chargement du material
         self.material={}
         #self.loadMaterial(self.name)
-        #print Objet3D.materiaux
+        #print(Objet3D.materiaux)
 
     def loadMaterial(self,fichier,name,faceNb):
         name = cleanup(name)

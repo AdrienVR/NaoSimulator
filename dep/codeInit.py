@@ -60,6 +60,6 @@ while not naoEvenement.recoVocale:
 	time.sleep(0.5)
 if naoEvenement.recoVocale:
 	nao.dire("J'ai reconnu %s" %(naoEvenement.motReconnu))
-	print "Taux : ", naoEvenement.tauxReconnaissance
+	print("Taux : ", naoEvenement.tauxReconnaissance)
 	naoEvenement.arreterReconnaissanceVocale();
 	nao.arreterReconnaissanceVocale();

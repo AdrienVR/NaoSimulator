@@ -194,8 +194,8 @@ class EventManagerAbstractModule(ALModule):
         self.unsubscribeToEvent(self.__middleTactilTouched, self.__name);
         self.unsubscribeToEvent(self.__rearTactilTouched, self.__name);
         
-        print _args
-        print len(_args)
+        print(_args)
+        print(len(_args))
         if len(_args)==3:
             location = _args[0]
             state = _args[1]

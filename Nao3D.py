@@ -199,7 +199,7 @@ class Nao3D():
 
     def ImageLoad(self,filename):
         #self.imageText=Gui.QImage(filename,"RGB")
-        #print "texture chargee"
+        #print("texture chargee")
         return
 
     def changeLegs(self):

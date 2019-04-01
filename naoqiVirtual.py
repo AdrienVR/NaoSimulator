@@ -147,9 +147,9 @@ class ALProxy():
                     ALProxy.getFunction(function)()
                     return 1
                 else :
-                    print mot.strip()+" is not in Vocabulary list"
+                    print(mot.strip()+" is not in Vocabulary list")
         ##except:
-        ##    print "Pas de AbstractNaoEvenement instancié"
+        ##    print("Pas de AbstractNaoEvenement instancié")
         return 0
 
     @staticmethod
@@ -209,7 +209,7 @@ class ALProxy():
 
     #test ok
     def say(self, text):
-        #print "NAO dit : "+str(text)
+        #print("NAO dit : "+str(text))
         self.virtualNao.addSpeaking(text)
         if not ALProxy.parallelism:
             self.timePerCharacter=0.1
@@ -239,7 +239,7 @@ class ALProxy():
         return r
 
     def getStiffness(self, numeroMoteur):
-            print "not implemented"
+            print("not implemented")
 
     def setStiffnesses(self, part="Body", value=1):
         names=self.getNamesFromPart(part)
@@ -247,7 +247,7 @@ class ALProxy():
             self.virtualNao.getMembre(a[:-1]).stiffness=value
 
     def setStiffness(self, numeroMoteur, taux):
-            print "not implemented"
+            print("not implemented")
 
     def getAngles(self, part="Body", isStg=True):
         return [0,0,0,0]
@@ -264,7 +264,7 @@ class ALProxy():
         num=self.getNumberFromName(name)
         nom=self.membresVirtual[num][:-1]
         n=int(self.membresVirtual[num][-1])
-        #print self.virtualNao.getMembre(nom).rotate, nom
+        #print(self.virtualNao.getMembre(nom).rotate, nom)
         if nom[:5] == "doigt":
             self.virtualNao.getMembre("doigt3"+nom[-1]).setAngleFromPercent(0,100-motorAngle)
             self.virtualNao.getMembre("doigt2"+nom[-1]).setAngleFromPercent(0,100-motorAngle)
@@ -340,7 +340,7 @@ class ALProxy():
         for x in self.membres:
             if name==self.membres[x]:
                 return x
-        print "error numberName"
+        print("error numberName")
         return num
 
     def getNameFromNumber(self, number):
@@ -352,7 +352,7 @@ class ALProxy():
         for x in self.membres.keys():
             if self.membres[x]==part:
                 return [self.membresVirtual[x]]
-        print "error Names part", part
+        print("error Names part", part)
         return []
 
 
@@ -388,7 +388,7 @@ class ALProxy():
         return result
 
     def setIntensity(self, name, intensity):
-        #print intensity
+        #print(intensity)
         if name in self.ledMnM.keys():
             a=self.ledMnM[name]
             color=[intensity,intensity,intensity]

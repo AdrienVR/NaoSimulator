@@ -55,8 +55,8 @@ class NaoAPI:
             self.__createBroker();
 
         except Exception,e:
-            print "Could not communicate with the robot";
-            print "Error was :",e;
+            print("Could not communicate with the robot");
+            print("Error was :",e);
             #sys.exit(1);
 
     def __createBroker(self):
@@ -217,8 +217,8 @@ class MotorsActuator:
     def setMotorAngle(self, motorNumber, motorAngle, time):
         name = self.getMotorName(motorNumber);
         isAbsolute = True;
-        #TODO print à enlever après les tests
-        print "%s en position %s en %s secondes" %(name, motorAngle, time);
+        #TODO print(à enlever après les tests)
+        print("%s en position %s en %s secondes" %(name, motorAngle, time));
         if self.__parallelism == False :
 			self.__proxy.angleInterpolation(name, motorAngle, time, isAbsolute);
         else :
@@ -256,16 +256,16 @@ class MotorsActuator:
 
         for i in range(len(names)):
             motorNumber = self.__joints.index(names[i]);
-            print motorWord,motorNumber," : ";
+            print(motorWord,motorNumber," : ");
             for j in range(len(angles[i])):
                 string = "    %s : %s" %(angleWord, angles[i][j]);
                 string = self.addSpaces(string, characterNumbers); 
-                print string,"-",timeWord,":",times[i][j];
+                print(string,"-",timeWord,":",times[i][j]);
 
     #test OK
     def displayMotorsNumber(self):
         for i in range(len(self.__joints)):
-            print i, ":", self.__joints[i];
+            print(i, ":", self.__joints[i]);
 
     #test OK
     def displayMotorAngles(self, motorWord, characterNumbers):
@@ -274,7 +274,7 @@ class MotorsActuator:
             joint = "%s %s" %(motorWord, i);
             joint = self.addSpaces(joint, characterNumbers); #take account of the space before ":"
             data = "%s : %s" %(joint, angles[i]);
-            print data
+            print(data)
 
     #test OK
     def addSpaces(self, string, characterTotalNumbers):
@@ -435,7 +435,7 @@ class LedsActuator:
     #test OK
     def setIntensity(self, ledNumber, intensity):
         name = self.getLedName(ledNumber);
-        #print name
+        #print(name)
         if self.__parallelism == False :
             self.__proxy.setIntensity(name, intensity);
         else :
@@ -445,7 +445,7 @@ class LedsActuator:
     def setIntensities(self, ledNumber, redIntensity, greenIntensity, blueIntensity):
         name = self.getLedName(ledNumber);
         tabColor = self.__colorsNames[name];
-        #print tabColor
+        #print(tabColor
         if self.__parallelism == False :
             self.__proxy.setIntensity(tabColor[0], redIntensity);
             self.__proxy.setIntensity(tabColor[1], greenIntensity);
@@ -573,7 +573,7 @@ class LedsActuator:
     #test OK
     def displayLedsNumber(self, ledsWord):
         for i in range(len(self.__ledsNames)):
-            print ledsWord,i, ":", self.__ledsNames[i];
+            print(ledsWord,i, ":", self.__ledsNames[i]);
 
     #test OK
     def displayAnimation(self, ledWord, valueWord, timeWord, characterNumbers):
@@ -583,11 +583,11 @@ class LedsActuator:
 
         for i in range(len(names)):
             ledNumber = self.__ledsNames.index(names[i]);
-            print ledWord,ledNumber," : ";
+            print(ledWord,ledNumber," : ");
             for j in range(len(values[i])):
                 string = "    %s : %s" %(valueWord, hex(values[i][j]));
                 string = self.addSpaces(string, characterNumbers); 
-                print string,"-",timeWord,":",times[i][j];
+                print(string,"-",timeWord,":",times[i][j]);
 
     #test OK
     #doublon !!!!
@@ -602,11 +602,11 @@ class LedsActuator:
     def __displayColorsNames(self):
         
         for name in self.__ledsNames:
-            print name,' :';
+            print(name,' :');
             tab = self.__colorsNames[name];
-            print "   ",tab[0];
-            print "   ",tab[1];
-            print "   ",tab[2];   
+            print("   ",tab[0]);
+            print("   ",tab[1]);
+            print("   ",tab[2]);   
         
 
     #test OK
@@ -621,7 +621,7 @@ class LedsActuator:
         color = int('%02x%02x%02x' %(red, green, blue), 16);
 
         #to check
-        #print hex(color);
+        #print(hex(color));
 
         return color;
 
@@ -632,7 +632,7 @@ class LedsActuator:
     
     def test(self):
         rgb = self.__RGBToInt(85,127,12);
-        print self.__intToRGB(rgb);
+        print(self.__intToRGB(rgb));
 		
 class SoundActuator:
     def __init__(self, proxy):
@@ -704,24 +704,24 @@ class SpeechRecognitionSensor:
 
     #test OK
     def startSpeechRecognition(self):
-        print "START SPEECH RECOGNITION 1";
+        print("START SPEECH RECOGNITION 1");
         self.__proxy.subscribe("naoEnib");
-        print "START SPEECH RECOGNITION 2";
+        print("START SPEECH RECOGNITION 2");
 
     #test OK
     def stopSpeechRecognition(self):
-        print "STOP SPEECH RECOGNITION 1";
+        print("STOP SPEECH RECOGNITION 1");
         try:
             self.__proxy.subscribe("naoEnib");
             self.__proxy.unsubscribe("naoEnib");
         except RuntimeError, message:
             try:
                 self.__proxy.subscribe("naoEnib");
-                print "Runtime Error : ", str(message);
+                print("Runtime Error : ", str(message));
                 self.__proxy.unsubscribe("naoEnib");
             except RuntimeError, message2 :
-                print "Runtime Error 2 : ", str(message2);
-        print "STOP SPEECH RECOGNITION 2";      
+                print("Runtime Error 2 : ", str(message2));
+        print("STOP SPEECH RECOGNITION 2");
 
 class VisualRecognition():
     def __init__(self, videoProxy, faceRecoProxy, naoXML):
@@ -779,7 +779,7 @@ class VisualRecognition():
     def displayFaces(self):
         faces = self.__xml.getFaces();
         for face in faces:
-            print face;
+            print(face);
 
     #test OK
     def learnObject(self, name, side):
@@ -802,8 +802,8 @@ class VisualRecognition():
     def displayObjects(self):
         objects = self.__xml.getObjects();
         for tabObject in objects:
-            print "Name :",tabObject[0];
-            print "Side :",tabObject[1];
+            print("Name :",tabObject[0]);
+            print("Side :",tabObject[1]);
 
     #test OK
     def __displayVideo(self, title, label, boutonTitle):
@@ -856,11 +856,11 @@ class VisualRecognition():
     
     #test OK
     def __onButtonClicked(self, visageNameStringVar):
-        print type(visageNameStringVar);
+        print(type(visageNameStringVar));
         nomVisage = visageNameStringVar.get();
-        print "Enregistrer %s" %(nomVisage);
+        print("Enregistrer %s" %(nomVisage));
         #TODO : externaliser cette information.
-        print "Enregistrement OK : %s"%(self.__learnFace(nomVisage));
+        print("Enregistrement OK : %s"%(self.__learnFace(nomVisage)));
         visageNameStringVar.set("");
 
 #test OK

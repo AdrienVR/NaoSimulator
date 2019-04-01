@@ -210,7 +210,7 @@ class XML():
     file.close();
 
 if __name__=="__main__" :
-  print sys.getdefaultencoding();
+  print(sys.getdefaultencoding());
   xml = XML("files/test.xml");
   xml.parse();
   #xml.addFace("Celine");
@@ -218,5 +218,5 @@ if __name__=="__main__" :
   #xml.addFace('Céline');
   #xml.addObject("pingouin", "féce");
   #xml.removeFace('Céline');
-  print "Faces  :",xml.getFaces();
-  print "Objets :",xml.getObjects();
+  print("Faces  :",xml.getFaces());
+  print("Objets :",xml.getObjects());

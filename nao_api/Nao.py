@@ -50,7 +50,7 @@ class Nao:
     #test OK
     def afficherLangagesDisponibles(self):
         for language in self.__nao.getVoice().getAvailableLanguages():
-            print language;
+            print(language);
 
 
     #///////////////////////////////////////////////////////////////
@@ -125,7 +125,7 @@ class Nao:
             label = "Moteur %s" %(i);
             label = self.__nao.getMotors().addSpaces(label, 9);
             frenchMotorName = "%s : %s" %(label, frenchMotors[numeroMoteur]);
-            print frenchMotorName;
+            print(frenchMotorName);
 
     #test OK
     def afficherPositionMoteurs(self):
@@ -135,7 +135,7 @@ class Nao:
             joint = "Moteur %s" %(i);
             joint = self.__nao.getMotors().addSpaces(joint, 9);
             data = "%s : %s" %(joint, normPosition);
-            print data
+            print(data)
     #test OK
     def activerTousMoteurs(self):
         self.__nao.getMotors().setStiffnesses(1);
@@ -161,7 +161,7 @@ class Nao:
         if position!=0:
             rate = 100 / float(position);
             vraiPosition = (maxPosition - minPosition) / rate + minPosition;
-        print "Vrai position de %s : %s" %(position, vraiPosition); #TODO à enlever après les tests
+        print("Vrai position de %s : %s" %(position, vraiPosition)); #TODO à enlever après les tests
         self.__nao.getMotors().setMotorAngle(numeroMoteur, vraiPosition, temps);
 
     #test OK
@@ -201,7 +201,7 @@ class Nao:
 
         for i in range(len(names)):
             motorNumber = joints.index(names[i]);
-            print "Moteur : %s" %(motorNumber);
+            print("Moteur : %s" %(motorNumber));
             for j in range(len(angles[i])):
                 minPosition, maxPosition = self.__recupererMinMaxMoteur(motorNumber);
                 motorAngle = angles[i][j];
@@ -212,7 +212,7 @@ class Nao:
                     normPosition = 100/rate;
                 string = "    position : %s" %(normPosition);
                 string = self.__nao.getMotors().addSpaces(string, 20);
-                print string,"- temps :",times[i][j];
+                print(string,"- temps :",times[i][j]);
 
     #test OK
     def __recupererMinMaxMoteur(self, numeroMoteur):
@@ -285,7 +285,7 @@ class Nao:
             label = "Led %s" %(i);
             label = self.__nao.getLeds().addSpaces(label, 6);
             frenchLedName = "%s : %s" %(label, frenchLeds[numeroLed]);
-            print frenchLedName;
+            print(frenchLedName);
 
     #TEST OK
     ##Cette méthode allume toutes les Leds (yeux) de Nao.
@@ -384,12 +384,12 @@ class Nao:
     #@return Un tableau de trois entiers [0,255] : (rouge, vert, bleu)
     #@warning Il y a un léger temps de latence lorsqu'on veut récupérer la couleur d'une Led qui vient d'être changée récemment.
     #@n exemple : nao.reglerCouleur(1, 255,0,255)
-    #@n print nao.recupererCouleur(1)
+    #@n print(nao.recupererCouleur(1))
     #@n Peut ne pas afficher (255,0,255), mais une autre valeur
     #@n @n De ce fait, il est conseillé de placer un time.sleep(0.25) entre les deux :
     #@n nao.reglerCouleur(1, 255,0,255)
     #@n time.sleep(0.25)
-    #@n print nao.recupererCouleur(1)
+    #@n print(nao.recupererCouleur(1))
     def recupererCouleur(self, numeroLed):
         return self.__nao.getLeds().getColor(numeroLed);
 
@@ -506,7 +506,7 @@ class Nao:
     def afficherRecoLangagesDisponibles(self):
         languages = self.__nao.getSpeechReco().getAvailableLanguages();
         for language in languages:
-            print language;
+            print(language);
     #test OK
     def recupererRecoLangage(self):
         return self.__nao.getSpeechReco().getLanguage();
@@ -521,7 +521,7 @@ class Nao:
 
     #test OK
     def arreterReconnaissanceVocale(self):
-        print "ARRET RECONNAISSANCE VOCALE";
+        print("ARRET RECONNAISSANCE VOCALE");
         self.__nao.getSpeechReco().stopSpeechRecognition();
 
     #///////////////////////////////////////////////////////////////
@@ -530,7 +530,7 @@ class Nao:
 
     #test OK
     def afficherVideo(self):
-        print self.__nao.getVisualReco().displayVideo("Vue de Nao", "Nom du visage : ","Enregistrer");
+        print(self.__nao.getVisualReco().displayVideo("Vue de Nao", "Nom du visage : ","Enregistrer"));
 
 
     #///////////////////////////////////////////////////////////////
@@ -539,7 +539,7 @@ class Nao:
 
     #test OK
     def apprendreVisage(self):
-        print "TEST";
+        print("TEST");
         self.__nao.getVisualReco().learnFace("Enregistrer visage", "Nom du visage : ", "Enregistrer");
 
     #test OK

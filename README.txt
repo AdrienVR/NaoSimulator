@@ -1,13 +1,12 @@
 
-dépendances : pyqt4 pyOpenGL3 numpy1.X
-(éventuellement cx_freeze 4.3.2 pour la compilation)
-(ou aucune dépendance si utilisation de la version compilée)
+dependencies : pyqt4 pyOpenGL3 numpy1.X
+(optional cx_freeze 4.3.2 for binary compilation)
 
 main : NaoSimulator.py
 
-compiler : python setup.py build
+compile command : python setup.py build
 
-installation des dépendances sous Linux :
+Linux commands to install:
 
 sudo apt-get install python-qt4
 sudo apt-get install python-opengl

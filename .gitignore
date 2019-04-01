@@ -4,3 +4,5 @@ build/
 
 *.pyc
 .idea/
+NaoSimulator.sln.DotSettings.user
+.vs/NaoSimulator/v15/.suo

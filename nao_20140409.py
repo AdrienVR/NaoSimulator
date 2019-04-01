@@ -67,7 +67,7 @@ while not naoEvenement.recoVocale:
 	time.sleep(0.5)
 if naoEvenement.recoVocale:
 	nao.dire("J'ai reconnu %s" %(naoEvenement.motReconnu))
-	print "Taux : ", naoEvenement.tauxReconnaissance
+	print("Taux : ", naoEvenement.tauxReconnaissance)
 	naoEvenement.arreterReconnaissanceVocale(); 
 	nao.arreterReconnaissanceVocale();
 
@@ -79,8 +79,8 @@ while not naoEvenement.recoObjet:
 	time.sleep(0.5)
 if naoEvenement.recoObjet:
 	nao.dire("J'ai reconnu %s" %(naoEvenement.objetReconnu))
-	print "Taux : ", naoEvenement.tauxRessemblance
-	print "Ratio : ", naoEvenement.ratio
+	print("Taux : ", naoEvenement.tauxRessemblance)
+	print("Ratio : ", naoEvenement.ratio)
 	naoEvenement.arreterDetectionObjet();
 
 #tests detection visage
@@ -90,8 +90,8 @@ while not naoEvenement.recoVisage:
 	time.sleep(0.5)
 if naoEvenement.recoVisage:
 	nao.dire("J'ai reconnu %s" %(naoEvenement.visageReconnu))
-	#print "Visage reconnu : ", naoEvenement.visageReconnu
-	print "Taux : ", naoEvenement.tauxReconnaissance
+	#print("Visage reconnu : ", naoEvenement.visageReconnu)
+	print("Taux : ", naoEvenement.tauxReconnaissance)
 	naoEvenement.arreterDetectionVisage();
 
 #tests detection parole
@@ -117,7 +117,7 @@ while naoEvenement.recoTactile:
     location = naoEvenement.location
     etat = naoEvenement.etat
 
-    print location, etat
+    print(location, etat)
 
     if location==8 and etat==1:
         nao.dire("Fin de la reconnaissance de capteurs")

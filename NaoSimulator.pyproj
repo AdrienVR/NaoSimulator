@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0fd0c9a2-fc85-411c-8d2b-a586a6921b2b}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>NaoSimulator.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>Global|PythonCore|2.7-32</InterpreterId>
+    <IsWindowsApplication>False</IsWindowsApplication>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="dep\48.ico" />
+    <Content Include="dep\arret.png" />
+    <Content Include="dep\config.txt" />
+    <Content Include="dep\fleche.png" />
+    <Content Include="dep\ico.png" />
+    <Content Include="dep\icoFonce.png" />
+    <Content Include="dep\icoOff.png" />
+    <Content Include="dep\LOGOTYPE.png" />
+    <Content Include="dep\naoText.png" />
+    <Content Include="dep\pause.png" />
+    <Content Include="doc\annotated.html" />
+    <Content Include="doc\bc_s.png" />
+    <Content Include="doc\bdwn.png" />
+    <Content Include="doc\classes.html" />
+    <Content Include="doc\class_nao_communication_1_1_abstract_nao_evenement-members.html" />
+    <Content Include="doc\class_nao_communication_1_1_abstract_nao_evenement.html" />
+    <Content Include="doc\class_nao_communication_1_1_abstract_nao_evenement.png" />
+    <Content Include="doc\class_nao_communication_1_1_nao_controle-members.html" />
+    <Content Include="doc\class_nao_communication_1_1_nao_controle.html" />
+    <Content Include="doc\closed.png" />
+    <Content Include="doc\doxygen.css" />
+    <Content Include="doc\doxygen.png" />
+    <Content Include="doc\dynsections.js" />
+    <Content Include="doc\ftv2blank.png" />
+    <Content Include="doc\ftv2doc.png" />
+    <Content Include="doc\ftv2folderclosed.png" />
+    <Content Include="doc\ftv2folderopen.png" />
+    <Content Include="doc\ftv2lastnode.png" />
+    <Content Include="doc\ftv2link.png" />
+    <Content Include="doc\ftv2mlastnode.png" />
+    <Content Include="doc\ftv2mnode.png" />
+    <Content Include="doc\ftv2node.png" />
+    <Content Include="doc\ftv2plastnode.png" />
+    <Content Include="doc\ftv2pnode.png" />
+    <Content Include="doc\ftv2splitbar.png" />
+    <Content Include="doc\ftv2vertline.png" />
+    <Content Include="doc\functions.html" />
+    <Content Include="doc\functions_func.html" />
+    <Content Include="doc\hierarchy.html" />
+    <Content Include="doc\index.html" />
+    <Content Include="doc\jquery.js" />
+    <Content Include="doc\nav_f.png" />
+    <Content Include="doc\nav_g.png" />
+    <Content Include="doc\nav_h.png" />
+    <Content Include="doc\numeroLeds.jpg" />
+    <Content Include="doc\open.png" />
+    <Content Include="doc\search\all_0.html" />
+    <Content Include="doc\search\all_0.js" />
+    <Content Include="doc\search\all_1.html" />
+    <Content Include="doc\search\all_1.js" />
+    <Content Include="doc\search\all_2.html" />
+    <Content Include="doc\search\all_2.js" />
+    <Content Include="doc\search\all_3.html" />
+    <Content Include="doc\search\all_3.js" />
+    <Content Include="doc\search\all_4.html" />
+    <Content Include="doc\search\all_4.js" />
+    <Content Include="doc\search\all_5.html" />
+    <Content Include="doc\search\all_5.js" />
+    <Content Include="doc\search\all_6.html" />
+    <Content Include="doc\search\all_6.js" />
+    <Content Include="doc\search\all_7.html" />
+    <Content Include="doc\search\all_7.js" />
+    <Content Include="doc\search\all_8.html" />
+    <Content Include="doc\search\all_8.js" />
+    <Content Include="doc\search\classes_0.html" />
+    <Content Include="doc\search\classes_0.js" />
+    <Content Include="doc\search\classes_1.html" />
+    <Content Include="doc\search\classes_1.js" />
+    <Content Include="doc\search\close.png" />
+    <Content Include="doc\search\functions_0.html" />
+    <Content Include="doc\search\functions_0.js" />
+    <Content Include="doc\search\functions_1.html" />
+    <Content Include="doc\search\functions_1.js" />
+    <Content Include="doc\search\functions_2.html" />
+    <Content Include="doc\search\functions_2.js" />
+    <Content Include="doc\search\functions_3.html" />
+    <Content Include="doc\search\functions_3.js" />
+    <Content Include="doc\search\functions_4.html" />
+    <Content Include="doc\search\functions_4.js" />
+    <Content Include="doc\search\functions_5.html" />
+    <Content Include="doc\search\functions_5.js" />
+    <Content Include="doc\search\functions_6.html" />
+    <Content Include="doc\search\functions_6.js" />
+    <Content Include="doc\search\functions_7.html" />
+    <Content Include="doc\search\functions_7.js" />
+    <Content Include="doc\search\mag_sel.png" />
+    <Content Include="doc\search\nomatches.html" />
+    <Content Include="doc\search\search.css" />
+    <Content Include="doc\search\search.js" />
+    <Content Include="doc\search\search_l.png" />
+    <Content Include="doc\search\search_m.png" />
+    <Content Include="doc\search\search_r.png" />
+    <Content Include="doc\sync_off.png" />
+    <Content Include="doc\sync_on.png" />
+    <Content Include="doc\tabs.css" />
+    <Content Include="doc\tab_a.png" />
+    <Content Include="doc\tab_b.png" />
+    <Content Include="doc\tab_h.png" />
+    <Content Include="doc\tab_s.png" />
+    <Content Include="interface.txt" />
+    <Content Include="ns1.jpg" />
+    <Content Include="README.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Animation.py" />
+    <Compile Include="DecoderAll.py" />
+    <Compile Include="dep\codeInit.py" />
+    <Compile Include="dep\code\detect.py" />
+    <Compile Include="dep\code\motor.py" />
+    <Compile Include="dep\code\say.py" />
+    <Compile Include="dep\code\speak.py" />
+    <Compile Include="dep\code\testAnimMoteur.py" />
+    <Compile Include="dep\code\testArret.py" />
+    <Compile Include="dep\code\testEvent.py" />
+    <Compile Include="dep\code\test_all.py" />
+    <Compile Include="Editeur.py" />
+    <Compile Include="Event.py" />
+    <Compile Include="GLDemo\Camera.py" />
+    <Compile Include="GLDemo\MyGeom.py" />
+    <Compile Include="GLDemo\__init__.py" />
+    <Compile Include="imports.py" />
+    <Compile Include="Loader.py" />
+    <Compile Include="Nao3D.py" />
+    <Compile Include="NaoAPIVirtual.py" />
+    <Compile Include="NaoMembre.py" />
+    <Compile Include="naoqiVirtual.py" />
+    <Compile Include="NaoSimulator.py" />
+    <Compile Include="NaoVirtual.py" />
+    <Compile Include="nao_20140409.py" />
+    <Compile Include="nao_api\Nao.py" />
+    <Compile Include="nao_api\NaoAPI.py" />
+    <Compile Include="nao_api\NaoEvent.py" />
+    <Compile Include="nao_api\NaoXML.py" />
+    <Compile Include="nao_api\__init__.py" />
+    <Compile Include="rsc_rc.py" />
+    <Compile Include="setup.py" />
+    <Compile Include="syntaxColor.py" />
+    <Compile Include="threaders.py" />
+    <Compile Include="TPINFO\Partie1\exercice1.py" />
+    <Compile Include="TPINFO\Partie1\exercice2.py" />
+    <Compile Include="TPINFO\Partie1\exercice3.py" />
+    <Compile Include="TPINFO\Partie1\exercice4.py" />
+    <Compile Include="TPINFO\Partie3\exercice1.py" />
+    <Compile Include="TPINFO\Partie3\exercice2.py" />
+    <Compile Include="TPINFO\Partie3\exercice3.py" />
+    <Compile Include="Video.py" />
+    <Compile Include="Viewer3DWidget.py" />
+    <Compile Include="widgets.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="dep" />
+    <Folder Include="dep\code" />
+    <Folder Include="doc" />
+    <Folder Include="doc\search" />
+    <Folder Include="GLDemo" />
+    <Folder Include="nao_api" />
+    <Folder Include="TPINFO\" />
+    <Folder Include="TPINFO\Partie1" />
+    <Folder Include="TPINFO\Partie3" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|PythonCore|2.7-32" />
+    <InterpreterReference Include="Global|PythonCore|3.6" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>
