@@ -13,11 +13,11 @@ for nombre in range(0,11,1):
 sleep(3)
 
 # 3 - Comment faire pour que le robot compte les secondes jusqu'a 10 ?
-...
+
 
 # 4 - Resoudre le probleme de ce morceau de code :
 for nombre in range(0,11,1):
-nao.dire(str(nombre))
+    nao.dire(str(nombre))
 
 # 5 - Expliquer pourquoi il ne marchait pas.
 # ...

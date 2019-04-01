@@ -11,7 +11,6 @@ nao=NaoControle(Nao())
 nao.dire("Bonjour")
 
 #1 - Ecrire une ligne de commande qui fasse dire au robot "Je suis un robot"
-...
 
 #Il est possible d'ecrire dans la console avec la fonction print()
 print("Bonjour")
@@ -24,7 +23,7 @@ print(variable)
 # ...
 
 # 4 - Modifier ce code pour que le robot dise "Bonjour la console"
-...
+
 
 # 5 - Demander au robot de compter jusqu'a 10.
-...
+

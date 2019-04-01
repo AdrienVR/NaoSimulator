@@ -15,6 +15,6 @@ compter(4)
 # (Partie 1 : exercice 4)
 # en rajoutant a la fin les mouvements pour que
 # le robot leve les bras en 2 secondes lors de l'explosion
-...
+
 
 # 3 - executer cette fonction.

@@ -27,4 +27,4 @@ for a in range(0,16,1):
 # 3 - A partir des exemples precedents, ecrire un code qui
 # allume alternativement les deux leds 1 seconde chacune
 # pendant 10 secondes.
-...
+

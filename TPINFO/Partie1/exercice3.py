@@ -10,13 +10,13 @@ for nombre in range(0,11,1):
         nao.dire(str(nombre))
 
 # 2 - Ecrire un code qui fait compter de 10 a 1
-...
+
 
 # 3 - Ecrire un code qui fait compter de 10 a 1, puis 
 # fait dire au robot "boum"
-...
+
 
 # 3 - Ecrire un code qui fait compter de 10 a 1, mais 
 # qui fait dire au robot "Que se passe-t-il ?" quand il reste
 # 5 secondes, puis "boum" à 0 secondes.
-...
+

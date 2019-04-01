@@ -35,4 +35,4 @@ nao.libererMoteur(A)
 
 # 2 - Ecrire un morceau de code qui fasse bouger la tete de haut en bas
 # en 8 secondes.
-...
+
