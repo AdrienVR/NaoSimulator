@@ -1,6 +1,6 @@
 NaoSimulator
 ============
-NaoSimulator is a free open source [NAO robot](https://www.softbankrobotics.com/emea/en/nao?q=emea/fr/nao) simulator.  
+NaoSimulator is a free open source [NAO robot](https://www.softbankrobotics.com/emea/en/nao) simulator.  
 This tool is made to help students to learn Python programming with the NAO robot.  
 Feel free to [submit issues](https://github.com/AdrienVR/NaoSimulator/issues) or even better: [Pull requests](https://gist.github.com/Chaser324/ce0505fbed06b947d962#creating-a-fork)!
 
@@ -20,7 +20,7 @@ Feel free to [submit issues](https://github.com/AdrienVR/NaoSimulator/issues) or
 * [numpy1.X](https://pypi.python.org/pypi/numpy)
 * (optional) [cx_freeze 4](https://pypi.python.org/pypi/cx_Freeze) **to enable compilation**
 
-### Install them on Windows using pip:   
+### Install them on Windows using pip (make sure to start in Administrator mode):   
 * With [python.exe in system path](https://superuser.com/questions/143119/how-do-i-add-python-to-the-windows-path):  
 
       python -m pip install PyOpenGL cx-Freeze  
@@ -31,10 +31,10 @@ Feel free to [submit issues](https://github.com/AdrienVR/NaoSimulator/issues) or
 				
 * [How to install PyQt4 on Windows using pip?](https://stackoverflow.com/a/48078369)  
 
-	Download the appropriate version of the PyQt4 from here: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyqt4  
+	Download the appropriate version (32bits Python 2.7) of the PyQt4 from here: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyqt4  
 	From the download repository:
 	
-       pip install PyQt4-4.11.4-cp27-cp27m-win_amd64.whl
+       pip install PyQt4-4.11.4-cp27-cp27m-win32.whl
 	
 
 ### Install them on Linux:
@@ -56,7 +56,9 @@ or
 ## Instructions
 
 This is the PyQt4 branch (stable).   
-The main file is: NaoSimulator.py
+The main file is NaoSimulator.py
+You can use Visual Studio 2017 for development and open NaoSimulator.sln
+You can build by launching build.bat
 
 | ![Python 2.7](https://www.python.org/static/img/python-logo.png "Python 2.7") | ![Qt4](http://www.fevrierdorian.com/blog/public/logos/Qt_logo002.png "Qt4") |
 |:----:|:----:|
